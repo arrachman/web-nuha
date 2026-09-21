@@ -235,7 +235,7 @@ export default async function BerandaPage() {
       <section className="pub-section">
         <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 40, alignItems: 'start' }}>
           {/* Kata Alumni */}
-          <div>
+          <div style={{ minWidth: 0 }}>
             <div className="pub-eyebrow">Kata Alumni</div>
             <h2 className="pub-h2" style={{ marginBottom: 24 }}>Jejak yang mereka bawa</h2>
             <div className="mq" style={{ width: '100%', maxWidth: '100%', overflow: 'hidden', position: 'relative', maskImage: 'linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent)', WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent)' }}>
@@ -263,7 +263,7 @@ export default async function BerandaPage() {
             </div>
           </div>
           {/* Agenda */}
-          <div>
+          <div style={{ minWidth: 0 }}>
             <div className="pub-eyebrow">Agenda</div>
             <h2 className="pub-h2" style={{ marginBottom: 24 }}>Kegiatan terdekat</h2>
             <div className="pub-agenda-card">
