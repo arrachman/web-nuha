@@ -1,0 +1,1612 @@
+// SIMTERPADU — Sistem Informasi Manajemen Terpadu
+// Yayasan Pendidikan Islam Nurul Huda Mergosono
+//
+// Prinsip inti: SATU IDENTITAS, BANYAK PERAN.
+// Seorang santri pondok yang juga siswa SMP adalah satu record `Person`
+// dengan beberapa baris peran (Santri, Siswa, Pegawai, Wali), bukan
+// beberapa record terpisah per unit.
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Identitas & akses
+// ─────────────────────────────────────────────────────────────
+
+enum JenisKelamin {
+  L
+  P
+}
+
+enum RegionLevel {
+  Province
+  City
+  District
+  Village
+}
+
+enum RegionAliasType {
+  FormerName
+  AlternateSpelling
+  Abbreviation
+  LocalLanguage
+}
+
+model Country {
+  id           Int      @id @default(autoincrement())
+  iso2         String   @unique @db.Char(2)
+  iso3         String   @unique @db.Char(3)
+  numericCode  String?  @map("numeric_code") @db.Char(3)
+  name         String   @db.VarChar(100)
+  localName    String?  @map("local_name") @db.VarChar(100)
+  phoneCode    String?  @map("phone_code") @db.VarChar(8)
+  currencyCode String?  @map("currency_code") @db.Char(3)
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  regions          Region[]
+  foreignAddresses ForeignAddress[]
+
+  @@index([name])
+  @@map("countries")
+}
+
+model Region {
+  id           BigInt      @id @default(autoincrement())
+  countryId    Int         @map("country_id")
+  parentId     BigInt?     @map("parent_id")
+  level        RegionLevel
+  code         String      @db.VarChar(20)
+  name         String      @db.VarChar(120)
+  typeLabel    String?     @map("type_label") @db.VarChar(30)
+  provinceId   BigInt?     @map("province_id")
+  cityId       BigInt?     @map("city_id")
+  districtId   BigInt?     @map("district_id")
+  depth        Int         @default(1)
+  fullName     String?     @map("full_name") @db.VarChar(400)
+  postalCode   String?     @map("postal_code") @db.Char(5)
+  latitude     Decimal?    @db.Decimal(10, 7)
+  longitude    Decimal?    @db.Decimal(10, 7)
+  areaKm2      Decimal?    @map("area_km2") @db.Decimal(12, 4)
+  population   Int?
+  isActive     Boolean     @default(true) @map("is_active")
+  replacedById BigInt?     @map("replaced_by_id")
+  createdAt    DateTime?   @default(now()) @map("created_at")
+  updatedAt    DateTime?   @updatedAt @map("updated_at")
+
+  country              Country         @relation(fields: [countryId], references: [id])
+  parent               Region?         @relation("RegionParent", fields: [parentId], references: [id], onDelete: Cascade)
+  children             Region[]        @relation("RegionParent")
+  province             Region?         @relation("RegionProvince", fields: [provinceId], references: [id], onDelete: SetNull)
+  provinceRegions      Region[]        @relation("RegionProvince")
+  city                 Region?         @relation("RegionCity", fields: [cityId], references: [id], onDelete: SetNull)
+  cityRegions          Region[]        @relation("RegionCity")
+  district             Region?         @relation("RegionDistrict", fields: [districtId], references: [id], onDelete: SetNull)
+  districtRegions      Region[]        @relation("RegionDistrict")
+  replacedBy           Region?         @relation("RegionReplacement", fields: [replacedById], references: [id], onDelete: SetNull)
+  replacedRegions      Region[]        @relation("RegionReplacement")
+  aliases              RegionAlias[]
+  people               Person[]        @relation("PersonRegion")
+  unitLocations        Unit[]          @relation("UnitRegion")
+  institutionLocations InstitutionProfile[] @relation("InstitutionProfileRegion")
+  applicants          Applicant[]          @relation("ApplicantRegion")
+
+  @@unique([countryId, code])
+  @@index([parentId, level, isActive])
+  @@index([level, isActive])
+  @@index([provinceId, cityId, districtId])
+  @@index([postalCode])
+  @@map("regions")
+}
+
+model RegionAlias {
+  id       BigInt          @id @default(autoincrement())
+  regionId BigInt          @map("region_id")
+  alias    String          @db.VarChar(120)
+  type     RegionAliasType
+
+  region Region @relation(fields: [regionId], references: [id], onDelete: Cascade)
+
+  @@unique([regionId, alias])
+  @@index([alias])
+  @@map("region_aliases")
+}
+
+model ForeignAddress {
+  id           BigInt  @id @default(autoincrement())
+  personId     BigInt  @unique @map("person_id")
+  countryId    Int     @map("country_id")
+  addressLine1 String  @map("address_line1") @db.VarChar(255)
+  addressLine2 String? @map("address_line2") @db.VarChar(255)
+  cityName     String? @map("city_name") @db.VarChar(120)
+  stateName    String? @map("state_name") @db.VarChar(120)
+  postalCode   String? @map("postal_code") @db.VarChar(20)
+  isCurrent    Boolean @default(true) @map("is_current")
+
+  person  Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
+  country Country @relation(fields: [countryId], references: [id])
+
+  @@index([countryId])
+  @@map("foreign_addresses")
+}
+
+model Person {
+  id               BigInt       @id @default(autoincrement())
+  nik              String?      @unique @db.VarChar(32)
+  /// Nama tampilan sehari-hari (tanpa gelar). Tetap kolom utama yang dipakai
+  /// seluruh UI & pencocokan jadwal guru — jangan ganti jadi nama lengkap.
+  fullName         String       @db.VarChar(160)
+  /// Gelar/sapaan kehormatan yang mendahului nama: "KH.", "Nyai Hj.", "Gus",
+  /// "Ning", "Ustadz", "Ustadzah". Dipisah supaya bisa dirender/difilter
+  /// tanpa mengurai string nama.
+  gelar            String?      @db.VarChar(60)
+  /// Nama panggilan akrab (mis. "Gus Alfan") untuk sapaan di UI/WA.
+  panggilan        String?      @db.VarChar(80)
+  /// Nama lengkap resmi termasuk gelar depan & belakang, sesuai dokumen.
+  namaLengkap      String?      @map("nama_lengkap") @db.VarChar(255)
+  gender           JenisKelamin
+  birthDate        DateTime?    @map("birth_date") @db.Date
+  birthPlace       String?      @map("birth_place") @db.VarChar(120)
+  addressLine      String?      @db.VarChar(255)
+  neighborhoodRt   String?      @db.VarChar(8)
+  neighborhoodRw   String?      @db.VarChar(8)
+  villageName      String?      @db.VarChar(120)
+  districtName     String?      @db.VarChar(120)
+  regencyName      String?      @db.VarChar(120)
+  regionId         BigInt?      @map("region_id")
+  postalCode       String?      @map("postal_code") @db.Char(5)
+  familyCardNumber String?      @map("family_card_number") @db.VarChar(32)
+  birthOrder       Int?         @map("birth_order")
+  siblingCount     Int?         @map("sibling_count")
+  hobby            String?      @db.VarChar(255)
+  aspiration       String?      @map("aspiration") @db.VarChar(160)
+  previousSchool   String?      @map("previous_school") @db.VarChar(160)
+  highestEducation String?      @map("highest_education") @db.VarChar(80)
+  phone            String?      @db.VarChar(32)
+  email            String?      @unique @db.VarChar(160)
+  photoUrl         String?      @map("photo_url") @db.VarChar(255)
+  isActive         Boolean      @default(true)
+  deletedAt        DateTime?    @map("deleted_at")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+
+  user              User?
+  santri            Santri?
+  riwayatPendidikan RiwayatPendidikan[]
+  staff             Staff?
+  waliDari          GuardianRelation[]        @relation("WaliOrang")
+  sebagaiAnak       GuardianRelation[]        @relation("AnakOrang")
+  region            Region?             @relation("PersonRegion", fields: [regionId], references: [id], onDelete: SetNull)
+  foreignAddress    ForeignAddress?
+
+  @@index([fullName])
+  @@index([regionId])
+  @@map("people")
+}
+
+model Role {
+  id          Int     @id @default(autoincrement())
+  key         String  @unique @db.VarChar(32)
+  name        String  @map("name") @db.VarChar(120)
+  description String? @map("description") @db.VarChar(255)
+
+  users     UserRole[]
+  menuItems MenuRole[]
+
+  @@map("roles")
+}
+
+model User {
+  id           BigInt    @id @default(autoincrement())
+  personId     BigInt    @unique @map("person_id")
+  email        String    @unique @db.VarChar(160)
+  username     String?   @unique @db.VarChar(64)
+  passwordHash String    @map("password_hash") @db.VarChar(255)
+  unitScope    String?   @map("unit_scope") @db.VarChar(64)
+  aktif        Boolean   @default(true)
+  lastLoginAt  DateTime? @map("last_login_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  person Person     @relation(fields: [personId], references: [id], onDelete: Cascade)
+  roles  UserRole[]
+
+  @@map("user")
+}
+
+model UserRole {
+  userId BigInt @map("user_id")
+  roleId Int    @map("role_id")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@map("user_roles")
+}
+
+model MenuItem {
+  id    Int     @id @default(autoincrement())
+  key   String  @unique @db.VarChar(32)
+  label String  @db.VarChar(120)
+  icon  String? @db.VarChar(255)
+  order Int     @default(0) @map("order")
+
+  roles MenuRole[]
+
+  @@map("menu_items")
+}
+
+model MenuRole {
+  menuId Int @map("menu_id")
+  roleId Int @map("role_id")
+
+  menu MenuItem @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  role Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([menuId, roleId])
+  @@map("menu_roles")
+}
+
+model GuardianRelation {
+  id         BigInt  @id @default(autoincrement())
+  waliId     BigInt  @map("wali_id")
+  anakId     BigInt  @map("anak_id")
+  hubungan   String  @db.VarChar(48)
+  pekerjaan  String? @db.VarChar(120)
+  utama      Boolean @default(true)
+  nik        String? @db.VarChar(32)
+  ttl        String? @db.VarChar(120)
+  pendidikan String? @db.VarChar(120)
+  pendapatan String? @db.VarChar(64)
+  /// "Ayah"/"Ibu"/"Wali" — sheet DATA WALI MURID memisahkan 3 blok NIK per peran.
+  peran      String? @db.VarChar(16)
+
+  wali Person @relation("WaliOrang", fields: [waliId], references: [id], onDelete: Cascade)
+  anak Person @relation("AnakOrang", fields: [anakId], references: [id], onDelete: Cascade)
+
+  @@unique([waliId, anakId])
+  @@map("guardian_relations")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Unit, asrama, kelas
+// ─────────────────────────────────────────────────────────────
+
+/// Satu unit di bawah yayasan (SMP, MA, Pondok, Poskestren) beserta profil
+/// kelembagaannya. Sebelum ini identitas unit (nama resmi, logo, kepala,
+/// alamat) tersebar hardcoded di JSX; kolom-kolom profil di bawah menjadikan
+/// tabel ini satu-satunya sumber kebenaran.
+model Unit {
+  id        Int     @id @default(autoincrement())
+  key       String  @unique @db.VarChar(24)
+  nama      String  @db.VarChar(160)
+  deskripsi String? @db.VarChar(255)
+  aktif     Boolean @default(true)
+
+  /// Nama resmi lengkap untuk kop surat & halaman publik ("SMP Nurul Huda Mergosono").
+  namaResmi       String?  @map("nama_resmi") @db.VarChar(200)
+  /// Jenjang/klasifikasi: "SMP", "MA", "Pesantren", "Layanan Kesehatan".
+  jenjang         String?  @db.VarChar(48)
+  /// NPSN (sekolah) atau NSM/nomor statistik pesantren.
+  npsn            String?  @db.VarChar(32)
+  akreditasi      String?  @db.VarChar(8)
+  tahunBerdiri    Int?     @map("tahun_berdiri")
+  /// Path logo relatif terhadap `public/` (mis. `/assets/logo-nuha.webp`).
+  logoPath        String?  @map("logo_path") @db.VarChar(255)
+  alamat          String?  @db.VarChar(255)
+  desaId          BigInt?  @map("desa_id")
+  latitude        Decimal? @db.Decimal(10, 7)
+  longitude       Decimal? @db.Decimal(10, 7)
+  telepon         String?  @db.VarChar(32)
+  email           String?  @db.VarChar(160)
+  website         String?  @db.VarChar(160)
+  /// Nama kepala unit. Dipertahankan sebagai teks karena pegawai bisa belum
+  /// terdaftar; `kepalaPegawaiId` adalah sumber kebenaran bila terisi.
+  kepalaNama      String?  @map("kepala_nama") @db.VarChar(160)
+  /// Sebutan jabatan kepala unit ("Kepala Sekolah", "Kepala Madrasah", "Pengasuh").
+  kepalaJabatan   String?  @map("kepala_jabatan") @db.VarChar(120)
+  headStaffId     BigInt?  @map("head_staff_id")
+  visi            String?  @db.Text
+  misi            String?  @db.Text
+
+  kelas             Kelas[]
+  santri            Santri[]
+  santriKelas       SantriKelas[]
+  riwayatPendidikan RiwayatPendidikan[]
+  staff             Staff[]             @relation("PegawaiUnit")
+  staffUnit         StaffUnit[]
+  jadwal            JadwalPelajaran[]
+  ujian             Ujian[]
+  kepalaPegawai     Staff?              @relation("UnitKepala", fields: [headStaffId], references: [id])
+  region            Region?             @relation("UnitRegion", fields: [desaId], references: [id], onDelete: SetNull)
+
+  @@index([desaId])
+  @@map("unit")
+}
+
+/// Profil yayasan induk — satu baris (`key = "yayasan"`), memuat identitas yang
+/// dipakai lintas modul: kop slip gaji, footer publik, rekening resmi, pengasuh.
+model InstitutionProfile {
+  id           Int      @id @default(autoincrement())
+  key          String   @unique @db.VarChar(24)
+  nama         String   @db.VarChar(200)
+  namaArab     String?  @map("nama_arab") @db.VarChar(160)
+  singkatan    String?  @db.VarChar(48)
+  logoPath     String?  @map("logo_path") @db.VarChar(255)
+  alamat       String?  @db.VarChar(255)
+  desaId       BigInt?  @map("desa_id")
+  latitude     Decimal? @db.Decimal(10, 7)
+  longitude    Decimal? @db.Decimal(10, 7)
+  telepon      String?  @db.VarChar(32)
+  email        String?  @db.VarChar(160)
+  website      String?  @db.VarChar(160)
+  tahunBerdiri Int?     @map("tahun_berdiri")
+  /// Nomor akta/badan hukum yayasan.
+  aktaNotaris  String?  @map("akta_notaris") @db.VarChar(160)
+  ketuaNama    String?  @map("ketua_nama") @db.VarChar(160)
+  pengasuhNama String?  @map("pengasuh_nama") @db.VarChar(160)
+  /// Rekening resmi untuk pembayaran wali ("BSI 7011-2345-6789 a.n. ...").
+  rekening     String?  @db.VarChar(160)
+  visi         String?  @db.Text
+  misi         String?  @db.Text
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  region    Region?  @relation("InstitutionProfileRegion", fields: [desaId], references: [id], onDelete: SetNull)
+
+  @@index([desaId])
+  @@map("institution_profiles")
+}
+
+model Kelas {
+  id             Int     @id @default(autoincrement())
+  unitId         Int     @map("unit_id")
+  nama           String  @db.VarChar(32)
+  tingkat        String  @db.VarChar(16)
+  /// Deprecated: dipertahankan untuk kompatibilitas. Sumber kebenaran adalah `waliKelasId`.
+  waliKelas      String? @map("wali_kelas") @db.VarChar(160)
+  homeroomStaffId BigInt? @map("homeroom_staff_id")
+  /// Kelas di-scope ke tahun ajaran karena satu unit bisa punya kelas "X" di
+  /// beberapa tahun ajaran berbeda dengan isi santri yang berbeda pula.
+  academicYearId Int?    @map("academic_year_id")
+
+  unit             Unit          @relation(fields: [unitId], references: [id])
+  waliKelasPegawai Staff?        @relation(fields: [homeroomStaffId], references: [id])
+  academicYear     AcademicYear? @relation(fields: [academicYearId], references: [id])
+  santri           Santri[]
+  santriKelas      SantriKelas[]
+  jadwalUjian      JadwalUjian[]
+  sesiCbt          SesiCbt[]
+
+  @@unique([unitId, nama, academicYearId])
+  @@map("kelas")
+}
+
+model AcademicYear {
+  id       Int     @id @default(autoincrement())
+  code     String  @db.VarChar(16)
+  semester String  @db.VarChar(8)
+  isActive Boolean @default(false) @map("is_active")
+
+  kelas             Kelas[]
+  teachingLoads     TeachingLoad[]
+  riwayatPendidikan RiwayatPendidikan[]
+
+  @@unique([code, semester])
+  @@map("academic_years")
+}
+
+model Dormitory {
+  id         Int          @id @default(autoincrement())
+  name       String       @unique @db.VarChar(120)
+  gender     JenisKelamin
+  capacity   Int          @default(0)
+  supervisor String?      @map("supervisor") @db.VarChar(160)
+
+  rooms Room[]
+
+  @@map("dormitories")
+}
+
+model Room {
+  id          Int    @id @default(autoincrement())
+  dormitoryId Int    @map("dormitory_id")
+  code        String @db.VarChar(16)
+  capacity    Int    @default(0)
+
+  dormitory Dormitory @relation(fields: [dormitoryId], references: [id], onDelete: Cascade)
+  santri    Santri[]
+
+  @@unique([dormitoryId, code])
+  @@map("rooms")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Santri & pegawai (peran dari Person)
+// ─────────────────────────────────────────────────────────────
+
+enum StatusSantri {
+  Aktif
+  TidakAktif
+}
+
+enum StatusRiwayatPendidikan {
+  Aktif
+  Lulus
+  TidakAktif
+}
+
+model Santri {
+  id         BigInt       @id @default(autoincrement())
+  personId   BigInt       @unique @map("person_id")
+  /// Sebagian data client hanya punya NISN, belum punya NIS. NIS dibuat
+  /// deterministik oleh importir; NISN tetap sumber kebenaran identitas.
+  nis        String?      @unique @db.VarChar(32)
+  nisn       String?      @unique @db.VarChar(32)
+  unitId     Int?         @map("unit_id")
+  kelasId    Int?         @map("kelas_id")
+  roomId     Int?         @map("room_id")
+  status     StatusSantri @default(Aktif)
+  program    String?      @db.VarChar(64)
+  tahunMasuk String?      @map("tahun_masuk") @db.VarChar(8)
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+
+  person Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+  unit   Unit?  @relation(fields: [unitId], references: [id])
+  kelas  Kelas? @relation(fields: [kelasId], references: [id])
+  room   Room?  @relation(fields: [roomId], references: [id])
+
+  memorization   Memorization[]
+  discipline     Discipline[]
+  leavePermits   LeavePermit[]
+  attendance     Attendance[]
+  invoices       Invoice[]
+  medicalRecords MedicalRecord[]
+  nilai          Nilai[]
+  kunjungan      Kunjungan[]
+  nilaiUjian     NilaiUjian[]
+  pesertaCbt     PesertaCbt[]
+  healthProfile  HealthProfile?
+  kelasLain      SantriKelas[]
+
+  @@index([status])
+  @@map("santri")
+}
+
+/// Penempatan rombel seorang santri, jamak: satu santri bisa sekolah formal di
+/// SMP/MA **sekaligus** mengaji di Madin pada tahun ajaran yang sama. Kolom
+/// `Santri.unitId/kelasId` dipertahankan sebagai penempatan UTAMA (dipakai
+/// modul yang memang hanya butuh satu jawaban: kartu identitas, tagihan, kamar),
+/// sedangkan tabel ini adalah sumber kebenaran untuk "santri ini ada di kelas
+/// mana saja" — dipakai pohon induk, penyaring unit/kelas, dan presensi.
+/// Baris dengan `utama = true` harus konsisten dengan kolom lama.
+model SantriKelas {
+  santriId  BigInt   @map("santri_id")
+  kelasId   Int      @map("kelas_id")
+  /// Disalin dari `Kelas.unitId` saat penulisan supaya penyaring per-unit tidak
+  /// perlu join ke `kelas`; wajib sama dengan unit kelasnya.
+  unitId    Int      @map("unit_id")
+  utama     Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  santri Santri @relation(fields: [santriId], references: [id], onDelete: Cascade)
+  kelas  Kelas  @relation(fields: [kelasId], references: [id], onDelete: Cascade)
+  unit   Unit   @relation(fields: [unitId], references: [id], onDelete: Cascade)
+
+  @@id([santriId, kelasId])
+  @@index([kelasId])
+  @@index([unitId])
+  @@map("santri_kelas")
+}
+
+/// Jenjang yang pernah/sedang dijalani seorang `Person` (SD → SMP → MA, dst),
+/// TERPISAH dari `Santri.status/unitId/kelasId` yang hanya menyimpan jenjang
+/// AKTIF saat ini. Perlu supaya lulus SMP bisa dicatat tanpa menimpa status
+/// aktif MA santri yang sama (satu Person hanya boleh punya satu baris Santri).
+model RiwayatPendidikan {
+  id             BigInt       @id @default(autoincrement())
+  personId       BigInt       @map("person_id")
+  unitId         Int          @map("unit_id")
+  kelasNama      String       @map("kelas_nama") @db.VarChar(32)
+  tingkat        String       @db.VarChar(16)
+  academicYearId Int          @map("academic_year_id")
+  status         StatusRiwayatPendidikan @default(Lulus)
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  person       Person       @relation(fields: [personId], references: [id], onDelete: Cascade)
+  unit         Unit         @relation(fields: [unitId], references: [id])
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
+
+  @@unique([personId, unitId, academicYearId])
+  @@map("riwayat_pendidikan")
+}
+
+/// Profil kesehatan sekali-isi (BB, TB, riwayat penyakit) — beda dari `MedicalRecord`
+/// yang mencatat per-kunjungan poskestren.
+model HealthProfile {
+  /// PK sintetis supaya modul CRUD generik (yang selalu memakai kolom `id`)
+  /// bisa mengelola tabel ini; `studentId` tetap unik — satu profil per santri.
+  id             BigInt   @id @default(autoincrement())
+  studentId      BigInt   @unique @map("student_id")
+  weightKg       Decimal? @map("weight_kg") @db.Decimal(5, 2)
+  heightCm       Decimal? @map("height_cm") @db.Decimal(5, 2)
+  bloodType      String?  @map("blood_type") @db.VarChar(3)
+  medicalHistory String?  @map("medical_history") @db.VarChar(255)
+  allergies      String?  @db.VarChar(255)
+  specialNeeds   String?  @map("special_needs") @db.VarChar(255)
+  notes          String?  @db.Text
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  student Santri @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("health_profiles")
+}
+
+model Staff {
+  id               BigInt   @id @default(autoincrement())
+  personId         BigInt   @unique @map("person_id")
+  employeeNumber   String   @unique @map("employee_number") @db.VarChar(32)
+  unitId           Int?     @map("unit_id")
+  position         String   @db.VarChar(120)
+  status           String   @db.VarChar(32)
+  bankAccount      String?  @map("bank_account") @db.VarChar(64)
+  lastEducation    String?  @map("last_education") @db.VarChar(120)
+  subjectsTaught   String?  @map("subjects_taught") @db.VarChar(255)
+  additionalDuties String?  @map("additional_duties") @db.VarChar(255)
+  teachingHours    Int      @default(0) @map("teaching_hours")
+  birthPlaceDate   String?  @map("birth_place_date") @db.VarChar(120)
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  person              Person               @relation(fields: [personId], references: [id], onDelete: Cascade)
+  unit                Unit?                @relation("PegawaiUnit", fields: [unitId], references: [id])
+  unitDipimpin        Unit[]               @relation("UnitKepala")
+  salaryComponent     SalaryComponent?
+  paySlips            PaySlip[]
+  kelasWali           Kelas[]
+  jadwalAmpu          JadwalPelajaran[]
+  jadwalPiket         JadwalPiket[]
+  jurnalMengajar      JurnalMengajar[]
+  attendances         StaffAttendance[]
+  teachingLoads       TeachingLoad[]
+  decreeArchives      DecreeArchive[]
+  structuralPositions StructuralPosition[]
+  otherUnits          StaffUnit[]
+
+  @@map("staff")
+}
+
+/// Penugasan seorang pegawai di sebuah unit. Satu orang bisa mengabdi di lebih
+/// dari satu lembaga (contoh: Alfan Jamil — guru Fikih di MA sekaligus asatidz
+/// Madin), sehingga `Pegawai.unitId` saja tidak cukup.
+///
+/// `Pegawai.unitId` tetap ada dan berarti **unit utama** (dipakai untuk kolom
+/// ringkas & urutan lama); tabel ini adalah daftar lengkap penugasannya dan
+/// harus memuat unit utama itu juga, supaya filter/pohon kepegawaian cukup
+/// membaca satu sumber.
+model StaffUnit {
+  staffId        BigInt   @map("staff_id")
+  unitId         Int      @map("unit_id")
+  position       String?  @map("position") @db.VarChar(120)
+  employeeNumber String?  @map("employee_number") @db.VarChar(32)
+  isPrimary      Boolean  @default(false) @map("is_primary")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  unit  Unit  @relation(fields: [unitId], references: [id], onDelete: Cascade)
+
+  @@id([staffId, unitId])
+  @@index([unitId])
+  @@map("staff_units")
+}
+
+/// Struktur organisasi dari SK pengangkatan (unit MA, pengurus asrama, dst).
+/// SENGAJA BUKAN peran RBAC — jabatan struktural cuma metadata organisasi,
+/// akses menu tetap diatur lewat `Peran`/`MenuPeran`. Satu orang boleh
+/// menjabat lebih dari satu jabatan (contoh: Waka Sarpras + Kepala Lab),
+/// jadi kunci unik berbasis (skNomor, urutan), bukan pegawaiId tunggal.
+model StructuralPosition {
+  id           BigInt   @id @default(autoincrement())
+  decreeNumber String   @map("decree_number") @db.VarChar(64)
+  order        Int      @default(0)
+  position     String   @db.VarChar(160)
+  scope        String   @db.VarChar(32)
+  division     String?  @db.VarChar(120)
+  startPeriod  DateTime @map("start_period") @db.Date
+  endPeriod    DateTime @map("end_period") @db.Date
+  staffId      BigInt?  @map("staff_id")
+  sourceName   String   @map("source_name") @db.VarChar(160)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  staff Staff? @relation(fields: [staffId], references: [id])
+
+  @@unique([decreeNumber, order])
+  @@index([scope])
+  @@map("structural_positions")
+}
+
+model SalaryComponent {
+  staffId           BigInt  @id @map("staff_id")
+  baseSalary        Decimal @default(0) @map("base_salary") @db.Decimal(14, 2)
+  positionAllowance Decimal @default(0) @map("position_allowance") @db.Decimal(14, 2)
+  familyAllowance   Decimal @default(0) @map("family_allowance") @db.Decimal(14, 2)
+  teachingHours     Int     @default(0) @map("teaching_hours")
+  hourlyRate        Decimal @default(0) @map("hourly_rate") @db.Decimal(14, 2)
+  transport         Decimal @default(0) @db.Decimal(14, 2)
+  bpjs              Decimal @default(0) @db.Decimal(14, 2)
+  cooperative       Decimal @default(0) @db.Decimal(14, 2)
+  incomeTax         Decimal @default(0) @map("income_tax") @db.Decimal(14, 2)
+
+  staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@map("salary_components")
+}
+
+model PaySlip {
+  id            BigInt    @id @default(autoincrement())
+  staffId       BigInt    @map("staff_id")
+  period        String    @db.VarChar(16)
+  grossAmount   Decimal   @map("gross_amount") @db.Decimal(14, 2)
+  deduction     Decimal   @db.Decimal(14, 2)
+  netAmount     Decimal   @map("net_amount") @db.Decimal(14, 2)
+  paidAt        DateTime? @map("paid_at")
+  // Revisi setelah pembayaran diizinkan; jejaknya disimpan di sini dan di audit_log.
+  status        String    @default("Draft") @db.VarChar(16)
+  revisionCount Int       @default(0) @map("revision_count")
+  issuedBy      BigInt?   @map("issued_by")
+  revisionNote  String?   @map("revision_note") @db.VarChar(255)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@unique([staffId, period])
+  @@map("pay_slips")
+}
+
+/// Jejak audit append-only: siapa melakukan apa, kapan, dan nilai apa yang berubah.
+model AuditLog {
+  id        BigInt   @id @default(autoincrement())
+  aksi      String   @db.VarChar(48)
+  entitas   String   @db.VarChar(48)
+  entitasId String?  @map("entitas_id") @db.VarChar(64)
+  ringkasan String   @db.VarChar(255)
+  perubahan Json?
+  aktorId   BigInt?  @map("aktor_id")
+  aktorNama String   @default("anonim") @map("aktor_nama") @db.VarChar(160)
+  ip        String?  @db.VarChar(64)
+  waktu     DateTime @default(now())
+
+  @@index([waktu])
+  @@index([entitas, entitasId])
+  @@map("audit_log")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Kepesantrenan
+// ─────────────────────────────────────────────────────────────
+
+model StudyCircle {
+  id             Int    @id @default(autoincrement())
+  name           String @db.VarChar(120)
+  teacher        String @db.VarChar(160)
+  schedule       String @db.VarChar(64)
+  location       String @db.VarChar(120)
+  educationLevel String @map("education_level") @db.VarChar(64)
+  memberCount    Int    @default(0) @map("member_count")
+
+  @@map("study_circles")
+}
+
+model Memorization {
+  id        BigInt   @id @default(autoincrement())
+  studentId BigInt   @map("student_id")
+  date      DateTime @db.Date
+  chapter   String   @db.VarChar(64)
+  verses    String   @db.VarChar(32)
+  type      String   @db.VarChar(32)
+  score     String   @db.VarChar(32)
+  examiner  String   @db.VarChar(160)
+
+  student Santri @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, date])
+  @@map("memorization_records")
+}
+
+model Discipline {
+  id        BigInt   @id @default(autoincrement())
+  studentId BigInt   @map("student_id")
+  date      DateTime @db.Date
+  violation String   @db.VarChar(255)
+  points    Int      @default(0)
+  sanction  String?  @db.VarChar(255)
+  officer   String   @db.VarChar(160)
+
+  student Santri @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, date])
+  @@map("discipline_records")
+}
+
+enum LeavePermitStatus {
+  Pending
+  Approved
+  Rejected
+  Completed
+}
+
+model LeavePermit {
+  id         BigInt            @id @default(autoincrement())
+  code       String            @unique @db.VarChar(24)
+  studentId  BigInt            @map("student_id")
+  type       String            @db.VarChar(64)
+  reason     String            @db.VarChar(255)
+  pickupBy   String?           @map("pickup_by") @db.VarChar(160)
+  departedAt DateTime          @map("departed_at")
+  returnedAt DateTime?         @map("returned_at")
+  status     LeavePermitStatus @default(Pending)
+
+  student Santri @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@map("leave_permits")
+}
+
+enum AttendanceStatus {
+  Present
+  Sick
+  Excused
+  Absent
+  // New values are appended because this is a MySQL enum and existing order must remain stable.
+  Late
+  EarlyDeparture
+}
+
+model Attendance {
+  id        BigInt           @id @default(autoincrement())
+  studentId BigInt           @map("student_id")
+  date      DateTime         @db.Date
+  session   String           @db.VarChar(32)
+  status    AttendanceStatus @default(Present)
+  note      String?          @db.VarChar(255)
+
+  student Santri @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, date, session])
+  @@map("attendance_records")
+}
+
+model DailyActivity {
+  id    Int     @id @default(autoincrement())
+  time  String  @db.VarChar(16)
+  name  String  @db.VarChar(160)
+  note  String? @db.VarChar(255)
+  order Int     @default(0)
+
+  @@map("daily_activities")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Akademik
+// ─────────────────────────────────────────────────────────────
+
+model MataPelajaran {
+  id        Int     @id @default(autoincrement())
+  kode      String  @unique @db.VarChar(24)
+  nama      String  @db.VarChar(160)
+  jp        Int     @default(0)
+  kelompok  String  @db.VarChar(64)
+  guru      String? @db.VarChar(160)
+  kkm       Int     @default(75)
+  kurikulum String? @db.VarChar(64)
+
+  nilai       Nilai[]
+  capaian     CapaianPembelajaran[]
+  jadwalUjian JadwalUjian[]
+  soal        Soal[]
+  paketSoal   PaketSoal[]
+
+  @@map("mata_pelajaran")
+}
+
+model PerangkatAjar {
+  id        Int    @id @default(autoincrement())
+  kode      String @unique @db.VarChar(24)
+  mapel     String @db.VarChar(160)
+  kelas     String @db.VarChar(32)
+  jenis     String @db.VarChar(64)
+  topik     String @db.VarChar(200)
+  pertemuan Int    @default(0)
+  guru      String @db.VarChar(160)
+  status    String @default("Draf") @db.VarChar(32)
+
+  @@map("perangkat_ajar")
+}
+
+model CapaianPembelajaran {
+  id      Int    @id @default(autoincrement())
+  kode    String @unique @db.VarChar(24)
+  mapelId Int?   @map("mapel_id")
+  mapel   String @db.VarChar(160)
+  fase    String @db.VarChar(32)
+  capaian String @db.Text
+
+  mataPelajaran MataPelajaran? @relation(fields: [mapelId], references: [id])
+
+  @@map("capaian_pembelajaran")
+}
+
+model BankSoal {
+  id      Int    @id @default(autoincrement())
+  kode    String @unique @db.VarChar(24)
+  mapel   String @db.VarChar(160)
+  topik   String @db.VarChar(200)
+  tipe    String @db.VarChar(64)
+  level   String @db.VarChar(64)
+  butir   Int    @default(0)
+  dipakai Int    @default(0)
+  penulis String @db.VarChar(160)
+
+  @@map("bank_soal")
+}
+
+model Nilai {
+  id       BigInt  @id @default(autoincrement())
+  santriId BigInt  @map("santri_id")
+  mapelId  Int     @map("mapel_id")
+  periode  String  @db.VarChar(24)
+  tugas    Decimal @default(0) @db.Decimal(5, 2)
+  uts      Decimal @default(0) @db.Decimal(5, 2)
+  uas      Decimal @default(0) @db.Decimal(5, 2)
+  akhir    Decimal @default(0) @db.Decimal(5, 2)
+  predikat String? @db.VarChar(8)
+
+  santri Santri        @relation(fields: [santriId], references: [id], onDelete: Cascade)
+  mapel  MataPelajaran @relation(fields: [mapelId], references: [id])
+
+  @@unique([santriId, mapelId, periode])
+  @@map("nilai")
+}
+
+model JadwalPelajaran {
+  id        Int     @id @default(autoincrement())
+  hari      String  @db.VarChar(16)
+  jamKe     Int     @map("jam_ke")
+  waktu     String  @db.VarChar(32)
+  mapel     String  @db.VarChar(160)
+  /// Deprecated: dipertahankan untuk kompatibilitas. Sumber kebenaran adalah `pegawaiId`.
+  guru      String? @db.VarChar(160)
+  staffId   BigInt? @map("staff_id")
+  kelas     String? @db.VarChar(32)
+  /// Tempat pelajaran berlangsung. Terpisah dari `kelas`: importir lama menyimpan
+  /// ruangan ("Lab IPA", "Musholla") di kolom kelas, sehingga guru yang mengajar
+  /// di luar ruang kelas kehilangan rombongan belajarnya.
+  ruang     String? @db.VarChar(64)
+  /// Unit tempat jam ini diajarkan. Seorang guru lazim mengampu di SMP dan MA
+  /// sekaligus, bahkan merangkap ustadz di pondok — tanpa kolom ini, jadwalnya
+  /// tercampur dan kartu "Kelas Saya" tak bisa dikelompokkan per unit.
+  unitId    Int?    @map("unit_id")
+
+  unit   Unit?            @relation(fields: [unitId], references: [id])
+  staff  Staff?           @relation(fields: [staffId], references: [id])
+  jurnal JurnalMengajar[]
+
+  @@unique([hari, jamKe, kelas])
+  @@index([guru])
+  @@map("jadwal_pelajaran")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Fase 6 — piket, jurnal mengajar, presensi & beban pegawai, arsip SK
+// ─────────────────────────────────────────────────────────────
+
+/// Jadwal piket guru mingguan (bukan per-tanggal). Sumber saat ini: foto
+/// jadwal piket MPLS yang dikonfirmasi client dipakai sebagai piket reguler
+/// (lihat RENCANA-IMPORT.md §Fase 7.2). Prasyarat reminder `WA-GUR-04`.
+model JadwalPiket {
+  id           Int     @id @default(autoincrement())
+  hari         String  @db.VarChar(16)
+  waktuMulai   String  @map("waktu_mulai") @db.VarChar(16)
+  waktuSelesai String  @map("waktu_selesai") @db.VarChar(16)
+  staffId      BigInt? @map("staff_id")
+  urutan       Int     @default(0)
+
+  staff Staff? @relation(fields: [staffId], references: [id])
+
+  // Satu shift = satu baris per (hari, jam mulai). Kunci ini yang membuat
+  // importir piket idempoten; tanpa itu setiap jalan ulang menduplikasi.
+  @@unique([hari, waktuMulai])
+  @@index([hari])
+  @@map("jadwal_piket")
+}
+
+/// Catatan mengajar per pertemuan (jurnal guru). Sumber: "PRESENSI DAN
+/// JURNAL JULI-AGUSTUS AJARAN BARU 2025_111924.xlsx". `jadwalId` opsional
+/// karena jurnal bisa dicatat untuk pertemuan yang tidak persis cocok ke
+/// satu baris `JadwalPelajaran` (mis. jam pengganti).
+model JurnalMengajar {
+  id          BigInt   @id @default(autoincrement())
+  staffId     BigInt?  @map("staff_id")
+  jadwalId    Int?     @map("jadwal_id")
+  kelas       String?  @db.VarChar(32)
+  tgl         DateTime @db.Date
+  jamKe       Int?     @map("jam_ke")
+  materi      String?  @db.VarChar(255)
+  catatan     String?  @db.VarChar(255)
+  jumlahHadir Int?     @map("jumlah_hadir")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  staff  Staff?           @relation(fields: [staffId], references: [id])
+  jadwal JadwalPelajaran? @relation(fields: [jadwalId], references: [id])
+
+  @@index([tgl])
+  @@index([staffId, tgl])
+  @@map("jurnal_mengajar")
+}
+
+/// Staff attendance is separate from Student `Attendance`.
+model StaffAttendance {
+  id       BigInt           @id @default(autoincrement())
+  staffId  BigInt           @map("staff_id")
+  date     DateTime         @db.Date
+  checkIn  String?          @map("check_in") @db.VarChar(16)
+  checkOut String?          @map("check_out") @db.VarChar(16)
+  status   AttendanceStatus @default(Present)
+  notes    String?          @db.VarChar(255)
+
+  staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@unique([staffId, date])
+  @@map("staff_attendances")
+}
+
+/// Beban jam mengajar per pegawai per tahun ajaran. Strukturnya ada di SK
+/// Pembagian Tugas Guru 2026, tapi ANGKANYA KOSONG di dokumen client —
+/// model disiapkan lebih dulu, pengisian menunggu data dari client.
+model TeachingLoad {
+  id             BigInt  @id @default(autoincrement())
+  staffId        BigInt  @map("staff_id")
+  academicYearId Int?    @map("academic_year_id")
+  subject        String? @db.VarChar(160)
+  hours          Int?    @map("hours")
+  notes          String? @db.VarChar(255)
+
+  staff        Staff         @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  academicYear AcademicYear? @relation(fields: [academicYearId], references: [id])
+
+  @@index([staffId])
+  @@map("teaching_loads")
+}
+
+/// Arsip SK kepegawaian. Berkas asli TIDAK disajikan lewat `public/` —
+/// mengikuti pola `docs-assets/` + route bergerbang (lihat
+/// app/docs/tangkapan/[nama]/route.ts); `fileUrl` di sini menyimpan nama
+/// berkas relatif ke direktori aman itu, bukan URL publik.
+model DecreeArchive {
+  id        BigInt   @id @default(autoincrement())
+  number    String   @db.VarChar(64)
+  title     String   @db.VarChar(200)
+  date      DateTime @db.Date
+  type      String   @db.VarChar(64)
+  staffId   BigInt?  @map("staff_id")
+  fileUrl   String?  @map("file_url") @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  staff Staff? @relation(fields: [staffId], references: [id])
+
+  @@index([type])
+  @@map("decree_archives")
+}
+
+/// Jadwal Madrasah Diniyah, terpisah dari `JadwalPelajaran` karena kuncinya
+/// berbasis kitab & tempat non-kelas (Ndalem Abuya, Nuhamart Lt2, dst),
+/// bukan @@unique([hari, jamKe, kelas]).
+model JadwalDiniyah {
+  id      Int    @id @default(autoincrement())
+  hari    String @db.VarChar(16)
+  jenjang String @db.VarChar(32)
+  kitab   String @db.VarChar(160)
+  ustadz  String @db.VarChar(160)
+  tempat  String @db.VarChar(120)
+  urutan  Int    @default(0)
+
+  @@map("jadwal_diniyah")
+}
+
+/// Satu gelombang ujian (UTS/UAS/ujian pondok) pada satu unit dan periode.
+model Ujian {
+  id          Int      @id @default(autoincrement())
+  kode        String   @unique @db.VarChar(24)
+  nama        String   @db.VarChar(160)
+  jenis       String   @db.VarChar(32)
+  unitId      Int      @map("unit_id")
+  tahunAjaran String   @map("tahun_ajaran") @db.VarChar(16)
+  semester    String   @db.VarChar(16)
+  mulai       DateTime @db.Date
+  selesai     DateTime @db.Date
+  status      String   @default("Draf") @db.VarChar(24)
+  catatan     String?  @db.VarChar(255)
+
+  unit   Unit          @relation(fields: [unitId], references: [id])
+  jadwal JadwalUjian[]
+
+  @@index([status])
+  @@map("ujian")
+}
+
+/// Satu sesi ujian: satu mapel untuk satu kelas, dengan pengawasnya.
+model JadwalUjian {
+  id       Int      @id @default(autoincrement())
+  ujianId  Int      @map("ujian_id")
+  mapelId  Int      @map("mapel_id")
+  kelasId  Int      @map("kelas_id")
+  tgl      DateTime @db.Date
+  waktu    String   @db.VarChar(32)
+  durasi   Int      @default(90)
+  ruang    String?  @db.VarChar(64)
+  pengawas String?  @db.VarChar(160)
+
+  ujian   Ujian         @relation(fields: [ujianId], references: [id], onDelete: Cascade)
+  mapel   MataPelajaran @relation(fields: [mapelId], references: [id])
+  kelas   Kelas         @relation(fields: [kelasId], references: [id])
+  nilai   NilaiUjian[]
+  sesiCbt SesiCbt[]
+
+  @@unique([ujianId, mapelId, kelasId])
+  @@map("jadwal_ujian")
+}
+
+/// Hasil satu santri pada satu sesi ujian. Terpisah dari `Nilai` yang menyimpan
+/// rekap rapor per periode: di sini nilainya per sesi, lengkap dengan kehadiran.
+model NilaiUjian {
+  id       BigInt  @id @default(autoincrement())
+  jadwalId Int     @map("jadwal_id")
+  santriId BigInt  @map("santri_id")
+  nilai    Decimal @default(0) @db.Decimal(5, 2)
+  hadir    Boolean @default(true)
+  catatan  String? @db.VarChar(255)
+
+  jadwal JadwalUjian @relation(fields: [jadwalId], references: [id], onDelete: Cascade)
+  santri Santri      @relation(fields: [santriId], references: [id], onDelete: Cascade)
+
+  @@unique([jadwalId, santriId])
+  @@map("nilai_ujian")
+}
+
+model KursusLms {
+  id         Int    @id @default(autoincrement())
+  kode       String @unique @db.VarChar(24)
+  nama       String @db.VarChar(160)
+  guru       String @db.VarChar(160)
+  modul      Int    @default(0)
+  selesai    Int    @default(0)
+  tugasAktif Int    @default(0) @map("tugas_aktif")
+  nilai      Int    @default(0)
+
+  materi MateriLms[]
+  tugas  TugasLms[]
+
+  @@map("kursus_lms")
+}
+
+model MateriLms {
+  id       Int      @id @default(autoincrement())
+  kursusId Int      @map("kursus_id")
+  judul    String   @db.VarChar(200)
+  tipe     String   @db.VarChar(64)
+  status   String   @db.VarChar(64)
+  tgl      DateTime @db.Date
+
+  kursus KursusLms @relation(fields: [kursusId], references: [id], onDelete: Cascade)
+
+  @@map("materi_lms")
+}
+
+model TugasLms {
+  id       Int      @id @default(autoincrement())
+  kode     String   @unique @db.VarChar(24)
+  kursusId Int      @map("kursus_id")
+  judul    String   @db.VarChar(200)
+  deadline DateTime @db.DateTime
+  status   String   @db.VarChar(64)
+
+  kursus KursusLms @relation(fields: [kursusId], references: [id], onDelete: Cascade)
+
+  @@map("tugas_lms")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Poskestren
+// ─────────────────────────────────────────────────────────────
+
+model MedicalRecord {
+  id        BigInt   @id @default(autoincrement())
+  studentId BigInt   @map("student_id")
+  date      DateTime @db.Date
+  time      String?  @db.VarChar(16)
+  complaint String   @db.VarChar(255)
+  diagnosis String?  @db.VarChar(255)
+  treatment String?  @db.VarChar(255)
+  followUp  String?  @map("follow_up") @db.VarChar(120)
+  officer   String   @db.VarChar(160)
+
+  student Santri @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, date])
+  @@map("medical_records")
+}
+
+model Medicine {
+  id       Int     @id @default(autoincrement())
+  name     String  @unique @db.VarChar(160)
+  unit     String  @db.VarChar(32)
+  category String? @db.VarChar(64)
+  stock    Int     @default(0)
+  minStock Int     @default(0) @map("min_stock")
+  expiry   String? @db.VarChar(32)
+
+  @@map("medicines")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Keuangan
+// ─────────────────────────────────────────────────────────────
+
+model Invoice {
+  id         BigInt   @id @default(autoincrement())
+  code       String   @unique @map("code") @db.VarChar(24)
+  santriId   BigInt   @map("santri_id")
+  type       String   @map("type") @db.VarChar(120)
+  period     String   @map("period") @db.VarChar(24)
+  amount     Decimal  @map("amount") @db.Decimal(14, 2)
+  paidAmount Decimal  @default(0) @map("paid_amount") @db.Decimal(14, 2)
+  dueDate    DateTime @map("due_date") @db.Date
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  santri   Santri    @relation(fields: [santriId], references: [id], onDelete: Cascade)
+  payments Payment[]
+
+  @@index([period])
+  @@map("invoices")
+}
+
+model Payment {
+  id        BigInt   @id @default(autoincrement())
+  invoiceId BigInt   @map("invoice_id")
+  date      DateTime @map("date") @db.Date
+  amount    Decimal  @map("amount") @db.Decimal(14, 2)
+  method    String   @map("method") @db.VarChar(64)
+  reference String?  @map("reference") @db.VarChar(64)
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+enum CashDirection {
+  Inbound
+  Outbound
+}
+
+model CashTransaction {
+  id          BigInt        @id @default(autoincrement())
+  code        String        @unique @map("code") @db.VarChar(24)
+  date        DateTime      @map("date") @db.Date
+  description String        @map("description") @db.VarChar(255)
+  category    String        @map("category") @db.VarChar(64)
+  method      String        @map("method") @db.VarChar(64)
+  direction   CashDirection @map("direction")
+  amount      Decimal       @map("amount") @db.Decimal(14, 2)
+
+  @@index([date])
+  @@map("cash_transactions")
+}
+
+// ─────────────────────────────────────────────────────────────
+// PPDB
+// ─────────────────────────────────────────────────────────────
+
+enum ApplicantStatus {
+  New
+  Verification
+  Selection
+  Passed
+  Failed
+  Reenrollment
+}
+
+model Applicant {
+  id                 BigInt          @id @default(autoincrement())
+  registrationNumber String          @unique @map("registration_number") @db.VarChar(32)
+  fullName           String          @map("full_name") @db.VarChar(160)
+  gender             JenisKelamin?
+  choice             String          @db.VarChar(64)
+  previousSchool     String?         @map("previous_school") @db.VarChar(160)
+  guardianPhone      String?         @map("guardian_phone") @db.VarChar(32)
+  registeredAt       DateTime        @map("registered_at") @db.Date
+  score              Decimal?        @db.Decimal(5, 2)
+  status             ApplicantStatus @default(New)
+  regionId           BigInt?         @map("region_id")
+  createdAt          DateTime        @default(now()) @map("created_at")
+
+  documents ApplicantDocument[]
+  region    Region?             @relation("ApplicantRegion", fields: [regionId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([regionId])
+  @@map("applicants")
+}
+
+model ApplicantDocument {
+  id          BigInt  @id @default(autoincrement())
+  applicantId BigInt  @map("applicant_id")
+  name        String  @db.VarChar(120)
+  fileUrl     String? @map("file_url") @db.VarChar(255)
+  required    Boolean @default(true)
+  verified    Boolean @default(false)
+
+  applicant Applicant @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+
+  @@map("applicant_documents")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Kunjungan wali
+// ─────────────────────────────────────────────────────────────
+
+model Kunjungan {
+  id        BigInt   @id @default(autoincrement())
+  santriId  BigInt   @map("santri_id")
+  namaWali  String   @map("nama_wali") @db.VarChar(160)
+  hubungan  String?  @db.VarChar(48)
+  tgl       DateTime @db.Date
+  jamMasuk  String?  @map("jam_masuk") @db.VarChar(16)
+  jamKeluar String?  @map("jam_keluar") @db.VarChar(16)
+  keperluan String?  @db.VarChar(255)
+  status    String   @default("Terjadwal") @db.VarChar(32)
+
+  santri Santri @relation(fields: [santriId], references: [id], onDelete: Cascade)
+
+  @@index([tgl])
+  @@map("kunjungan")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Notifikasi WhatsApp
+// ─────────────────────────────────────────────────────────────
+
+model WaTemplate {
+  id       Int     @id @default(autoincrement())
+  code     String  @unique @db.VarChar(24)
+  role     String  @db.VarChar(64)
+  title    String  @db.VarChar(160)
+  trigger  String  @db.VarChar(255)
+  schedule String? @db.VarChar(120)
+  content  String  @db.Text
+  isActive Boolean @default(true) @map("is_active")
+
+  logs WaLog[]
+
+  @@map("wa_templates")
+}
+
+model WaLog {
+  id         BigInt   @id @default(autoincrement())
+  templateId Int?     @map("template_id")
+  recipient  String   @db.VarChar(160)
+  phone      String   @db.VarChar(32)
+  content    String   @db.Text
+  status     String   @default("Terkirim") @db.VarChar(24)
+  messageId  String?  @map("message_id") @db.VarChar(96)
+  error      String?  @db.VarChar(255)
+  sentAt     DateTime @default(now()) @map("sent_at")
+
+  template WaTemplate? @relation(fields: [templateId], references: [id])
+
+  @@index([sentAt])
+  @@map("wa_logs")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Fase 7 — penjadwal notifikasi WA (cron eksternal, bukan setInterval Next.js)
+// ─────────────────────────────────────────────────────────────
+
+/// Satu baris = satu "job" penjadwal yang dijalankan proses `nuha-cron`.
+/// `kodeTemplate` di sini adalah kode JOB, bukan selalu identik dengan
+/// `TemplateWa.kode` — WA-GUR-04 punya dua pemicu waktu (H-1 pukul 19.00 dan
+/// H-0 45 menit sebelum shift, keduanya dinamis per baris `JadwalPiket`)
+/// sehingga dipecah jadi dua job (`WA-GUR-04-H1`, `WA-GUR-04-H0`) yang
+/// keduanya mengirim template `WA-GUR-04` yang sama. Lihat `lib/penjadwal/`.
+model NotificationSchedule {
+  id           Int       @id @default(autoincrement())
+  templateCode String    @unique @map("template_code") @db.VarChar(32)
+  cron         String    @db.VarChar(32)
+  isActive     Boolean   @default(true) @map("is_active")
+  lastRunAt    DateTime? @map("last_run_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@map("notification_schedules")
+}
+
+/// Idempotent queue. `recipientId` identifies the recipient within a job.
+model NotificationQueue {
+  id            BigInt   @id @default(autoincrement())
+  templateCode  String   @map("template_code") @db.VarChar(32)
+  recipientId   String   @map("recipient_id") @db.VarChar(64)
+  scheduledDate DateTime @map("scheduled_date") @db.Date
+  status        String   @default("Terkirim") @db.VarChar(24)
+  waLogId       BigInt?  @map("wa_log_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@unique([templateCode, recipientId, scheduledDate])
+  @@index([scheduledDate])
+  @@map("notification_queue")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Pengumuman & agenda
+// ─────────────────────────────────────────────────────────────
+
+model Announcement {
+  id        BigInt   @id @default(autoincrement())
+  date      DateTime @db.Date
+  title     String   @db.VarChar(200)
+  content   String   @db.Text
+  target    String   @default("Semua") @db.VarChar(64)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([date])
+  @@map("announcements")
+}
+
+model Agenda {
+  id    BigInt   @id @default(autoincrement())
+  date  DateTime @db.Date
+  time  String?  @db.VarChar(16)
+  title String   @db.VarChar(200)
+  unit  String?  @db.VarChar(64)
+
+  @@index([date])
+  @@map("agenda")
+}
+
+model Testimoni {
+  id      BigInt  @id @default(autoincrement())
+  nama    String  @db.VarChar(120)
+  inisial String  @db.VarChar(4)
+  ket     String  @db.VarChar(160)
+  kata    String  @db.VarChar(500)
+
+  @@map("testimoni")
+}
+
+// ---------------------------------------------------------------------------
+// CBT — ujian berbasis komputer
+//
+// `BankSoal` yang lama hanya menyimpan metadata paket (jumlah butir, penulis)
+// untuk layar kurikulum. Butir soal sungguhan hidup di `Soal` + `OpsiSoal`,
+// dirakit jadi `PaketSoal`, lalu dijadwalkan lewat `SesiCbt`. Nilai akhir tetap
+// mengalir ke `NilaiUjian` supaya rapor dan analisis lama tidak perlu diubah.
+// ---------------------------------------------------------------------------
+
+/// Satu butir soal. `tipe` menentukan cara koreksi: PG/PGK/BS/Menjodohkan
+/// dikoreksi otomatis, Esai/Uraian menunggu penilaian guru.
+model Soal {
+  id         BigInt   @id @default(autoincrement())
+  mapelId    Int      @map("mapel_id")
+  penulis    String   @db.VarChar(160)
+  tipe       TipeSoal @default(PG)
+  level      String   @default("C1") @db.VarChar(8)
+  topik      String?  @db.VarChar(200)
+  /// Konteks/stimulus bersama (wacana AKM). Kosong untuk soal berdiri sendiri.
+  stimulus   String?  @db.Text
+  pertanyaan String   @db.Text
+  /// Jawaban benar untuk tipe isian singkat; PG memakai OpsiSoal.benar.
+  kunci      String?  @db.VarChar(255)
+  pembahasan String?  @db.Text
+  bobot      Decimal  @default(1) @db.Decimal(6, 2)
+  /// Parameter IRT hasil kalibrasi: a=daya beda, b=tingkat kesulitan, c=tebakan.
+  irtA       Decimal? @map("irt_a") @db.Decimal(6, 3)
+  irtB       Decimal? @map("irt_b") @db.Decimal(6, 3)
+  irtC       Decimal? @map("irt_c") @db.Decimal(6, 3)
+  /// Statistik klasik, diperbarui tiap kali analisis butir dijalankan.
+  pDiff      Decimal? @map("p_diff") @db.Decimal(6, 3)
+  dIndex     Decimal? @map("d_index") @db.Decimal(6, 3)
+  dipakai    Int      @default(0)
+  aktif      Boolean  @default(true)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  mapel MataPelajaran    @relation(fields: [mapelId], references: [id])
+  opsi  OpsiSoal[]
+  butir ButirPaket[]
+  jawab JawabanPeserta[]
+
+  @@index([mapelId, tipe])
+  @@index([aktif])
+  @@map("soal")
+}
+
+enum TipeSoal {
+  PG
+  PGK
+  BS
+  Menjodohkan
+  IsianSingkat
+  Esai
+}
+
+model OpsiSoal {
+  id     BigInt  @id @default(autoincrement())
+  soalId BigInt  @map("soal_id")
+  label  String  @db.VarChar(4)
+  teks   String  @db.Text
+  benar  Boolean @default(false)
+  urutan Int     @default(0)
+
+  soal Soal @relation(fields: [soalId], references: [id], onDelete: Cascade)
+
+  @@unique([soalId, label])
+  @@map("opsi_soal")
+}
+
+/// Rakitan soal yang siap diujikan. Satu paket dipakai berulang di banyak sesi.
+model PaketSoal {
+  id          Int      @id @default(autoincrement())
+  kode        String   @unique @db.VarChar(24)
+  nama        String   @db.VarChar(160)
+  mapelId     Int      @map("mapel_id")
+  /// Jenis penilaian: Harian, UTS, UAS, AKM, TryOut.
+  jenis       String   @default("UTS") @db.VarChar(32)
+  durasi      Int      @default(90)
+  /// Acak urutan soal & opsi per peserta agar tetangga tidak sama layarnya.
+  acakSoal    Boolean  @default(true) @map("acak_soal")
+  acakOpsi    Boolean  @default(true) @map("acak_opsi")
+  /// Tampilkan skor & pembahasan segera setelah peserta submit.
+  tampilHasil Boolean  @default(false) @map("tampil_hasil")
+  kkm         Int      @default(75)
+  status      String   @default("Draf") @db.VarChar(24)
+  penulis     String   @db.VarChar(160)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  mapel MataPelajaran @relation(fields: [mapelId], references: [id])
+  butir ButirPaket[]
+  sesi  SesiCbt[]
+
+  @@index([status])
+  @@map("paket_soal")
+}
+
+model ButirPaket {
+  id      BigInt  @id @default(autoincrement())
+  paketId Int     @map("paket_id")
+  soalId  BigInt  @map("soal_id")
+  urutan  Int     @default(0)
+  bobot   Decimal @default(1) @db.Decimal(6, 2)
+
+  paket PaketSoal @relation(fields: [paketId], references: [id], onDelete: Cascade)
+  soal  Soal      @relation(fields: [soalId], references: [id], onDelete: Cascade)
+
+  @@unique([paketId, soalId])
+  @@map("butir_paket")
+}
+
+/// Penyelenggaraan satu paket untuk satu kelas pada waktu tertentu.
+/// Boleh berdiri sendiri (ulangan harian) atau menempel ke sesi `JadwalUjian`.
+model SesiCbt {
+  id               Int      @id @default(autoincrement())
+  kode             String   @unique @db.VarChar(24)
+  paketId          Int      @map("paket_id")
+  kelasId          Int      @map("kelas_id")
+  jadwalId         Int?     @map("jadwal_id")
+  mulai            DateTime @map("mulai")
+  selesai          DateTime @map("selesai")
+  /// Token yang diketik peserta sebelum masuk; diputar tiap sesi.
+  token            String   @db.VarChar(12)
+  /// Kunci lokasi: hanya IP dengan awalan ini yang boleh mengerjakan
+  /// (zone-locked exam di jaringan lab sekolah). Kosong = tanpa kunci.
+  ipPrefix         String?  @map("ip_prefix") @db.VarChar(64)
+  /// Wajib memakai Exam Browser; permintaan dari browser biasa ditolak.
+  wajibExamBrowser Boolean  @default(false) @map("wajib_exam_browser")
+  /// Berapa kali peserta boleh keluar layar sebelum sesinya dibekukan.
+  batasPelanggaran Int      @default(3) @map("batas_pelanggaran")
+  status           String   @default("Terjadwal") @db.VarChar(24)
+  pengawas         String?  @db.VarChar(160)
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  paket   PaketSoal    @relation(fields: [paketId], references: [id])
+  kelas   Kelas        @relation(fields: [kelasId], references: [id])
+  jadwal  JadwalUjian? @relation(fields: [jadwalId], references: [id])
+  peserta PesertaCbt[]
+
+  @@index([status])
+  @@map("sesi_cbt")
+}
+
+/// Satu peserta pada satu sesi: kartu ujian, urutan soal acaknya, dan hasilnya.
+model PesertaCbt {
+  id          BigInt        @id @default(autoincrement())
+  sesiId      Int           @map("sesi_id")
+  santriId    BigInt        @map("santri_id")
+  /// Nomor peserta yang tercetak di kartu ujian.
+  noPeserta   String        @map("no_peserta") @db.VarChar(32)
+  status      StatusPeserta @default(Belum)
+  mulaiAt     DateTime?     @map("mulai_at")
+  selesaiAt   DateTime?     @map("selesai_at")
+  /// Urutan soal hasil pengacakan, disimpan agar refresh tidak mengubah soal.
+  urutan      String?       @db.Text
+  skor        Decimal       @default(0) @db.Decimal(6, 2)
+  benar       Int           @default(0)
+  salah       Int           @default(0)
+  kosong      Int           @default(0)
+  /// Estimasi kemampuan hasil skoring IRT (theta).
+  theta       Decimal?      @db.Decimal(6, 3)
+  pelanggaran Int           @default(0)
+  ipTerakhir  String?       @map("ip_terakhir") @db.VarChar(64)
+  createdAt   DateTime      @default(now()) @map("created_at")
+
+  sesi    SesiCbt          @relation(fields: [sesiId], references: [id], onDelete: Cascade)
+  santri  Santri           @relation(fields: [santriId], references: [id], onDelete: Cascade)
+  jawaban JawabanPeserta[]
+  log     LogKecurangan[]
+
+  @@unique([sesiId, santriId])
+  @@index([status])
+  @@map("peserta_cbt")
+}
+
+enum StatusPeserta {
+  Belum
+  Mengerjakan
+  Selesai
+  Dibekukan
+}
+
+model JawabanPeserta {
+  id          BigInt   @id @default(autoincrement())
+  pesertaId   BigInt   @map("peserta_id")
+  soalId      BigInt   @map("soal_id")
+  /// Label opsi terpilih (PG) atau teks jawaban (isian/esai).
+  jawaban     String?  @db.Text
+  ragu        Boolean  @default(false)
+  benar       Boolean?
+  skor        Decimal  @default(0) @db.Decimal(6, 2)
+  /// Diisi guru untuk esai; null berarti belum dinilai.
+  dinilaiOleh String?  @map("dinilai_oleh") @db.VarChar(160)
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  peserta PesertaCbt @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  soal    Soal       @relation(fields: [soalId], references: [id], onDelete: Cascade)
+
+  @@unique([pesertaId, soalId])
+  @@map("jawaban_peserta")
+}
+
+/// Jejak setiap dugaan kecurangan. Tidak pernah dihapus otomatis: pengawas
+/// yang memutuskan apakah sesi peserta dibuka kembali.
+model LogKecurangan {
+  id        BigInt   @id @default(autoincrement())
+  pesertaId BigInt   @map("peserta_id")
+  jenis     String   @db.VarChar(48)
+  detail    String?  @db.VarChar(255)
+  at        DateTime @default(now())
+
+  peserta PesertaCbt @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+
+  @@index([pesertaId])
+  @@map("log_kecurangan")
+}

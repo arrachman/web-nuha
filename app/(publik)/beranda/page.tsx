@@ -75,11 +75,12 @@ const UNIT_LABEL: Record<string, string> = {
 };
 
 export default async function BerandaPage() {
-  const [santriAktif, pegawaiAktif, unit, agenda] = await Promise.all([
+  const [santriAktif, pegawaiAktif, unit, agenda, testimoni] = await Promise.all([
     prisma.santri.count({ where: { status: 'Aktif' } }),
     prisma.staff.count({ where: { status: { notIn: ['Nonaktif', 'Keluar', 'Pensiun'] } } }),
     prisma.unit.findMany({ where: { aktif: true }, orderBy: { id: 'asc' }, include: { _count: { select: { santri: true } } } }),
     prisma.agenda.findMany({ where: { date: { gte: new Date() } }, orderBy: { date: 'asc' }, take: 5 }),
+    prisma.testimoni.findMany({ orderBy: { id: 'asc' } }),
   ]);
 
   const heroStats = [
@@ -232,23 +233,56 @@ export default async function BerandaPage() {
       </section>
 
       <section className="pub-section">
-        <div className="pub-eyebrow">Agenda</div>
-        <h2 className="pub-h2" style={{ marginBottom: 24 }}>Kegiatan terdekat</h2>
-        <div className="pub-agenda-card">
-          {agenda.length === 0 ? (
-            <div className="pub-agenda-row"><span className="muted">Belum ada agenda terjadwal.</span></div>
-          ) : agenda.map((g) => (
-            <div key={String(g.id)} className="pub-agenda-row">
-              <div className="pub-agenda-tgl">
-                <b>{g.date.toLocaleDateString('id-ID', { day: '2-digit' })}</b>
-                <span>{g.date.toLocaleDateString('id-ID', { month: 'short' })}</span>
-              </div>
-              <div>
-                <div className="pub-agenda-judul">{g.title}</div>
-                <div className="pub-agenda-unit">{g.unit ?? 'Yayasan'}{g.time ? ` · ${g.time}` : ''}</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 40, alignItems: 'start' }}>
+          {/* Kata Alumni */}
+          <div>
+            <div className="pub-eyebrow">Kata Alumni</div>
+            <h2 className="pub-h2" style={{ marginBottom: 24 }}>Jejak yang mereka bawa</h2>
+            <div className="mq" style={{ maxWidth: '100%' }}>
+              <div className="mqtrack" style={{ gap: 14 }}>
+                {testimoni.map((t) => (
+                  <div key={t.id} style={{ width: 330, flex: '0 0 auto', background: '#fff', border: '1px solid #e8e3d9', borderRadius: 16, padding: 20, display: 'flex', gap: 14 }}>
+                    <div style={{ width: 44, height: 44, flex: '0 0 44px', borderRadius: '50%', background: '#f1f5f1', color: '#0f6b3d', display: 'grid', placeItems: 'center', fontWeight: 700, fontSize: 14 }}>{t.inisial}</div>
+                    <div>
+                      <div style={{ fontSize: 14, lineHeight: 1.65, color: '#2f3437', fontStyle: 'italic', textWrap: 'pretty' }}>「{t.kata}」</div>
+                      <div style={{ fontSize: 12.5, color: '#6b7280', marginTop: 8 }}><strong style={{ color: '#0a4a2b' }}>{t.nama}</strong> · {t.ket}</div>
+                    </div>
+                  </div>
+                ))}
+                {/* Duplikat untuk looping infinite */}
+                {testimoni.map((t) => (
+                  <div key={`dup-${t.id}`} style={{ width: 330, flex: '0 0 auto', background: '#fff', border: '1px solid #e8e3d9', borderRadius: 16, padding: 20, display: 'flex', gap: 14 }}>
+                    <div style={{ width: 44, height: 44, flex: '0 0 44px', borderRadius: '50%', background: '#f1f5f1', color: '#0f6b3d', display: 'grid', placeItems: 'center', fontWeight: 700, fontSize: 14 }}>{t.inisial}</div>
+                    <div>
+                      <div style={{ fontSize: 14, lineHeight: 1.65, color: '#2f3437', fontStyle: 'italic', textWrap: 'pretty' }}>「{t.kata}」</div>
+                      <div style={{ fontSize: 12.5, color: '#6b7280', marginTop: 8 }}><strong style={{ color: '#0a4a2b' }}>{t.nama}</strong> · {t.ket}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+          </div>
+          {/* Agenda */}
+          <div>
+            <div className="pub-eyebrow">Agenda</div>
+            <h2 className="pub-h2" style={{ marginBottom: 24 }}>Kegiatan terdekat</h2>
+            <div className="pub-agenda-card">
+              {agenda.length === 0 ? (
+                <div className="pub-agenda-row"><span className="muted">Belum ada agenda terjadwal.</span></div>
+              ) : agenda.map((g) => (
+                <div key={String(g.id)} className="pub-agenda-row">
+                  <div className="pub-agenda-tgl">
+                    <b>{g.date.toLocaleDateString('id-ID', { day: '2-digit' })}</b>
+                    <span>{g.date.toLocaleDateString('id-ID', { month: 'short' })}</span>
+                  </div>
+                  <div>
+                    <div className="pub-agenda-judul">{g.title}</div>
+                    <div className="pub-agenda-unit">{g.unit ?? 'Yayasan'}{g.time ? ` · ${g.time}` : ''}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     </div>
