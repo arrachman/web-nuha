@@ -239,12 +239,12 @@ export default async function BerandaPage() {
             <div className="pub-eyebrow">Kata Alumni</div>
             <h2 className="pub-h2" style={{ marginBottom: 24 }}>Jejak yang mereka bawa</h2>
             <div className="mq" style={{ width: '100%', maxWidth: '100%', overflow: 'hidden', position: 'relative', maskImage: 'linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent)', WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent)' }}>
-              <div className="mqtrack" style={{ width: 'max-content', gap: 14, animationDuration: '34s' }}>
+              <div className="mqtrack" style={{ width: 'max-content', gap: 14, animation: 'mq 34s linear infinite' }}>
                 {testimoni.map((t) => (
                   <div key={t.id} style={{ width: 330, flex: '0 0 auto', background: '#fff', border: '1px solid #e8e3d9', borderRadius: 16, padding: 20, display: 'flex', gap: 14 }}>
                     <div style={{ width: 44, height: 44, flex: '0 0 44px', borderRadius: '50%', background: '#f1f5f1', color: '#0f6b3d', display: 'grid', placeItems: 'center', fontWeight: 700, fontSize: 14 }}>{t.inisial}</div>
                     <div>
-                      <div style={{ fontSize: 14, lineHeight: 1.65, color: '#2f3437', fontStyle: 'italic', textWrap: 'pretty' }}>「{t.kata}」</div>
+                      <div style={{ fontSize: 14, lineHeight: 1.65, color: '#2f3437', fontStyle: 'italic', textWrap: 'pretty' }}>"{t.kata}"</div>
                       <div style={{ fontSize: 12.5, color: '#6b7280', marginTop: 8 }}><strong style={{ color: '#0a4a2b' }}>{t.nama}</strong> · {t.ket}</div>
                     </div>
                   </div>
@@ -254,7 +254,7 @@ export default async function BerandaPage() {
                   <div key={`dup-${t.id}`} style={{ width: 330, flex: '0 0 auto', background: '#fff', border: '1px solid #e8e3d9', borderRadius: 16, padding: 20, display: 'flex', gap: 14 }}>
                     <div style={{ width: 44, height: 44, flex: '0 0 44px', borderRadius: '50%', background: '#f1f5f1', color: '#0f6b3d', display: 'grid', placeItems: 'center', fontWeight: 700, fontSize: 14 }}>{t.inisial}</div>
                     <div>
-                      <div style={{ fontSize: 14, lineHeight: 1.65, color: '#2f3437', fontStyle: 'italic', textWrap: 'pretty' }}>「{t.kata}」</div>
+                      <div style={{ fontSize: 14, lineHeight: 1.65, color: '#2f3437', fontStyle: 'italic', textWrap: 'pretty' }}>"{t.kata}"</div>
                       <div style={{ fontSize: 12.5, color: '#6b7280', marginTop: 8 }}><strong style={{ color: '#0a4a2b' }}>{t.nama}</strong> · {t.ket}</div>
                     </div>
                   </div>
