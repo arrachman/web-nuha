@@ -158,3 +158,6 @@
 /* Responsive */
 @media (max-width: 900px) { [data-sim="hero"] { grid-template-columns: 1fr !important; } }
 @media (max-width: 600px) { [data-sim="h1"] { font-size: 30px !important; } }
+
+/* Portal wali card floating animation */
+@keyframes floaty { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-9px) } }

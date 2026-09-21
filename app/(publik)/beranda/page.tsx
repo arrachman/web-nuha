@@ -261,6 +261,60 @@ export default async function BerandaPage() {
                 ))}
               </div>
             </div>
+            {/* Portal Wali card — prototype feature, data contoh statis */}
+            <div style={{ marginTop: 34, background: '#fff', border: '1px solid #e8e3d9', borderRadius: 20, padding: 26, display: 'flex', gap: 28, alignItems: 'center', flexWrap: 'wrap' }}>
+              <div style={{ width: 210, height: 420, borderRadius: 34, background: '#0a4a2b', padding: 9, flex: '0 0 auto', boxShadow: '0 18px 44px rgba(10,74,43,.24)', animation: 'floaty 6s ease-in-out infinite' }}>
+                <div style={{ width: '100%', height: '100%', borderRadius: 27, background: '#faf8f3', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ background: 'linear-gradient(180deg, #4e8f72, #6ba684)', color: '#f3f1e9', padding: '16px 14px 18px' }}>
+                    <div style={{ display: 'flex', gap: 7, alignItems: 'center' }}>
+                      <div style={{ width: 22, height: 22, borderRadius: 7, background: '#faf8f3', display: 'grid', placeItems: 'center' }}>
+                        <Image src="/assets/logo-nuha.webp" alt="Logo" width={18} height={18} style={{ objectFit: 'contain' }} />
+                      </div>
+                      <span style={{ fontSize: 8.5, letterSpacing: '.7px', textTransform: 'uppercase', opacity: '.8' }}>Portal Wali</span>
+                    </div>
+                    <div style={{ fontFamily: "'Lora', serif", fontSize: 14, fontWeight: 600, marginTop: 12 }}>Ahmad Fauzan R.</div>
+                    <div style={{ fontSize: 9.5, opacity: '.82', marginTop: 2 }}>SMP 8B · Asrama Al-Ghazali A-3</div>
+                  </div>
+                  <div style={{ padding: 11, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <div style={{ display: 'flex', gap: 7 }}>
+                      <div style={{ flex: 1, background: '#fff', border: '1px solid #e8e3d9', borderRadius: 10, padding: 9 }}>
+                        <div style={{ fontSize: 7.5, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '.4px' }}>Presensi</div>
+                        <div style={{ fontFamily: "'Lora', serif", fontSize: 17, color: '#0f6b3d', fontWeight: 600 }}>92%</div>
+                      </div>
+                      <div style={{ flex: 1, background: '#fff', border: '1px solid #e8e3d9', borderRadius: 10, padding: 9 }}>
+                        <div style={{ fontSize: 7.5, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '.4px' }}>Hafalan</div>
+                        <div style={{ fontFamily: "'Lora', serif", fontSize: 17, color: '#e8973a', fontWeight: 600 }}>12 juz</div>
+                      </div>
+                    </div>
+                    <div style={{ background: '#fffbeb', border: '1px solid #f0cfa4', borderRadius: 10, padding: 9 }}>
+                      <div style={{ fontSize: 9, fontWeight: 700, color: '#92400e' }}>ISPA · 21 Agu</div>
+                      <div style={{ fontSize: 8.5, color: '#4b5563', marginTop: 2, lineHeight: 1.5 }}>Demam, batuk 2 hari — istirahat di kamar.</div>
+                    </div>
+                    <div style={{ background: '#fff', border: '1px solid #e8e3d9', borderRadius: 10, padding: 9 }}>
+                      <div style={{ fontSize: 9, fontWeight: 700, color: '#0a4a2b' }}>Tagihan Agustus</div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5 }}>
+                        <span style={{ fontSize: 8.5, color: '#6b7280' }}>Rp 1.350.000</span>
+                        <span style={{ fontSize: 8, fontWeight: 700, color: '#0f6b3d', background: '#dcf0e3', padding: '2px 7px', borderRadius: 999 }}>Lunas</span>
+                      </div>
+                    </div>
+                    <div style={{ background: '#fff', border: '1px solid #e8e3d9', borderRadius: 10, padding: 9 }}>
+                      <div style={{ fontSize: 9, fontWeight: 700, color: '#0a4a2b' }}>Izin IZ-241</div>
+                      <div style={{ fontSize: 8.5, color: '#6b7280', marginTop: 3 }}>22–24 Agu · menunggu pengasuh</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style={{ flex: 1, minWidth: 220 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#e8973a' }}>Di Genggaman Wali</div>
+                <h3 style={{ fontFamily: "'Lora', serif", fontSize: 24, fontWeight: 600, color: '#0a4a2b', margin: '8px 0 12px' }}>Wali tahu kabar anaknya hari itu juga</h3>
+                <p style={{ fontSize: 14.5, lineHeight: 1.75, color: '#4b5563', margin: '0 0 16px', textWrap: 'pretty' }}>
+                  Presensi, hafalan, catatan Poskestren, tagihan, izin, dan jadwal kunjungan — semua terkirim ke portal dan WhatsApp wali tanpa perlu datang ke kantor.
+                </p>
+                <Link href="/login" style={{ padding: '11px 18px', borderRadius: 11, border: '1px solid #0f6b3d', background: 'transparent', color: '#0f6b3d', fontWeight: 600, fontSize: 13.5, cursor: 'pointer', display: 'inline-block' }}>
+                  Coba portal wali & santri
+                </Link>
+              </div>
+            </div>
           </div>
           {/* Agenda */}
           <div style={{ minWidth: 0 }}>

@@ -1,6 +1,6 @@
 # Riwayat Perubahan — web-nuha
 
-## 2026-09-21 — beranda: section Kata Alumni + agenda mendatang (24403f6)
+## 2026-09-21 — beranda: section Kata Alumni + agenda mendatang (87c110e)
 
 Tabel `testimoni` baru ditambahkan ke schema Prisma (kolom: nama, inisial, ket, kata)
 bersama migration `20260921000000_add_testimoni`. Seed idempoten di `prisma/seed.ts`
