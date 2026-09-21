@@ -1,0 +1,2 @@
+"scripts": {
+    "dev": "node scripts/hmr-proxy.js",

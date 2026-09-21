@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "node scripts/patch-hmr.js",
     "dev": "next dev -p ${WEB_NUHA_PORT:-3226}",
     "build": "prisma generate && next build",
     "start": "next start -p ${WEB_NUHA_PORT:-3226}",
