@@ -1,0 +1,134 @@
+name: nuha_simterpadu
+
+services:
+  nuha-mysql:
+    image: mysql:8.0
+    container_name: nuha-mysql
+    restart: unless-stopped
+    ports:
+      - "${NUHA_MYSQL_PORT:-3308}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${NUHA_MYSQL_ROOT_PASSWORD:-change_me}
+      MYSQL_DATABASE: ${NUHA_MYSQL_DATABASE:-nuha_simterpadu}
+      MYSQL_USER: ${NUHA_MYSQL_USER:-nuha}
+      MYSQL_PASSWORD: ${NUHA_MYSQL_PASSWORD:-change_me}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - nuha_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+
+  nuha-migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    container_name: nuha-migrate
+    restart: "no"
+    environment:
+      DATABASE_URL: mysql://${NUHA_MYSQL_USER:-nuha}:${NUHA_MYSQL_PASSWORD:-change_me}@nuha-mysql:3306/${NUHA_MYSQL_DATABASE:-nuha_simterpadu}
+    # Hanya seed dasar (peran, menu, unit, template WA, superadmin). Data contoh
+    # prototype ada di prisma/seed.ts dan sengaja TIDAK dijalankan otomatis —
+    # pakai `npm run db:seed:demo` bila memang butuh isi demo.
+    command: sh -c "npx prisma migrate deploy && npx tsx prisma/seed-dasar.ts"
+    depends_on:
+      nuha-mysql:
+        condition: service_healthy
+
+  # Gateway WhatsApp (Baileys) — sumber kebenaran daftar perangkat & kredensial
+  # sesi. Tidak dipetakan ke port host: hanya nuha-app yang memanggilnya lewat
+  # jaringan compose, jadi tak perlu entri ports.json maupun aturan UFW baru.
+  wa-gateway:
+    build:
+      context: ../web-althea/apps/wa-gateway
+      dockerfile: Dockerfile
+    container_name: nuha-wa-gateway
+    restart: unless-stopped
+    environment:
+      WA_GATEWAY_PORT: 3204
+      WA_GATEWAY_ACCOUNT_TOKEN: ${WA_GATEWAY_ACCOUNT_TOKEN:?WA_GATEWAY_ACCOUNT_TOKEN wajib diisi di .env}
+      WA_GATEWAY_DATA_DIR: /app/data
+    volumes:
+      - nuha_wa_data:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:3204/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  nuha-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nuha-app
+    restart: unless-stopped
+    ports:
+      - "${WEB_NUHA_PORT:-3226}:3226"
+    environment:
+      NODE_ENV: production
+      PORT: 3226
+      HOSTNAME: 0.0.0.0
+      DATABASE_URL: mysql://${NUHA_MYSQL_USER:-nuha}:${NUHA_MYSQL_PASSWORD:-change_me}@nuha-mysql:3306/${NUHA_MYSQL_DATABASE:-nuha_simterpadu}
+      AUTH_SECRET: ${AUTH_SECRET:-dev-secret-change-me-in-production-32b}
+      # Set to true only once the app is served over HTTPS.
+      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-false}
+      WA_DRY_RUN: ${WA_DRY_RUN:-true}
+      WA_GATEWAY_URL: ${WA_GATEWAY_URL:-http://wa-gateway:3204}
+      # Token akun: mengelola perangkat. Token perangkat untuk mengirim dibiarkan
+      # kosong agar diambil dari perangkat terhubung hasil pindai QR.
+      WA_GATEWAY_ACCOUNT_TOKEN: ${WA_GATEWAY_ACCOUNT_TOKEN:?WA_GATEWAY_ACCOUNT_TOKEN wajib diisi di .env}
+      WA_GATEWAY_TOKEN: ${WA_GATEWAY_TOKEN:-}
+      # Pengalihan nomor saat debugging. Selama terisi, tidak ada wali santri
+      # yang menerima notifikasi — wajib dikosongkan sebelum produksi.
+      WA_DEBUG_REDIRECT: ${WA_DEBUG_REDIRECT:-}
+      NUHA_PERIODE_GAJI: ${NUHA_PERIODE_GAJI:-}
+    depends_on:
+      nuha-migrate:
+        condition: service_completed_successfully
+      wa-gateway:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:3226/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  # Penjadwal notifikasi WA — proses Node terpisah (bukan setInterval di
+  # nuha-app), lihat komentar di scripts/cron.ts. Pakai target `builder`
+  # yang sama seperti nuha-migrate karena butuh tsx (devDependency).
+  nuha-cron:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    container_name: nuha-cron
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: mysql://${NUHA_MYSQL_USER:-nuha}:${NUHA_MYSQL_PASSWORD:-change_me}@nuha-mysql:3306/${NUHA_MYSQL_DATABASE:-nuha_simterpadu}
+      WA_DRY_RUN: ${WA_DRY_RUN:-true}
+      WA_GATEWAY_URL: ${WA_GATEWAY_URL:-http://wa-gateway:3204}
+      WA_GATEWAY_ACCOUNT_TOKEN: ${WA_GATEWAY_ACCOUNT_TOKEN:?WA_GATEWAY_ACCOUNT_TOKEN wajib diisi di .env}
+      WA_GATEWAY_TOKEN: ${WA_GATEWAY_TOKEN:-}
+      WA_DEBUG_REDIRECT: ${WA_DEBUG_REDIRECT:-}
+    command: sh -c "npx tsx scripts/cron.ts --loop"
+    depends_on:
+      nuha-migrate:
+        condition: service_completed_successfully
+      wa-gateway:
+        condition: service_started
+
+volumes:
+  nuha_mysql_data:
+    name: nuha_simterpadu_mysql_data
+  # registry.json + sessions/<token> — hilang berarti semua perangkat harus
+  # dipindai ulang, jadi wajib volume, bukan direktori sementara container.
+  nuha_wa_data:
+    name: nuha_simterpadu_wa_data

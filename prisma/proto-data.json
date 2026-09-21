@@ -1,0 +1,4922 @@
+{
+ "pendaftar": [
+  {
+   "noReg": "PPDB-2026-0001",
+   "nama": "Ahmad Zaki Mubarok",
+   "pilihan": "SMP + Pondok",
+   "asal": "SDN Mergosono 03",
+   "tgl": "02 Jul 2026",
+   "nilai": 86.4,
+   "status": "Lulus"
+  },
+  {
+   "noReg": "PPDB-2026-0002",
+   "nama": "Nur Faizah Amelia",
+   "pilihan": "MA (IPA) + Pondok",
+   "asal": "MTs Al-Hidayah",
+   "tgl": "02 Jul 2026",
+   "nilai": 88.1,
+   "status": "Lulus"
+  },
+  {
+   "noReg": "PPDB-2026-0003",
+   "nama": "Bagas Dwi Saputra",
+   "pilihan": "SMP",
+   "asal": "SDN Sukun 01",
+   "tgl": "03 Jul 2026",
+   "nilai": 79.2,
+   "status": "Seleksi"
+  },
+  {
+   "noReg": "PPDB-2026-0004",
+   "nama": "Alya Rahmadhani",
+   "pilihan": "Pondok saja",
+   "asal": "SMPN 4 Malang",
+   "tgl": "04 Jul 2026",
+   "nilai": 81.7,
+   "status": "Verifikasi"
+  },
+  {
+   "noReg": "PPDB-2026-0005",
+   "nama": "Firman Hidayatullah",
+   "pilihan": "MA (Keagamaan) + Pondok",
+   "asal": "MTs Nurul Jadid",
+   "tgl": "05 Jul 2026",
+   "nilai": 90.3,
+   "status": "Lulus"
+  },
+  {
+   "noReg": "PPDB-2026-0006",
+   "nama": "Hilda Nur Kholifah",
+   "pilihan": "SMP + Pondok",
+   "asal": "MI Miftahul Ulum",
+   "tgl": "06 Jul 2026",
+   "nilai": 84,
+   "status": "Seleksi"
+  },
+  {
+   "noReg": "PPDB-2026-0007",
+   "nama": "Muhammad Alfin Nur",
+   "pilihan": "MA (IPS) + Pondok",
+   "asal": "MTs Darussalam",
+   "tgl": "07 Jul 2026",
+   "nilai": 77.5,
+   "status": "Verifikasi"
+  },
+  {
+   "noReg": "PPDB-2026-0008",
+   "nama": "Syifa Aulia Rahma",
+   "pilihan": "SMP",
+   "asal": "SDN Blimbing 02",
+   "tgl": "08 Jul 2026",
+   "nilai": 82.9,
+   "status": "Baru"
+  },
+  {
+   "noReg": "PPDB-2026-0009",
+   "nama": "Rizky Bagus Prasetyo",
+   "pilihan": "Pondok saja",
+   "asal": "SMPN 9 Malang",
+   "tgl": "09 Jul 2026",
+   "nilai": 74.1,
+   "status": "Tidak Lulus"
+  },
+  {
+   "noReg": "PPDB-2026-0010",
+   "nama": "Nadia Putri Maharani",
+   "pilihan": "MA (IPA)",
+   "asal": "MTsN 1 Malang",
+   "tgl": "10 Jul 2026",
+   "nilai": 91.6,
+   "status": "Lulus"
+  },
+  {
+   "noReg": "PPDB-2026-0011",
+   "nama": "Ibrahim Malik Asyari",
+   "pilihan": "SMP + Pondok",
+   "asal": "MI Nurul Huda",
+   "tgl": "11 Jul 2026",
+   "nilai": 80.4,
+   "status": "Seleksi"
+  },
+  {
+   "noReg": "PPDB-2026-0012",
+   "nama": "Wardah Nur Latifah",
+   "pilihan": "MA (Keagamaan)",
+   "asal": "MTs Al-Falah",
+   "tgl": "12 Jul 2026",
+   "nilai": 85.8,
+   "status": "Verifikasi"
+  },
+  {
+   "noReg": "PPDB-2026-0013",
+   "nama": "Dimas Arya Nugraha",
+   "pilihan": "SMP",
+   "asal": "SDN Turen 01",
+   "tgl": "13 Jul 2026",
+   "nilai": 76.3,
+   "status": "Baru"
+  },
+  {
+   "noReg": "PPDB-2026-0014",
+   "nama": "Anisa Fitri Ramadhani",
+   "pilihan": "SMP + Pondok",
+   "asal": "SDN Pakisaji 02",
+   "tgl": "14 Jul 2026",
+   "nilai": 87.2,
+   "status": "Lulus"
+  },
+  {
+   "noReg": "PPDB-2026-0015",
+   "nama": "Faris Abdillah Yusuf",
+   "pilihan": "MA (IPA) + Pondok",
+   "asal": "MTs Sunan Ampel",
+   "tgl": "15 Jul 2026",
+   "nilai": 89,
+   "status": "Seleksi"
+  },
+  {
+   "noReg": "PPDB-2026-0016",
+   "nama": "Kholifatul Munawaroh",
+   "pilihan": "Pondok saja",
+   "asal": "SMPN 2 Tanggul",
+   "tgl": "16 Jul 2026",
+   "nilai": 78.6,
+   "status": "Verifikasi"
+  },
+  {
+   "noReg": "PPDB-2026-0017",
+   "nama": "Yoga Pratama Wijaya",
+   "pilihan": "SMP",
+   "asal": "SDN Sukorambi 03",
+   "tgl": "17 Jul 2026",
+   "nilai": 73.4,
+   "status": "Tidak Lulus"
+  },
+  {
+   "noReg": "PPDB-2026-0018",
+   "nama": "Rahma Dwi Lestari",
+   "pilihan": "MA (IPS)",
+   "asal": "MTs Bustanul Ulum",
+   "tgl": "18 Jul 2026",
+   "nilai": 83.5,
+   "status": "Baru"
+  }
+ ],
+ "roles": [
+  {
+   "key": "ketua",
+   "nama": "Ketua Yayasan",
+   "orang": "H. Imam Syafi'i Nawawi, S.Ag."
+  },
+  {
+   "key": "kepsmp",
+   "nama": "Kepala SMP",
+   "orang": "Drs. Sulaiman Hadi, M.Pd."
+  },
+  {
+   "key": "kepma",
+   "nama": "Kepala MA",
+   "orang": "Nur Kholis Majid, M.Pd.I."
+  },
+  {
+   "key": "guru",
+   "nama": "Guru / Wali Kelas",
+   "orang": "Bu Rina Kusuma, S.Pd."
+  },
+  {
+   "key": "pengasuh",
+   "nama": "Pengasuh / Lurah Pondok",
+   "orang": "Ust. Abdul Karim"
+  },
+  {
+   "key": "poskestren",
+   "nama": "Petugas Poskestren",
+   "orang": "Ns. Maimunah, S.Kep."
+  },
+  {
+   "key": "bendahara",
+   "nama": "Bendahara Yayasan",
+   "orang": "Hj. Siti Fatimah, S.E."
+  },
+  {
+   "key": "wali",
+   "nama": "Wali Santri",
+   "orang": "Bpk. Sulaiman Hadi"
+  }
+ ],
+ "santri": [
+  {
+   "id": 1,
+   "nis": "2023070011",
+   "nisn": "3081447215",
+   "nama": "Ahmad Fauzan Ramadhani",
+   "jk": "L",
+   "unit": "SMP",
+   "kelas": "8B",
+   "status": "Aktif",
+   "asrama": "Al-Ghazali",
+   "kamar": "A-3",
+   "program": "Tahfidz",
+   "juz": 12,
+   "hal": 8,
+   "wali": "Bpk. Sulaiman Hadi",
+   "hpWali": "081334552310",
+   "pekerjaan": "Petani",
+   "alamat": "Dsn. Krajan, Mergosono, Malang",
+   "lahir": "12 Mar 2011",
+   "masuk": "2023"
+  },
+  {
+   "id": 2,
+   "nis": "2022070004",
+   "nisn": "3074128860",
+   "nama": "Muhammad Rizky Maulana",
+   "jk": "L",
+   "unit": "SMP",
+   "kelas": "9A",
+   "status": "Aktif",
+   "asrama": "Ibnu Sina",
+   "kamar": "B-1",
+   "program": "Kitab Kuning",
+   "juz": 5,
+   "hal": 12,
+   "wali": "Bpk. Ahmad Syaifudin",
+   "hpWali": "085233419087",
+   "pekerjaan": "Pedagang",
+   "alamat": "Jl. Kalimantan 18, Sukun",
+   "lahir": "04 Jan 2010",
+   "masuk": "2022"
+  },
+  {
+   "id": 3,
+   "nis": "2024100027",
+   "nisn": "3065774102",
+   "nama": "Siti Nur Aisyah",
+   "jk": "P",
+   "unit": "MA",
+   "kelas": "X-IPA-1",
+   "status": "Aktif",
+   "asrama": "Khadijah",
+   "kamar": "K-2",
+   "program": "Tahfidz",
+   "juz": 9,
+   "hal": 4,
+   "wali": "Bpk. Zainal Arifin",
+   "hpWali": "081249007731",
+   "pekerjaan": "Guru",
+   "alamat": "Dsn. Sumberpakem, Lawang",
+   "lahir": "22 Agu 2009",
+   "masuk": "2024"
+  },
+  {
+   "id": 4,
+   "nis": "2023100015",
+   "nisn": "3058221904",
+   "nama": "Zahra Salsabila",
+   "jk": "P",
+   "unit": "MA",
+   "kelas": "XI-IPS-1",
+   "status": "Aktif",
+   "asrama": "Aisyah",
+   "kamar": "A-5",
+   "program": "Tahfidz",
+   "juz": 15,
+   "hal": 2,
+   "wali": "Bpk. Hasan Basri",
+   "hpWali": "089612340088",
+   "pekerjaan": "Wiraswasta",
+   "alamat": "Jl. Trunojoyo 44, Blimbing",
+   "lahir": "09 Feb 2009",
+   "masuk": "2023"
+  },
+  {
+   "id": 5,
+   "nis": "2022100002",
+   "nisn": "3049883771",
+   "nama": "Abdullah Faqih Umam",
+   "jk": "L",
+   "unit": "MA",
+   "kelas": "XII-Keagamaan",
+   "status": "Aktif",
+   "asrama": "Imam Syafi'i",
+   "kamar": "C-2",
+   "program": "Kitab Kuning",
+   "juz": 7,
+   "hal": 10,
+   "wali": "Bpk. Nur Salim",
+   "hpWali": "081555230914",
+   "pekerjaan": "Petani",
+   "alamat": "Dsn. Curahmalang, Pakisaji",
+   "lahir": "17 Jul 2008",
+   "masuk": "2022"
+  },
+  {
+   "id": 6,
+   "nis": "2025070042",
+   "nisn": "3092114577",
+   "nama": "Nabila Husna Kamila",
+   "jk": "P",
+   "unit": "SMP",
+   "kelas": "7C",
+   "status": "Kalong",
+   "asrama": "-",
+   "kamar": "-",
+   "program": "-",
+   "juz": 3,
+   "hal": 6,
+   "wali": "Bpk. Agus Riyadi",
+   "hpWali": "082144908812",
+   "pekerjaan": "PNS",
+   "alamat": "Perum Bumi Tegal Besar B-12",
+   "lahir": "30 Mei 2013",
+   "masuk": "2025"
+  },
+  {
+   "id": 7,
+   "nis": "2022070019",
+   "nisn": "3071009845",
+   "nama": "Hafidz Nur Rohman",
+   "jk": "L",
+   "unit": "SMP",
+   "kelas": "9C",
+   "status": "Aktif",
+   "asrama": "Al-Ghazali",
+   "kamar": "A-1",
+   "program": "Tahfidz",
+   "juz": 20,
+   "hal": 0,
+   "wali": "Bpk. Rohmatullah",
+   "hpWali": "085700114523",
+   "pekerjaan": "Ustadz",
+   "alamat": "Dsn. Sabrang, Tumpang",
+   "lahir": "11 Nov 2010",
+   "masuk": "2022"
+  },
+  {
+   "id": 8,
+   "nis": "2024100031",
+   "nisn": "3066512230",
+   "nama": "Fatimah Az-Zahra",
+   "jk": "P",
+   "unit": "MA",
+   "kelas": "X-Keagamaan",
+   "status": "Aktif",
+   "asrama": "Fatimah",
+   "kamar": "F-3",
+   "program": "Tahfidz",
+   "juz": 11,
+   "hal": 12,
+   "wali": "Bpk. Muhaimin",
+   "hpWali": "081211774590",
+   "pekerjaan": "Pedagang",
+   "alamat": "Jl. Manggar 7, Mergosono",
+   "lahir": "03 Des 2009",
+   "masuk": "2024"
+  },
+  {
+   "id": 9,
+   "nis": "2023070033",
+   "nisn": "3079441128",
+   "nama": "Ilham Maulana Yusuf",
+   "jk": "L",
+   "unit": "SMP",
+   "kelas": "8A",
+   "status": "Kalong",
+   "asrama": "-",
+   "kamar": "-",
+   "program": "-",
+   "juz": 2,
+   "hal": 4,
+   "wali": "Bpk. Yusuf Efendi",
+   "hpWali": "087855120033",
+   "pekerjaan": "Sopir",
+   "alamat": "Jl. Gajah Mada 90, Mergosono",
+   "lahir": "25 Apr 2011",
+   "masuk": "2023"
+  },
+  {
+   "id": 10,
+   "nis": "2023100021",
+   "nisn": "3057330198",
+   "nama": "Khadijah Nur Salma",
+   "jk": "P",
+   "unit": "MA",
+   "kelas": "XI-IPA-2",
+   "status": "Aktif",
+   "asrama": "Khadijah",
+   "kamar": "K-4",
+   "program": "Kitab Kuning",
+   "juz": 6,
+   "hal": 8,
+   "wali": "Bpk. Abdul Wahab",
+   "hpWali": "081399002145",
+   "pekerjaan": "Petani",
+   "alamat": "Dsn. Glagahwero, Dau",
+   "lahir": "14 Jun 2009",
+   "masuk": "2023"
+  },
+  {
+   "id": 11,
+   "nis": "2025070008",
+   "nisn": "3090227713",
+   "nama": "Umar Abdul Aziz",
+   "jk": "L",
+   "unit": "SMP",
+   "kelas": "7A",
+   "status": "Aktif",
+   "asrama": "Ibnu Sina",
+   "kamar": "B-3",
+   "program": "Tahfidz",
+   "juz": 5,
+   "hal": 2,
+   "wali": "Bpk. Aziz Fahrurrozi",
+   "hpWali": "082330019876",
+   "pekerjaan": "Buruh",
+   "alamat": "Dsn. Karanganyar, Turen",
+   "lahir": "08 Sep 2013",
+   "masuk": "2025"
+  },
+  {
+   "id": 12,
+   "nis": "2023070024",
+   "nisn": "3080114459",
+   "nama": "Aisyah Rahmawati",
+   "jk": "P",
+   "unit": "SMP",
+   "kelas": "8D",
+   "status": "Aktif",
+   "asrama": "Aisyah",
+   "kamar": "A-2",
+   "program": "Tahfidz",
+   "juz": 8,
+   "hal": 10,
+   "wali": "Bpk. Rahmat Hidayat",
+   "hpWali": "085100923471",
+   "pekerjaan": "Wiraswasta",
+   "alamat": "Jl. Sultan Agung 12, Malang",
+   "lahir": "19 Okt 2011",
+   "masuk": "2023"
+  },
+  {
+   "id": 13,
+   "nis": "2024100009",
+   "nisn": "3068890035",
+   "nama": "Bilal Ramadhan Putra",
+   "jk": "L",
+   "unit": "MA",
+   "kelas": "X-IPS-1",
+   "status": "Aktif",
+   "asrama": "Imam Syafi'i",
+   "kamar": "C-1",
+   "program": "Kitab Kuning",
+   "juz": 4,
+   "hal": 6,
+   "wali": "Bpk. Sutrisno Bakri",
+   "hpWali": "081766201394",
+   "pekerjaan": "Pedagang",
+   "alamat": "Dsn. Tegalgede, Sukun",
+   "lahir": "27 Feb 2010",
+   "masuk": "2024"
+  },
+  {
+   "id": 14,
+   "nis": "2022100017",
+   "nisn": "3048112267",
+   "nama": "Halimah Nur Fadhilah",
+   "jk": "P",
+   "unit": "MA",
+   "kelas": "XII-IPA-1",
+   "status": "Aktif",
+   "asrama": "Fatimah",
+   "kamar": "F-1",
+   "program": "Tahfidz",
+   "juz": 24,
+   "hal": 6,
+   "wali": "Bpk. Fadhil Ahmad",
+   "hpWali": "089511004488",
+   "pekerjaan": "Guru",
+   "alamat": "Jl. Bengawan Solo 5, Malang",
+   "lahir": "05 Jan 2008",
+   "masuk": "2022"
+  },
+  {
+   "id": 15,
+   "nis": "2022070030",
+   "nisn": "3073004411",
+   "nama": "Yusuf Abdurrahman",
+   "jk": "L",
+   "unit": "SMP",
+   "kelas": "9B",
+   "status": "Aktif",
+   "asrama": "Al-Ghazali",
+   "kamar": "A-4",
+   "program": "Kitab Kuning",
+   "juz": 3,
+   "hal": 14,
+   "wali": "Bpk. Abdurrahman Wahid",
+   "hpWali": "082255113309",
+   "pekerjaan": "Petani",
+   "alamat": "Dsn. Sumberjati, Wagir",
+   "lahir": "21 Agu 2010",
+   "masuk": "2022"
+  },
+  {
+   "id": 16,
+   "nis": "2025070051",
+   "nisn": "3093551178",
+   "nama": "Maryam Nur Azizah",
+   "jk": "P",
+   "unit": "SMP",
+   "kelas": "7B",
+   "status": "Kalong",
+   "asrama": "-",
+   "kamar": "-",
+   "program": "-",
+   "juz": 1,
+   "hal": 8,
+   "wali": "Bpk. Nurhadi",
+   "hpWali": "081222004417",
+   "pekerjaan": "Pedagang",
+   "alamat": "Jl. Letjen Suprapto 21, Malang",
+   "lahir": "16 Jan 2014",
+   "masuk": "2025"
+  },
+  {
+   "id": 17,
+   "nis": "2023100038",
+   "nisn": "3059220087",
+   "nama": "Zaid bin Tsabit Hakim",
+   "jk": "L",
+   "unit": "MA",
+   "kelas": "XI-Keagamaan",
+   "status": "Aktif",
+   "asrama": "Ibnu Sina",
+   "kamar": "B-5",
+   "program": "Tahfidz",
+   "juz": 17,
+   "hal": 4,
+   "wali": "Bpk. Hakim Mustofa",
+   "hpWali": "085644120099",
+   "pekerjaan": "Ustadz",
+   "alamat": "Dsn. Kemuning, Singosari",
+   "lahir": "02 Mar 2009",
+   "masuk": "2023"
+  },
+  {
+   "id": 18,
+   "nis": "2024100044",
+   "nisn": "3067119923",
+   "nama": "Ruqoyyah Salma Dewi",
+   "jk": "P",
+   "unit": "MA",
+   "kelas": "X-IPA-1",
+   "status": "Aktif",
+   "asrama": "Khadijah",
+   "kamar": "K-1",
+   "program": "Tahfidz",
+   "juz": 10,
+   "hal": 2,
+   "wali": "Bpk. Dewa Saputra",
+   "hpWali": "081911223345",
+   "pekerjaan": "Wiraswasta",
+   "alamat": "Jl. Riau 8, Sukun",
+   "lahir": "23 Nov 2009",
+   "masuk": "2024"
+  },
+  {
+   "id": 19,
+   "nis": "2023070047",
+   "nisn": "3081990234",
+   "nama": "Salman Al-Farisi Nur",
+   "jk": "L",
+   "unit": "SMP",
+   "kelas": "8C",
+   "status": "Aktif",
+   "asrama": "Imam Syafi'i",
+   "kamar": "C-4",
+   "program": "Kitab Kuning",
+   "juz": 2,
+   "hal": 12,
+   "wali": "Bpk. Nur Hasyim",
+   "hpWali": "087700551122",
+   "pekerjaan": "Buruh",
+   "alamat": "Dsn. Kedungkandang, Kota Malang",
+   "lahir": "07 Jul 2011",
+   "masuk": "2023"
+  },
+  {
+   "id": 20,
+   "nis": "2022100025",
+   "nisn": "3047880156",
+   "nama": "Nurul Izzah Maulida",
+   "jk": "P",
+   "unit": "MA",
+   "kelas": "XII-IPS-1",
+   "status": "Kalong",
+   "asrama": "-",
+   "kamar": "-",
+   "program": "-",
+   "juz": 6,
+   "hal": 0,
+   "wali": "Bpk. Maulida Zain",
+   "hpWali": "081300229944",
+   "pekerjaan": "PNS",
+   "alamat": "Perum Gunung Batu C-4, Malang",
+   "lahir": "29 Sep 2008",
+   "masuk": "2022"
+  }
+ ],
+ "asrama": [
+  {
+   "nama": "Al-Ghazali",
+   "jk": "Putra",
+   "kapasitas": 96,
+   "isi": 91,
+   "kamar": 8,
+   "musyrif": "Ust. Abdul Karim",
+   "kamarList": [
+    [
+     "A-1",
+     12,
+     12
+    ],
+    [
+     "A-2",
+     12,
+     11
+    ],
+    [
+     "A-3",
+     12,
+     12
+    ],
+    [
+     "A-4",
+     12,
+     10
+    ],
+    [
+     "A-5",
+     12,
+     12
+    ],
+    [
+     "A-6",
+     12,
+     12
+    ],
+    [
+     "A-7",
+     12,
+     11
+    ],
+    [
+     "A-8",
+     12,
+     11
+    ]
+   ]
+  },
+  {
+   "nama": "Ibnu Sina",
+   "jk": "Putra",
+   "kapasitas": 84,
+   "isi": 80,
+   "kamar": 7,
+   "musyrif": "Ust. Syamsul Arifin",
+   "kamarList": [
+    [
+     "B-1",
+     12,
+     12
+    ],
+    [
+     "B-2",
+     12,
+     11
+    ],
+    [
+     "B-3",
+     12,
+     12
+    ],
+    [
+     "B-4",
+     12,
+     10
+    ],
+    [
+     "B-5",
+     12,
+     12
+    ],
+    [
+     "B-6",
+     12,
+     12
+    ],
+    [
+     "B-7",
+     12,
+     11
+    ]
+   ]
+  },
+  {
+   "nama": "Imam Syafi'i",
+   "jk": "Putra",
+   "kapasitas": 84,
+   "isi": 79,
+   "kamar": 7,
+   "musyrif": "Ust. Mahfudz Ridwan",
+   "kamarList": [
+    [
+     "C-1",
+     12,
+     12
+    ],
+    [
+     "C-2",
+     12,
+     12
+    ],
+    [
+     "C-3",
+     12,
+     10
+    ],
+    [
+     "C-4",
+     12,
+     12
+    ],
+    [
+     "C-5",
+     12,
+     11
+    ],
+    [
+     "C-6",
+     12,
+     11
+    ],
+    [
+     "C-7",
+     12,
+     11
+    ]
+   ]
+  },
+  {
+   "nama": "Khadijah",
+   "jk": "Putri",
+   "kapasitas": 84,
+   "isi": 78,
+   "kamar": 7,
+   "musyrif": "Ustzh. Maimunah",
+   "kamarList": [
+    [
+     "K-1",
+     12,
+     12
+    ],
+    [
+     "K-2",
+     12,
+     11
+    ],
+    [
+     "K-3",
+     12,
+     10
+    ],
+    [
+     "K-4",
+     12,
+     12
+    ],
+    [
+     "K-5",
+     12,
+     11
+    ],
+    [
+     "K-6",
+     12,
+     11
+    ],
+    [
+     "K-7",
+     12,
+     11
+    ]
+   ]
+  },
+  {
+   "nama": "Aisyah",
+   "jk": "Putri",
+   "kapasitas": 72,
+   "isi": 68,
+   "kamar": 6,
+   "musyrif": "Ustzh. Nur Laila",
+   "kamarList": [
+    [
+     "A-1",
+     12,
+     12
+    ],
+    [
+     "A-2",
+     12,
+     11
+    ],
+    [
+     "A-3",
+     12,
+     11
+    ],
+    [
+     "A-4",
+     12,
+     12
+    ],
+    [
+     "A-5",
+     12,
+     11
+    ],
+    [
+     "A-6",
+     12,
+     11
+    ]
+   ]
+  },
+  {
+   "nama": "Fatimah",
+   "jk": "Putri",
+   "kapasitas": 72,
+   "isi": 64,
+   "kamar": 6,
+   "musyrif": "Ustzh. Khoirun Nisa",
+   "kamarList": [
+    [
+     "F-1",
+     12,
+     11
+    ],
+    [
+     "F-2",
+     12,
+     10
+    ],
+    [
+     "F-3",
+     12,
+     12
+    ],
+    [
+     "F-4",
+     12,
+     11
+    ],
+    [
+     "F-5",
+     12,
+     10
+    ],
+    [
+     "F-6",
+     12,
+     10
+    ]
+   ]
+  }
+ ],
+ "setoran": [
+  {
+   "tgl": "20 Agu 2026",
+   "santri": "Ahmad Fauzan Ramadhani",
+   "surat": "Al-Kahfi",
+   "ayat": "1–20",
+   "jenis": "Ziyadah",
+   "nilai": "Jayyid Jiddan",
+   "penguji": "Ust. Abdul Karim"
+  },
+  {
+   "tgl": "19 Agu 2026",
+   "santri": "Ahmad Fauzan Ramadhani",
+   "surat": "Al-Isra'",
+   "ayat": "70–111",
+   "jenis": "Muroja'ah",
+   "nilai": "Mumtaz",
+   "penguji": "Ust. Abdul Karim"
+  },
+  {
+   "tgl": "19 Agu 2026",
+   "santri": "Hafidz Nur Rohman",
+   "surat": "Maryam",
+   "ayat": "1–40",
+   "jenis": "Ziyadah",
+   "nilai": "Mumtaz",
+   "penguji": "Ust. Mahfudz Ridwan"
+  },
+  {
+   "tgl": "18 Agu 2026",
+   "santri": "Halimah Nur Fadhilah",
+   "surat": "An-Nur",
+   "ayat": "35–64",
+   "jenis": "Ziyadah",
+   "nilai": "Mumtaz",
+   "penguji": "Ustzh. Khoirun Nisa"
+  },
+  {
+   "tgl": "18 Agu 2026",
+   "santri": "Zahra Salsabila",
+   "surat": "Al-Hijr",
+   "ayat": "1–45",
+   "jenis": "Muroja'ah",
+   "nilai": "Jayyid",
+   "penguji": "Ustzh. Nur Laila"
+  },
+  {
+   "tgl": "17 Agu 2026",
+   "santri": "Zaid bin Tsabit Hakim",
+   "surat": "Al-Furqan",
+   "ayat": "1–30",
+   "jenis": "Ziyadah",
+   "nilai": "Jayyid Jiddan",
+   "penguji": "Ust. Syamsul Arifin"
+  },
+  {
+   "tgl": "17 Agu 2026",
+   "santri": "Ahmad Fauzan Ramadhani",
+   "surat": "An-Nahl",
+   "ayat": "90–128",
+   "jenis": "Ziyadah",
+   "nilai": "Jayyid",
+   "penguji": "Ust. Abdul Karim"
+  },
+  {
+   "tgl": "16 Agu 2026",
+   "santri": "Siti Nur Aisyah",
+   "surat": "Yusuf",
+   "ayat": "1–30",
+   "jenis": "Ziyadah",
+   "nilai": "Jayyid Jiddan",
+   "penguji": "Ustzh. Maimunah"
+  },
+  {
+   "tgl": "16 Agu 2026",
+   "santri": "Ruqoyyah Salma Dewi",
+   "surat": "At-Taubah",
+   "ayat": "100–129",
+   "jenis": "Muroja'ah",
+   "nilai": "Maqbul",
+   "penguji": "Ustzh. Maimunah"
+  },
+  {
+   "tgl": "15 Agu 2026",
+   "santri": "Umar Abdul Aziz",
+   "surat": "Al-Anfal",
+   "ayat": "1–25",
+   "jenis": "Ziyadah",
+   "nilai": "Jayyid",
+   "penguji": "Ust. Syamsul Arifin"
+  },
+  {
+   "tgl": "15 Agu 2026",
+   "santri": "Ahmad Fauzan Ramadhani",
+   "surat": "Al-Kahfi",
+   "ayat": "21–45",
+   "jenis": "Muroja'ah",
+   "nilai": "Jayyid Jiddan",
+   "penguji": "Ust. Abdul Karim"
+  },
+  {
+   "tgl": "14 Agu 2026",
+   "santri": "Aisyah Rahmawati",
+   "surat": "Al-A'raf",
+   "ayat": "150–206",
+   "jenis": "Ziyadah",
+   "nilai": "Jayyid",
+   "penguji": "Ustzh. Nur Laila"
+  }
+ ],
+ "halaqah": [
+  {
+   "nama": "Halaqah Tahfidz A",
+   "ustadz": "Ust. Abdul Karim",
+   "waktu": "Ba'da Subuh · 04.45–06.00",
+   "tempat": "Aula Al-Ghazali",
+   "anggota": 14,
+   "jenjang": "Juz 1–10"
+  },
+  {
+   "nama": "Halaqah Tahfidz B",
+   "ustadz": "Ust. Mahfudz Ridwan",
+   "waktu": "Ba'da Subuh · 04.45–06.00",
+   "tempat": "Musholla Putra",
+   "anggota": 12,
+   "jenjang": "Juz 11–20"
+  },
+  {
+   "nama": "Halaqah Tahfidz Putri A",
+   "ustadz": "Ustzh. Maimunah",
+   "waktu": "Ba'da Subuh · 04.45–06.00",
+   "tempat": "Aula Khadijah",
+   "anggota": 16,
+   "jenjang": "Juz 1–10"
+  },
+  {
+   "nama": "Halaqah Tahfidz Putri B",
+   "ustadz": "Ustzh. Khoirun Nisa",
+   "waktu": "Ba'da Ashar · 16.00–17.15",
+   "tempat": "Aula Fatimah",
+   "anggota": 13,
+   "jenjang": "Juz 11–30"
+  },
+  {
+   "nama": "Kitab Fathul Qorib",
+   "ustadz": "Ust. Syamsul Arifin",
+   "waktu": "Ba'da Isya · 19.30–21.00",
+   "tempat": "Kelas Diniyah 1",
+   "anggota": 22,
+   "jenjang": "Wustho"
+  },
+  {
+   "nama": "Kitab Ta'lim Muta'allim",
+   "ustadz": "Ust. Abdul Karim",
+   "waktu": "Ba'da Maghrib · 18.15–19.15",
+   "tempat": "Kelas Diniyah 2",
+   "anggota": 25,
+   "jenjang": "Ula"
+  },
+  {
+   "nama": "Nahwu Shorof (Jurumiyah)",
+   "ustadz": "Ust. Nur Hasan",
+   "waktu": "Ba'da Dhuhur · 13.00–14.00",
+   "tempat": "Kelas Diniyah 3",
+   "anggota": 19,
+   "jenjang": "Ula"
+  }
+ ],
+ "tazir": [
+  {
+   "tgl": "20 Agu 2026",
+   "santri": "Salman Al-Farisi Nur",
+   "kamar": "C-4",
+   "pelanggaran": "Tidak ikut jamaah Subuh",
+   "poin": 5,
+   "sanksi": "Membersihkan halaman + hafalan 5 ayat",
+   "petugas": "Ust. Mahfudz Ridwan",
+   "total": 15
+  },
+  {
+   "tgl": "19 Agu 2026",
+   "santri": "Ilham Maulana Yusuf",
+   "kamar": "-",
+   "pelanggaran": "Terlambat masuk diniyah",
+   "poin": 3,
+   "sanksi": "Teguran tertulis",
+   "petugas": "Ust. Nur Hasan",
+   "total": 8
+  },
+  {
+   "tgl": "18 Agu 2026",
+   "santri": "Yusuf Abdurrahman",
+   "kamar": "A-4",
+   "pelanggaran": "Membawa HP ke asrama",
+   "poin": 15,
+   "sanksi": "HP disita 1 bulan + panggilan wali",
+   "petugas": "Ust. Abdul Karim",
+   "total": 30
+  },
+  {
+   "tgl": "17 Agu 2026",
+   "santri": "Bilal Ramadhan Putra",
+   "kamar": "C-1",
+   "pelanggaran": "Keluar tanpa izin (kabur)",
+   "poin": 25,
+   "sanksi": "Ta'zir cukur + panggilan wali",
+   "petugas": "Ust. Abdul Karim",
+   "total": 25
+  },
+  {
+   "tgl": "16 Agu 2026",
+   "santri": "Muhammad Rizky Maulana",
+   "kamar": "B-1",
+   "pelanggaran": "Tidur saat halaqah",
+   "poin": 3,
+   "sanksi": "Berdiri hafalan 10 menit",
+   "petugas": "Ust. Syamsul Arifin",
+   "total": 6
+  },
+  {
+   "tgl": "15 Agu 2026",
+   "santri": "Umar Abdul Aziz",
+   "kamar": "B-3",
+   "pelanggaran": "Piket kamar tidak dikerjakan",
+   "poin": 5,
+   "sanksi": "Piket 3 hari berturut",
+   "petugas": "Ust. Syamsul Arifin",
+   "total": 5
+  },
+  {
+   "tgl": "14 Agu 2026",
+   "santri": "Aisyah Rahmawati",
+   "kamar": "A-2",
+   "pelanggaran": "Berbicara saat muroja'ah",
+   "poin": 3,
+   "sanksi": "Menulis istighfar 100x",
+   "petugas": "Ustzh. Nur Laila",
+   "total": 3
+  },
+  {
+   "tgl": "13 Agu 2026",
+   "santri": "Khadijah Nur Salma",
+   "kamar": "K-4",
+   "pelanggaran": "Terlambat kembali dari izin",
+   "poin": 10,
+   "sanksi": "Izin dibekukan 1 bulan",
+   "petugas": "Ustzh. Maimunah",
+   "total": 10
+  }
+ ],
+ "izinList": [
+  {
+   "id": "IZ-241",
+   "santri": "Ahmad Fauzan Ramadhani",
+   "kamar": "A-3",
+   "alasan": "Pulang — hajatan keluarga",
+   "penjemput": "Bpk. Sulaiman Hadi (ayah)",
+   "keluar": "22 Agu 2026 08.00",
+   "kembali": "24 Agu 2026 17.00",
+   "status": "Menunggu"
+  },
+  {
+   "id": "IZ-240",
+   "santri": "Siti Nur Aisyah",
+   "kamar": "K-2",
+   "alasan": "Kontrol gigi ke RS Islam Aisyiyah",
+   "penjemput": "Ibu Zulaikha (ibu)",
+   "keluar": "22 Agu 2026 09.00",
+   "kembali": "22 Agu 2026 15.00",
+   "status": "Menunggu"
+  },
+  {
+   "id": "IZ-239",
+   "santri": "Zaid bin Tsabit Hakim",
+   "kamar": "B-5",
+   "alasan": "Lomba MTQ Kabupaten",
+   "penjemput": "Ust. Syamsul Arifin (pendamping)",
+   "keluar": "21 Agu 2026 06.30",
+   "kembali": "21 Agu 2026 20.00",
+   "status": "Disetujui"
+  },
+  {
+   "id": "IZ-238",
+   "santri": "Yusuf Abdurrahman",
+   "kamar": "A-4",
+   "alasan": "Pulang — ibu sakit",
+   "penjemput": "Bpk. Abdurrahman Wahid (ayah)",
+   "keluar": "18 Agu 2026 07.00",
+   "kembali": "20 Agu 2026 17.00",
+   "status": "Telat kembali"
+  },
+  {
+   "id": "IZ-237",
+   "santri": "Halimah Nur Fadhilah",
+   "kamar": "F-1",
+   "alasan": "Wisuda kakak",
+   "penjemput": "Bpk. Fadhil Ahmad (ayah)",
+   "keluar": "19 Agu 2026 08.00",
+   "kembali": "20 Agu 2026 16.00",
+   "status": "Sudah kembali"
+  },
+  {
+   "id": "IZ-236",
+   "santri": "Bilal Ramadhan Putra",
+   "kamar": "C-1",
+   "alasan": "Urus dokumen KTP",
+   "penjemput": "Bpk. Sutrisno Bakri (ayah)",
+   "keluar": "20 Agu 2026 08.00",
+   "kembali": "20 Agu 2026 14.00",
+   "status": "Sudah kembali"
+  },
+  {
+   "id": "IZ-235",
+   "santri": "Aisyah Rahmawati",
+   "kamar": "A-2",
+   "alasan": "Periksa mata ke Puskesmas",
+   "penjemput": "Ustzh. Nur Laila (pendamping)",
+   "keluar": "21 Agu 2026 09.00",
+   "kembali": "21 Agu 2026 12.00",
+   "status": "Sedang di luar"
+  },
+  {
+   "id": "IZ-234",
+   "santri": "Umar Abdul Aziz",
+   "kamar": "B-3",
+   "alasan": "Pulang — walimah tetangga",
+   "penjemput": "Bpk. Aziz Fahrurrozi (ayah)",
+   "keluar": "15 Agu 2026 08.00",
+   "kembali": "17 Agu 2026 17.00",
+   "status": "Ditolak"
+  },
+  {
+   "id": "IZ-233",
+   "santri": "Ruqoyyah Salma Dewi",
+   "kamar": "K-1",
+   "alasan": "Kontrol pasca sakit",
+   "penjemput": "Bpk. Dewa Saputra (ayah)",
+   "keluar": "14 Agu 2026 09.00",
+   "kembali": "14 Agu 2026 16.00",
+   "status": "Sudah kembali"
+  },
+  {
+   "id": "IZ-232",
+   "santri": "Salman Al-Farisi Nur",
+   "kamar": "C-4",
+   "alasan": "Pulang — libur akhir bulan",
+   "penjemput": "Bpk. Nur Hasyim (ayah)",
+   "keluar": "12 Agu 2026 07.00",
+   "kembali": "14 Agu 2026 17.00",
+   "status": "Sudah kembali"
+  }
+ ],
+ "kunjungan": [
+  {
+   "tgl": "22 Agu 2026",
+   "jam": "07.20",
+   "santri": "Salman Al-Farisi Nur",
+   "asrama": "Imam Syafi'i",
+   "keluhan": "Gatal di sela jari, malam memburuk",
+   "diagnosis": "Scabies",
+   "terapi": "Permetrin 5% krim, salep antihistamin",
+   "lanjut": "Rawat Poskestren",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "tgl": "22 Agu 2026",
+   "jam": "08.05",
+   "santri": "Bilal Ramadhan Putra",
+   "asrama": "Imam Syafi'i",
+   "keluhan": "Gatal seluruh lipatan tangan",
+   "diagnosis": "Scabies",
+   "terapi": "Permetrin 5% krim",
+   "lanjut": "Istirahat di kamar",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "tgl": "21 Agu 2026",
+   "jam": "16.40",
+   "santri": "Abdullah Faqih Umam",
+   "asrama": "Imam Syafi'i",
+   "keluhan": "Gatal di perut & selangkangan",
+   "diagnosis": "Scabies",
+   "terapi": "Permetrin 5% krim, edukasi cuci kasur",
+   "lanjut": "Rawat Poskestren",
+   "petugas": "dr. Hendra Wijaya"
+  },
+  {
+   "tgl": "21 Agu 2026",
+   "jam": "09.15",
+   "santri": "Ahmad Fauzan Ramadhani",
+   "asrama": "Al-Ghazali",
+   "keluhan": "Demam, batuk berdahak 2 hari",
+   "diagnosis": "ISPA",
+   "terapi": "Paracetamol 500mg, OBH, vitamin C",
+   "lanjut": "Istirahat di kamar",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "tgl": "21 Agu 2026",
+   "jam": "10.02",
+   "santri": "Umar Abdul Aziz",
+   "asrama": "Ibnu Sina",
+   "keluhan": "Nyeri perut atas, mual",
+   "diagnosis": "Gastritis",
+   "terapi": "Antasida syrup, edukasi pola makan",
+   "lanjut": "Istirahat di kamar",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "tgl": "20 Agu 2026",
+   "jam": "15.30",
+   "santri": "Aisyah Rahmawati",
+   "asrama": "Aisyah",
+   "keluhan": "Kulit kemerahan di lengan",
+   "diagnosis": "Dermatitis",
+   "terapi": "Hidrokortison krim 1%",
+   "lanjut": "Istirahat di kamar",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "tgl": "20 Agu 2026",
+   "jam": "11.10",
+   "santri": "Muhammad Rizky Maulana",
+   "asrama": "Ibnu Sina",
+   "keluhan": "Luka lecet di kaki saat olahraga",
+   "diagnosis": "Luka lecet",
+   "terapi": "Rawat luka, povidon iodin",
+   "lanjut": "Istirahat di kamar",
+   "petugas": "Kader: Hafidz N. R."
+  },
+  {
+   "tgl": "19 Agu 2026",
+   "jam": "14.25",
+   "santri": "Khadijah Nur Salma",
+   "asrama": "Khadijah",
+   "keluhan": "Demam 38.6°C, nyeri kepala",
+   "diagnosis": "Demam",
+   "terapi": "Paracetamol, kompres, observasi",
+   "lanjut": "Rawat Poskestren",
+   "petugas": "dr. Hendra Wijaya"
+  },
+  {
+   "tgl": "19 Agu 2026",
+   "jam": "08.40",
+   "santri": "Zahra Salsabila",
+   "asrama": "Aisyah",
+   "keluhan": "Batuk kering, tenggorokan nyeri",
+   "diagnosis": "ISPA",
+   "terapi": "OBH, vitamin C, masker",
+   "lanjut": "Istirahat di kamar",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "tgl": "18 Agu 2026",
+   "jam": "13.05",
+   "santri": "Ahmad Fauzan Ramadhani",
+   "asrama": "Al-Ghazali",
+   "keluhan": "Demam tinggi 38.9°C, lemas",
+   "diagnosis": "Demam",
+   "terapi": "Paracetamol 500mg, cairan oral",
+   "lanjut": "Rawat Poskestren",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "tgl": "18 Agu 2026",
+   "jam": "09.50",
+   "santri": "Yusuf Abdurrahman",
+   "asrama": "Al-Ghazali",
+   "keluhan": "Diare 4x sejak pagi",
+   "diagnosis": "Diare",
+   "terapi": "Oralit, zinc, observasi",
+   "lanjut": "Rawat Poskestren",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "tgl": "17 Agu 2026",
+   "jam": "16.15",
+   "santri": "Ruqoyyah Salma Dewi",
+   "asrama": "Khadijah",
+   "keluhan": "Gatal di pergelangan tangan",
+   "diagnosis": "Scabies",
+   "terapi": "Permetrin 5% krim",
+   "lanjut": "Istirahat di kamar",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "tgl": "17 Agu 2026",
+   "jam": "10.30",
+   "santri": "Zaid bin Tsabit Hakim",
+   "asrama": "Ibnu Sina",
+   "keluhan": "Sakit gigi berlubang",
+   "diagnosis": "Karies gigi",
+   "terapi": "Analgesik, rujuk poli gigi",
+   "lanjut": "Rujuk Puskesmas",
+   "petugas": "dr. Hendra Wijaya"
+  },
+  {
+   "tgl": "16 Agu 2026",
+   "jam": "07.45",
+   "santri": "Siti Nur Aisyah",
+   "asrama": "Khadijah",
+   "keluhan": "Pusing, tekanan darah rendah",
+   "diagnosis": "Hipotensi",
+   "terapi": "Istirahat, cairan, tablet tambah darah",
+   "lanjut": "Istirahat di kamar",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "tgl": "16 Agu 2026",
+   "jam": "12.20",
+   "santri": "Halimah Nur Fadhilah",
+   "asrama": "Fatimah",
+   "keluhan": "Nyeri haid berat",
+   "diagnosis": "Dismenorea",
+   "terapi": "Analgesik, kompres hangat",
+   "lanjut": "Istirahat di kamar",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "tgl": "15 Agu 2026",
+   "jam": "17.05",
+   "santri": "Fatimah Az-Zahra",
+   "asrama": "Fatimah",
+   "keluhan": "Bercak merah bersisik di siku",
+   "diagnosis": "Dermatitis",
+   "terapi": "Pelembab, hidrokortison krim",
+   "lanjut": "Istirahat di kamar",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "tgl": "15 Agu 2026",
+   "jam": "09.30",
+   "santri": "Hafidz Nur Rohman",
+   "asrama": "Al-Ghazali",
+   "keluhan": "Batuk & pilek 3 hari",
+   "diagnosis": "ISPA",
+   "terapi": "OBH, vitamin C",
+   "lanjut": "Istirahat di kamar",
+   "petugas": "Kader: Umar A. A."
+  },
+  {
+   "tgl": "14 Agu 2026",
+   "jam": "11.55",
+   "santri": "Nabila Husna Kamila",
+   "asrama": "-",
+   "keluhan": "Nyeri perut, terlambat makan",
+   "diagnosis": "Gastritis",
+   "terapi": "Antasida, edukasi",
+   "lanjut": "Istirahat di kamar",
+   "petugas": "Ns. Maimunah"
+  }
+ ],
+ "obat": [
+  {
+   "nama": "Paracetamol 500mg",
+   "satuan": "tablet",
+   "stok": 240,
+   "min": 200,
+   "exp": "Mar 2027",
+   "kategori": "Analgesik"
+  },
+  {
+   "nama": "Permetrin 5% krim",
+   "satuan": "tube",
+   "stok": 6,
+   "min": 20,
+   "exp": "Nov 2026",
+   "kategori": "Antiskabies"
+  },
+  {
+   "nama": "Oralit sachet",
+   "satuan": "sachet",
+   "stok": 38,
+   "min": 60,
+   "exp": "Jan 2027",
+   "kategori": "Rehidrasi"
+  },
+  {
+   "nama": "Amoxicillin 500mg",
+   "satuan": "kapsul",
+   "stok": 120,
+   "min": 100,
+   "exp": "Sep 2026",
+   "kategori": "Antibiotik"
+  },
+  {
+   "nama": "OBH Combi 100ml",
+   "satuan": "botol",
+   "stok": 9,
+   "min": 15,
+   "exp": "Feb 2027",
+   "kategori": "Antitusif"
+  },
+  {
+   "nama": "Hidrokortison krim 1%",
+   "satuan": "tube",
+   "stok": 14,
+   "min": 12,
+   "exp": "Jul 2027",
+   "kategori": "Kortikosteroid"
+  },
+  {
+   "nama": "Antasida syrup",
+   "satuan": "botol",
+   "stok": 11,
+   "min": 10,
+   "exp": "Des 2026",
+   "kategori": "Antasida"
+  },
+  {
+   "nama": "Povidon iodin 60ml",
+   "satuan": "botol",
+   "stok": 7,
+   "min": 10,
+   "exp": "Apr 2027",
+   "kategori": "Antiseptik"
+  },
+  {
+   "nama": "Zinc 20mg",
+   "satuan": "tablet",
+   "stok": 85,
+   "min": 60,
+   "exp": "Okt 2026",
+   "kategori": "Suplemen"
+  },
+  {
+   "nama": "Vitamin C 500mg",
+   "satuan": "tablet",
+   "stok": 310,
+   "min": 150,
+   "exp": "Jun 2027",
+   "kategori": "Suplemen"
+  },
+  {
+   "nama": "Kasa steril",
+   "satuan": "pak",
+   "stok": 4,
+   "min": 12,
+   "exp": "Agu 2028",
+   "kategori": "Alkes"
+  },
+  {
+   "nama": "Plester luka",
+   "satuan": "box",
+   "stok": 16,
+   "min": 10,
+   "exp": "Mei 2028",
+   "kategori": "Alkes"
+  },
+  {
+   "nama": "Tablet tambah darah",
+   "satuan": "tablet",
+   "stok": 190,
+   "min": 120,
+   "exp": "Jan 2027",
+   "kategori": "Suplemen"
+  },
+  {
+   "nama": "Salep antihistamin",
+   "satuan": "tube",
+   "stok": 5,
+   "min": 15,
+   "exp": "Okt 2026",
+   "kategori": "Antihistamin"
+  }
+ ],
+ "piket": [
+  {
+   "hari": "Senin",
+   "kader": "Hafidz Nur Rohman · Umar Abdul Aziz",
+   "shift": "16.00–21.00",
+   "asrama": "Putra"
+  },
+  {
+   "hari": "Senin",
+   "kader": "Ruqoyyah Salma Dewi · Aisyah Rahmawati",
+   "shift": "16.00–21.00",
+   "asrama": "Putri"
+  },
+  {
+   "hari": "Selasa",
+   "kader": "Yusuf Abdurrahman · Bilal Ramadhan Putra",
+   "shift": "16.00–21.00",
+   "asrama": "Putra"
+  },
+  {
+   "hari": "Selasa",
+   "kader": "Khadijah Nur Salma · Fatimah Az-Zahra",
+   "shift": "16.00–21.00",
+   "asrama": "Putri"
+  },
+  {
+   "hari": "Rabu",
+   "kader": "Zaid bin Tsabit Hakim · Salman Al-Farisi Nur",
+   "shift": "16.00–21.00",
+   "asrama": "Putra"
+  },
+  {
+   "hari": "Kamis",
+   "kader": "Ahmad Fauzan Ramadhani · M. Rizky Maulana",
+   "shift": "16.00–21.00",
+   "asrama": "Putra"
+  },
+  {
+   "hari": "Kamis",
+   "kader": "Zahra Salsabila · Halimah Nur Fadhilah",
+   "shift": "16.00–21.00",
+   "asrama": "Putri"
+  },
+  {
+   "hari": "Jumat",
+   "kader": "Abdullah Faqih Umam · Hafidz Nur Rohman",
+   "shift": "16.00–21.00",
+   "asrama": "Putra"
+  },
+  {
+   "hari": "Sabtu",
+   "kader": "Siti Nur Aisyah · Ruqoyyah Salma Dewi",
+   "shift": "16.00–21.00",
+   "asrama": "Putri"
+  },
+  {
+   "hari": "Ahad",
+   "kader": "Umar Abdul Aziz · Bilal Ramadhan Putra",
+   "shift": "16.00–21.00",
+   "asrama": "Putra"
+  }
+ ],
+ "tagihanRows": [
+  {
+   "id": "TG-0011",
+   "santri": "Ahmad Fauzan Ramadhani",
+   "unit": "SMP + Pondok",
+   "jenis": "SPP + Syahriyah + Makan",
+   "periode": "Agu 2026",
+   "nominal": 1350000,
+   "bayar": 1350000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0012",
+   "santri": "Muhammad Rizky Maulana",
+   "unit": "SMP + Pondok",
+   "jenis": "SPP + Syahriyah + Makan",
+   "periode": "Agu 2026",
+   "nominal": 1350000,
+   "bayar": 700000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0013",
+   "santri": "Siti Nur Aisyah",
+   "unit": "MA + Pondok",
+   "jenis": "SPP + Syahriyah + Makan",
+   "periode": "Agu 2026",
+   "nominal": 1400000,
+   "bayar": 1400000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0014",
+   "santri": "Zahra Salsabila",
+   "unit": "MA + Pondok",
+   "jenis": "SPP + Syahriyah + Laundry",
+   "periode": "Agu 2026",
+   "nominal": 1130000,
+   "bayar": 0,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0015",
+   "santri": "Abdullah Faqih Umam",
+   "unit": "MA + Pondok",
+   "jenis": "SPP + Syahriyah + Makan",
+   "periode": "Agu 2026",
+   "nominal": 1400000,
+   "bayar": 1400000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0016",
+   "santri": "Nabila Husna Kamila",
+   "unit": "SMP",
+   "jenis": "SPP",
+   "periode": "Agu 2026",
+   "nominal": 350000,
+   "bayar": 350000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0017",
+   "santri": "Hafidz Nur Rohman",
+   "unit": "SMP + Pondok",
+   "jenis": "SPP + Syahriyah + Makan",
+   "periode": "Agu 2026",
+   "nominal": 1350000,
+   "bayar": 1350000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0018",
+   "santri": "Fatimah Az-Zahra",
+   "unit": "MA + Pondok",
+   "jenis": "SPP + Syahriyah + Makan",
+   "periode": "Agu 2026",
+   "nominal": 1400000,
+   "bayar": 400000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0019",
+   "santri": "Ilham Maulana Yusuf",
+   "unit": "SMP",
+   "jenis": "SPP",
+   "periode": "Agu 2026",
+   "nominal": 350000,
+   "bayar": 0,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0020",
+   "santri": "Khadijah Nur Salma",
+   "unit": "MA + Pondok",
+   "jenis": "SPP + Syahriyah",
+   "periode": "Agu 2026",
+   "nominal": 1050000,
+   "bayar": 1050000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0021",
+   "santri": "Umar Abdul Aziz",
+   "unit": "SMP + Pondok",
+   "jenis": "SPP + Syahriyah + Makan",
+   "periode": "Agu 2026",
+   "nominal": 1350000,
+   "bayar": 350000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0022",
+   "santri": "Aisyah Rahmawati",
+   "unit": "SMP + Pondok",
+   "jenis": "SPP + Syahriyah + Makan",
+   "periode": "Agu 2026",
+   "nominal": 1350000,
+   "bayar": 1350000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0023",
+   "santri": "Bilal Ramadhan Putra",
+   "unit": "MA + Pondok",
+   "jenis": "SPP + Syahriyah + Laundry",
+   "periode": "Agu 2026",
+   "nominal": 1130000,
+   "bayar": 0,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0024",
+   "santri": "Halimah Nur Fadhilah",
+   "unit": "MA + Pondok",
+   "jenis": "SPP + Syahriyah + Makan",
+   "periode": "Agu 2026",
+   "nominal": 1400000,
+   "bayar": 1400000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0025",
+   "santri": "Yusuf Abdurrahman",
+   "unit": "SMP + Pondok",
+   "jenis": "SPP + Syahriyah",
+   "periode": "Agu 2026",
+   "nominal": 1000000,
+   "bayar": 500000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0026",
+   "santri": "Maryam Nur Azizah",
+   "unit": "SMP",
+   "jenis": "SPP",
+   "periode": "Agu 2026",
+   "nominal": 350000,
+   "bayar": 350000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0027",
+   "santri": "Zaid bin Tsabit Hakim",
+   "unit": "MA + Pondok",
+   "jenis": "SPP + Syahriyah + Makan",
+   "periode": "Agu 2026",
+   "nominal": 1400000,
+   "bayar": 1400000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0028",
+   "santri": "Ruqoyyah Salma Dewi",
+   "unit": "MA + Pondok",
+   "jenis": "SPP + Syahriyah + Makan",
+   "periode": "Agu 2026",
+   "nominal": 1400000,
+   "bayar": 0,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0029",
+   "santri": "Salman Al-Farisi Nur",
+   "unit": "SMP + Pondok",
+   "jenis": "SPP + Syahriyah + Makan",
+   "periode": "Agu 2026",
+   "nominal": 1350000,
+   "bayar": 1350000,
+   "jatuh": "10 Agu 2026"
+  },
+  {
+   "id": "TG-0030",
+   "santri": "Nurul Izzah Maulida",
+   "unit": "MA",
+   "jenis": "SPP",
+   "periode": "Agu 2026",
+   "nominal": 400000,
+   "bayar": 400000,
+   "jatuh": "10 Agu 2026"
+  }
+ ],
+ "transaksi": [
+  {
+   "tgl": "22 Agu 2026",
+   "kode": "TRX-8841",
+   "uraian": "SPP + Syahriyah — Ahmad Fauzan Ramadhani",
+   "kategori": "Penerimaan",
+   "metode": "Transfer BSI",
+   "nominal": 1350000
+  },
+  {
+   "tgl": "22 Agu 2026",
+   "kode": "TRX-8842",
+   "uraian": "Belanja obat Poskestren (14 item)",
+   "kategori": "Pengeluaran",
+   "metode": "Kas",
+   "nominal": -2840000
+  },
+  {
+   "tgl": "21 Agu 2026",
+   "kode": "TRX-8840",
+   "uraian": "Syahriyah — Zaid bin Tsabit Hakim",
+   "kategori": "Penerimaan",
+   "metode": "Tunai",
+   "nominal": 1400000
+  },
+  {
+   "tgl": "21 Agu 2026",
+   "kode": "TRX-8839",
+   "uraian": "Honor 24 ustadz/ustadzah Agustus",
+   "kategori": "Pengeluaran",
+   "metode": "Transfer",
+   "nominal": -38400000
+  },
+  {
+   "tgl": "20 Agu 2026",
+   "kode": "TRX-8838",
+   "uraian": "Angsuran SPP — Fatimah Az-Zahra",
+   "kategori": "Penerimaan",
+   "metode": "Transfer BSI",
+   "nominal": 400000
+  },
+  {
+   "tgl": "20 Agu 2026",
+   "kode": "TRX-8837",
+   "uraian": "Belanja dapur pondok pekan 3",
+   "kategori": "Pengeluaran",
+   "metode": "Kas",
+   "nominal": -14750000
+  },
+  {
+   "tgl": "19 Agu 2026",
+   "kode": "TRX-8836",
+   "uraian": "SPP — Nurul Izzah Maulida",
+   "kategori": "Penerimaan",
+   "metode": "Tunai",
+   "nominal": 400000
+  },
+  {
+   "tgl": "19 Agu 2026",
+   "kode": "TRX-8835",
+   "uraian": "Donasi wali santri — pembangunan asrama",
+   "kategori": "Penerimaan",
+   "metode": "Transfer BSI",
+   "nominal": 5000000
+  },
+  {
+   "tgl": "18 Agu 2026",
+   "kode": "TRX-8834",
+   "uraian": "Listrik & air Juli 2026",
+   "kategori": "Pengeluaran",
+   "metode": "Autodebet",
+   "nominal": -8620000
+  },
+  {
+   "tgl": "18 Agu 2026",
+   "kode": "TRX-8833",
+   "uraian": "Syahriyah — Aisyah Rahmawati",
+   "kategori": "Penerimaan",
+   "metode": "Transfer BSI",
+   "nominal": 1350000
+  },
+  {
+   "tgl": "17 Agu 2026",
+   "kode": "TRX-8832",
+   "uraian": "Perbaikan MCK asrama Fatimah",
+   "kategori": "Pengeluaran",
+   "metode": "Kas",
+   "nominal": -3200000
+  },
+  {
+   "tgl": "17 Agu 2026",
+   "kode": "TRX-8831",
+   "uraian": "SPP — Maryam Nur Azizah",
+   "kategori": "Penerimaan",
+   "metode": "Tunai",
+   "nominal": 350000
+  },
+  {
+   "tgl": "16 Agu 2026",
+   "kode": "TRX-8830",
+   "uraian": "Syahriyah — Halimah Nur Fadhilah",
+   "kategori": "Penerimaan",
+   "metode": "Transfer BSI",
+   "nominal": 1400000
+  },
+  {
+   "tgl": "16 Agu 2026",
+   "kode": "TRX-8829",
+   "uraian": "ATK & modul diniyah",
+   "kategori": "Pengeluaran",
+   "metode": "Kas",
+   "nominal": -1980000
+  },
+  {
+   "tgl": "15 Agu 2026",
+   "kode": "TRX-8828",
+   "uraian": "Syahriyah — Siti Nur Aisyah",
+   "kategori": "Penerimaan",
+   "metode": "Transfer BSI",
+   "nominal": 1400000
+  },
+  {
+   "tgl": "15 Agu 2026",
+   "kode": "TRX-8827",
+   "uraian": "Insentif kader Santri Husada",
+   "kategori": "Pengeluaran",
+   "metode": "Kas",
+   "nominal": -1200000
+  }
+ ],
+ "presensiAkademik": [
+  {
+   "tgl": "22 Agu 2026",
+   "hari": "Sabtu",
+   "status": "Hadir",
+   "ket": "-"
+  },
+  {
+   "tgl": "21 Agu 2026",
+   "hari": "Jumat",
+   "status": "Sakit",
+   "ket": "Sakit (dari Poskestren) — ISPA"
+  },
+  {
+   "tgl": "20 Agu 2026",
+   "hari": "Kamis",
+   "status": "Hadir",
+   "ket": "-"
+  },
+  {
+   "tgl": "19 Agu 2026",
+   "hari": "Rabu",
+   "status": "Hadir",
+   "ket": "-"
+  },
+  {
+   "tgl": "18 Agu 2026",
+   "hari": "Selasa",
+   "status": "Sakit",
+   "ket": "Sakit (dari Poskestren) — Demam, rawat Poskestren"
+  },
+  {
+   "tgl": "17 Agu 2026",
+   "hari": "Senin",
+   "status": "Hadir",
+   "ket": "Upacara HUT RI"
+  },
+  {
+   "tgl": "15 Agu 2026",
+   "hari": "Sabtu",
+   "status": "Hadir",
+   "ket": "-"
+  },
+  {
+   "tgl": "14 Agu 2026",
+   "hari": "Jumat",
+   "status": "Izin",
+   "ket": "Izin keluarga (IZ-232)"
+  }
+ ],
+ "nilaiRows": [
+  {
+   "mapel": "Al-Qur'an Hadits",
+   "tugas": 88,
+   "uts": 85,
+   "uas": 87,
+   "akhir": 86.7,
+   "predikat": "B+"
+  },
+  {
+   "mapel": "Fiqih",
+   "tugas": 90,
+   "uts": 88,
+   "uas": 91,
+   "akhir": 89.7,
+   "predikat": "A-"
+  },
+  {
+   "mapel": "Bahasa Arab",
+   "tugas": 84,
+   "uts": 80,
+   "uas": 86,
+   "akhir": 83.3,
+   "predikat": "B"
+  },
+  {
+   "mapel": "Matematika",
+   "tugas": 78,
+   "uts": 74,
+   "uas": 80,
+   "akhir": 77.3,
+   "predikat": "B-"
+  },
+  {
+   "mapel": "Bahasa Indonesia",
+   "tugas": 86,
+   "uts": 84,
+   "uas": 88,
+   "akhir": 86,
+   "predikat": "B+"
+  },
+  {
+   "mapel": "Bahasa Inggris",
+   "tugas": 82,
+   "uts": 79,
+   "uas": 84,
+   "akhir": 81.7,
+   "predikat": "B"
+  },
+  {
+   "mapel": "IPA",
+   "tugas": 80,
+   "uts": 77,
+   "uas": 82,
+   "akhir": 79.7,
+   "predikat": "B"
+  },
+  {
+   "mapel": "IPS",
+   "tugas": 85,
+   "uts": 83,
+   "uas": 86,
+   "akhir": 84.7,
+   "predikat": "B+"
+  },
+  {
+   "mapel": "PPKn",
+   "tugas": 88,
+   "uts": 86,
+   "uas": 89,
+   "akhir": 87.7,
+   "predikat": "B+"
+  },
+  {
+   "mapel": "PJOK",
+   "tugas": 90,
+   "uts": 88,
+   "uas": 90,
+   "akhir": 89.3,
+   "predikat": "A-"
+  }
+ ],
+ "agenda": [
+  {
+   "tgl": "24 Agu",
+   "judul": "Rapat pleno pengurus yayasan",
+   "unit": "Yayasan",
+   "jam": "09.00 · Aula Utama"
+  },
+  {
+   "tgl": "26 Agu",
+   "judul": "Ujian tengah semester diniyah",
+   "unit": "Pondok",
+   "jam": "07.30 · Kelas Diniyah"
+  },
+  {
+   "tgl": "28 Agu",
+   "judul": "Pemeriksaan massal kulit (scabies)",
+   "unit": "Poskestren",
+   "jam": "15.00 · 3 asrama putra"
+  },
+  {
+   "tgl": "30 Agu",
+   "judul": "Wisuda tahfidz 30 juz — 4 santri",
+   "unit": "Pondok",
+   "jam": "08.00 · Masjid Jami'"
+  },
+  {
+   "tgl": "02 Sep",
+   "judul": "Batas akhir pembayaran syahriyah",
+   "unit": "Keuangan",
+   "jam": "Seluruh unit"
+  },
+  {
+   "tgl": "05 Sep",
+   "judul": "Supervisi Kemenag ke MA",
+   "unit": "MA",
+   "jam": "10.00 · Ruang Kepala"
+  }
+ ],
+ "notif": [
+  {
+   "tipe": "kritis",
+   "judul": "Dugaan KLB scabies — Asrama Imam Syafi'i",
+   "ket": "3 kasus dalam 7 hari terakhir. Perlu pemeriksaan massal & sterilisasi kasur.",
+   "waktu": "22 Agu 07.30"
+  },
+  {
+   "tipe": "peringatan",
+   "judul": "1 santri telat kembali dari izin",
+   "ket": "Yusuf Abdurrahman (A-4) — jatuh tempo 20 Agu 17.00.",
+   "waktu": "21 Agu 18.00"
+  },
+  {
+   "tipe": "peringatan",
+   "judul": "4 item obat di bawah stok minimum",
+   "ket": "Permetrin 5%, Kasa steril, Salep antihistamin, Oralit.",
+   "waktu": "22 Agu 06.00"
+  },
+  {
+   "tipe": "info",
+   "judul": "2 pengajuan izin menunggu persetujuan",
+   "ket": "IZ-241 & IZ-240 perlu keputusan pengasuh.",
+   "waktu": "22 Agu 05.40"
+  },
+  {
+   "tipe": "info",
+   "judul": "Tunggakan syahriyah Agustus Rp 6.230.000",
+   "ket": "9 santri belum lunas, 4 di antaranya belum bayar sama sekali.",
+   "waktu": "22 Agu 00.05"
+  }
+ ],
+ "users": [
+  {
+   "nama": "H. Imam Syafi'i Nawawi, S.Ag.",
+   "email": "ketua@nuha.pesantren.web.id",
+   "peran": "Ketua Yayasan",
+   "unit": "Semua unit",
+   "aktif": true
+  },
+  {
+   "nama": "Drs. Sulaiman Hadi, M.Pd.",
+   "email": "kepsek.smp@nuha.pesantren.web.id",
+   "peran": "Kepala SMP",
+   "unit": "SMP",
+   "aktif": true
+  },
+  {
+   "nama": "Nur Kholis Majid, M.Pd.I.",
+   "email": "kepsek.ma@nuha.pesantren.web.id",
+   "peran": "Kepala MA",
+   "unit": "MA",
+   "aktif": true
+  },
+  {
+   "nama": "Ust. Abdul Karim",
+   "email": "pengasuh@nuha.pesantren.web.id",
+   "peran": "Pengasuh / Lurah Pondok",
+   "unit": "Pondok",
+   "aktif": true
+  },
+  {
+   "nama": "Ns. Maimunah, S.Kep.",
+   "email": "poskestren@nuha.pesantren.web.id",
+   "peran": "Petugas Poskestren",
+   "unit": "Poskestren",
+   "aktif": true
+  },
+  {
+   "nama": "Hj. Siti Fatimah, S.E.",
+   "email": "bendahara@nuha.pesantren.web.id",
+   "peran": "Bendahara Yayasan",
+   "unit": "Semua unit",
+   "aktif": true
+  },
+  {
+   "nama": "Ust. Syamsul Arifin",
+   "email": "musyrif.b@nuha.pesantren.web.id",
+   "peran": "Musyrif Asrama",
+   "unit": "Pondok",
+   "aktif": true
+  },
+  {
+   "nama": "Dwi Astuti",
+   "email": "tu.smp@nuha.pesantren.web.id",
+   "peran": "Tata Usaha",
+   "unit": "SMP",
+   "aktif": false
+  }
+ ],
+ "jadwalPelajaran": [
+  {
+   "hari": "Senin",
+   "rows": [
+    [
+     "07.00–08.20",
+     "Al-Qur'an Hadits",
+     "Ust. Nur Hasan",
+     "8B"
+    ],
+    [
+     "08.20–09.40",
+     "Matematika",
+     "Bu Rina Kusuma",
+     "8B"
+    ],
+    [
+     "10.00–11.20",
+     "Bahasa Arab",
+     "Ust. Syamsul Arifin",
+     "8B"
+    ],
+    [
+     "11.20–12.40",
+     "IPA Terpadu",
+     "Pak Dedi Kurnia",
+     "Lab IPA"
+    ]
+   ]
+  },
+  {
+   "hari": "Selasa",
+   "rows": [
+    [
+     "07.00–08.20",
+     "Fiqih",
+     "Ust. Mahfudz Ridwan",
+     "8B"
+    ],
+    [
+     "08.20–09.40",
+     "Bahasa Indonesia",
+     "Bu Sri Wahyuni",
+     "8B"
+    ],
+    [
+     "10.00–11.20",
+     "IPS Terpadu",
+     "Pak Agus Salim",
+     "8B"
+    ],
+    [
+     "11.20–12.40",
+     "PPKn",
+     "Bu Dwi Astuti",
+     "8B"
+    ]
+   ]
+  },
+  {
+   "hari": "Rabu",
+   "rows": [
+    [
+     "07.00–08.20",
+     "Bahasa Inggris",
+     "Bu Lilik Hartati",
+     "8B"
+    ],
+    [
+     "08.20–09.40",
+     "Matematika",
+     "Bu Rina Kusuma",
+     "8B"
+    ],
+    [
+     "10.00–11.20",
+     "Akidah Akhlak",
+     "Ust. Abdul Karim",
+     "8B"
+    ],
+    [
+     "11.20–12.40",
+     "Prakarya",
+     "Pak Dedi Kurnia",
+     "Workshop"
+    ]
+   ]
+  },
+  {
+   "hari": "Kamis",
+   "rows": [
+    [
+     "07.00–08.20",
+     "SKI",
+     "Ust. Nur Hasan",
+     "8B"
+    ],
+    [
+     "08.20–09.40",
+     "IPA Terpadu",
+     "Pak Dedi Kurnia",
+     "Lab IPA"
+    ],
+    [
+     "10.00–11.20",
+     "Bahasa Arab",
+     "Ust. Syamsul Arifin",
+     "8B"
+    ],
+    [
+     "11.20–12.40",
+     "Bimbingan Konseling",
+     "Bu Sri Wahyuni",
+     "8B"
+    ]
+   ]
+  },
+  {
+   "hari": "Jumat",
+   "rows": [
+    [
+     "07.00–08.20",
+     "PJOK",
+     "Pak Agus Salim",
+     "Lapangan"
+    ],
+    [
+     "08.20–09.40",
+     "Bahasa Indonesia",
+     "Bu Sri Wahyuni",
+     "8B"
+    ],
+    [
+     "10.00–11.00",
+     "Tahsin & Tajwid",
+     "Ust. Mahfudz Ridwan",
+     "Musholla"
+    ]
+   ]
+  },
+  {
+   "hari": "Sabtu",
+   "rows": [
+    [
+     "07.00–08.20",
+     "Matematika",
+     "Bu Rina Kusuma",
+     "8B"
+    ],
+    [
+     "08.20–09.40",
+     "Bahasa Inggris",
+     "Bu Lilik Hartati",
+     "8B"
+    ],
+    [
+     "10.00–11.20",
+     "Ekstrakurikuler (Kaligrafi)",
+     "Ust. Nur Hasan",
+     "Aula"
+    ]
+   ]
+  }
+ ],
+ "jadwalDiniyah": [
+  {
+   "waktu": "Ba'da Subuh · 04.45–06.00",
+   "kitab": "Halaqah Tahfidz A",
+   "ustadz": "Ust. Abdul Karim",
+   "tempat": "Aula Al-Ghazali",
+   "jenjang": "Setoran ziyadah & muroja'ah"
+  },
+  {
+   "waktu": "Ba'da Dhuhur · 13.00–14.00",
+   "kitab": "Nahwu — Jurumiyah",
+   "ustadz": "Ust. Nur Hasan",
+   "tempat": "Kelas Diniyah 3",
+   "jenjang": "Ula"
+  },
+  {
+   "waktu": "Ba'da Ashar · 16.00–17.15",
+   "kitab": "Shorof — Amtsilah Tashrifiyah",
+   "ustadz": "Ust. Mahfudz Ridwan",
+   "tempat": "Kelas Diniyah 1",
+   "jenjang": "Ula"
+  },
+  {
+   "waktu": "Ba'da Maghrib · 18.15–19.15",
+   "kitab": "Ta'lim Muta'allim",
+   "ustadz": "Ust. Abdul Karim",
+   "tempat": "Kelas Diniyah 2",
+   "jenjang": "Ula"
+  },
+  {
+   "waktu": "Ba'da Isya · 19.30–21.00",
+   "kitab": "Fiqih — Fathul Qorib",
+   "ustadz": "Ust. Syamsul Arifin",
+   "tempat": "Kelas Diniyah 1",
+   "jenjang": "Wustho"
+  },
+  {
+   "waktu": "Ahad pagi · 08.00–09.30",
+   "kitab": "Akhlak — Washoya",
+   "ustadz": "Ust. Syamsul Arifin",
+   "tempat": "Masjid Jami'",
+   "jenjang": "Umum"
+  }
+ ],
+ "kegiatanHarian": [
+  {
+   "jam": "03.30",
+   "nama": "Bangun & qiyamul lail",
+   "ket": "Tahajud berjamaah di musholla asrama"
+  },
+  {
+   "jam": "04.30",
+   "nama": "Jamaah Subuh",
+   "ket": "Wajib · absensi musyrif"
+  },
+  {
+   "jam": "04.45",
+   "nama": "Halaqah tahfidz",
+   "ket": "Setoran ziyadah / muroja'ah"
+  },
+  {
+   "jam": "06.15",
+   "nama": "Piket kamar & sarapan",
+   "ket": "Sesuai jadwal piket kamar A-3"
+  },
+  {
+   "jam": "07.00",
+   "nama": "KBM sekolah formal",
+   "ket": "SMP Nurul Huda Mergosono"
+  },
+  {
+   "jam": "12.30",
+   "nama": "Jamaah Dhuhur & makan siang",
+   "ket": "Dapur pondok"
+  },
+  {
+   "jam": "13.00",
+   "nama": "Diniyah siang",
+   "ket": "Nahwu Jurumiyah"
+  },
+  {
+   "jam": "15.30",
+   "nama": "Jamaah Ashar & diniyah sore",
+   "ket": "Shorof"
+  },
+  {
+   "jam": "17.00",
+   "nama": "Olahraga / MCK",
+   "ket": "Waktu bebas terjadwal"
+  },
+  {
+   "jam": "18.00",
+   "nama": "Jamaah Maghrib & Ta'lim",
+   "ket": "Ta'lim Muta'allim"
+  },
+  {
+   "jam": "19.30",
+   "nama": "Jamaah Isya & Fathul Qorib",
+   "ket": "Kelas Diniyah 1"
+  },
+  {
+   "jam": "21.15",
+   "nama": "Muroja'ah mandiri & belajar",
+   "ket": "Di kamar, diawasi musyrif"
+  },
+  {
+   "jam": "22.00",
+   "nama": "Istirahat malam",
+   "ket": "Lampu kamar dipadamkan"
+  }
+ ],
+ "lmsKursus": [
+  {
+   "kode": "LMS-ARB",
+   "nama": "Bahasa Arab — Kelas 8",
+   "guru": "Ust. Syamsul Arifin",
+   "modul": 12,
+   "selesai": 9,
+   "tugasAktif": 1,
+   "nilai": 83,
+   "warna": "#0F6B3D"
+  },
+  {
+   "kode": "LMS-FIQ",
+   "nama": "Fiqih — Fathul Qorib",
+   "guru": "Ust. Mahfudz Ridwan",
+   "modul": 10,
+   "selesai": 8,
+   "tugasAktif": 0,
+   "nilai": 90,
+   "warna": "#17804A"
+  },
+  {
+   "kode": "LMS-MTK",
+   "nama": "Matematika — Kelas 8",
+   "guru": "Bu Rina Kusuma",
+   "modul": 14,
+   "selesai": 7,
+   "tugasAktif": 2,
+   "nilai": 77,
+   "warna": "#E8973A"
+  },
+  {
+   "kode": "LMS-IPA",
+   "nama": "IPA Terpadu — Kelas 8",
+   "guru": "Pak Dedi Kurnia",
+   "modul": 12,
+   "selesai": 6,
+   "tugasAktif": 1,
+   "nilai": 80,
+   "warna": "#86B79C"
+  },
+  {
+   "kode": "LMS-QUR",
+   "nama": "Tahsin & Tajwid",
+   "guru": "Ust. Mahfudz Ridwan",
+   "modul": 8,
+   "selesai": 8,
+   "tugasAktif": 0,
+   "nilai": 88,
+   "warna": "#5B21B6"
+  },
+  {
+   "kode": "LMS-ING",
+   "nama": "Bahasa Inggris — Kelas 8",
+   "guru": "Bu Lilik Hartati",
+   "modul": 12,
+   "selesai": 5,
+   "tugasAktif": 1,
+   "nilai": 82,
+   "warna": "#1D4ED8"
+  }
+ ],
+ "lmsMateri": [
+  {
+   "kursus": "Bahasa Arab — Kelas 8",
+   "judul": "Modul 9 — Fi'il Madhi & Mudhari'",
+   "tipe": "PDF · 14 hal",
+   "status": "Selesai dibaca",
+   "tgl": "20 Agu 2026"
+  },
+  {
+   "kursus": "Bahasa Arab — Kelas 8",
+   "judul": "Modul 10 — Isim Isyarah",
+   "tipe": "Video · 18 menit",
+   "status": "Belum dibuka",
+   "tgl": "22 Agu 2026"
+  },
+  {
+   "kursus": "Matematika — Kelas 8",
+   "judul": "Modul 7 — Teorema Pythagoras",
+   "tipe": "PDF + latihan",
+   "status": "Sedang dipelajari",
+   "tgl": "21 Agu 2026"
+  },
+  {
+   "kursus": "Matematika — Kelas 8",
+   "judul": "Modul 8 — Lingkaran",
+   "tipe": "Video · 22 menit",
+   "status": "Belum dibuka",
+   "tgl": "23 Agu 2026"
+  },
+  {
+   "kursus": "IPA Terpadu — Kelas 8",
+   "judul": "Modul 6 — Sistem Pencernaan",
+   "tipe": "Slide · 32 hal",
+   "status": "Sedang dipelajari",
+   "tgl": "21 Agu 2026"
+  },
+  {
+   "kursus": "Fiqih — Fathul Qorib",
+   "judul": "Bab Thaharah — Air & Najis",
+   "tipe": "Kitab digital",
+   "status": "Selesai dibaca",
+   "tgl": "19 Agu 2026"
+  },
+  {
+   "kursus": "Tahsin & Tajwid",
+   "judul": "Makhraj huruf halqi",
+   "tipe": "Audio · 12 menit",
+   "status": "Selesai dibaca",
+   "tgl": "18 Agu 2026"
+  },
+  {
+   "kursus": "Bahasa Inggris — Kelas 8",
+   "judul": "Unit 5 — Descriptive Text",
+   "tipe": "PDF · 9 hal",
+   "status": "Belum dibuka",
+   "tgl": "22 Agu 2026"
+  }
+ ],
+ "lmsTugas": [
+  {
+   "id": "TGS-118",
+   "kursus": "Matematika — Kelas 8",
+   "judul": "Latihan Pythagoras nomor 1–20",
+   "deadline": "24 Agu 2026 21.00",
+   "sisa": "2 hari lagi",
+   "status": "Belum dikerjakan",
+   "nilai": "—"
+  },
+  {
+   "id": "TGS-117",
+   "kursus": "Bahasa Arab — Kelas 8",
+   "judul": "Tarjamah teks 'Fil Madrasah'",
+   "deadline": "23 Agu 2026 21.00",
+   "sisa": "1 hari lagi",
+   "status": "Draft tersimpan",
+   "nilai": "—"
+  },
+  {
+   "id": "TGS-116",
+   "kursus": "IPA Terpadu — Kelas 8",
+   "judul": "Laporan praktikum uji makanan",
+   "deadline": "25 Agu 2026 21.00",
+   "sisa": "3 hari lagi",
+   "status": "Belum dikerjakan",
+   "nilai": "—"
+  },
+  {
+   "id": "TGS-115",
+   "kursus": "Bahasa Inggris — Kelas 8",
+   "judul": "Write a descriptive text (120 kata)",
+   "deadline": "26 Agu 2026 21.00",
+   "sisa": "4 hari lagi",
+   "status": "Belum dikerjakan",
+   "nilai": "—"
+  },
+  {
+   "id": "TGS-114",
+   "kursus": "Matematika — Kelas 8",
+   "judul": "Kuis online bab bilangan",
+   "deadline": "20 Agu 2026 21.00",
+   "sisa": "Lewat",
+   "status": "Dinilai",
+   "nilai": "78"
+  },
+  {
+   "id": "TGS-113",
+   "kursus": "Fiqih — Fathul Qorib",
+   "judul": "Rangkuman bab thaharah",
+   "deadline": "19 Agu 2026 21.00",
+   "sisa": "Lewat",
+   "status": "Dinilai",
+   "nilai": "90"
+  },
+  {
+   "id": "TGS-112",
+   "kursus": "Tahsin & Tajwid",
+   "judul": "Rekaman bacaan Al-Fatihah",
+   "deadline": "18 Agu 2026 21.00",
+   "sisa": "Lewat",
+   "status": "Dinilai",
+   "nilai": "88"
+  },
+  {
+   "id": "TGS-111",
+   "kursus": "Bahasa Arab — Kelas 8",
+   "judul": "Hafalan mufradat pekan 3",
+   "deadline": "17 Agu 2026 21.00",
+   "sisa": "Lewat",
+   "status": "Terlambat dikumpulkan",
+   "nilai": "70"
+  }
+ ],
+ "pengumumanSantri": [
+  {
+   "tgl": "22 Agu 2026",
+   "kategori": "Kesehatan",
+   "judul": "Pemeriksaan kulit massal 28 Agustus",
+   "isi": "Seluruh santri asrama putra wajib hadir pukul 15.00 di aula. Bawa handuk pribadi dan sabun antiseptik. Kasur dijemur pada hari yang sama.",
+   "prioritas": "Penting"
+  },
+  {
+   "tgl": "22 Agu 2026",
+   "kategori": "Akademik",
+   "judul": "Ujian tengah semester diniyah 26–28 Agustus",
+   "isi": "Materi: Jurumiyah bab I–IV, Amtsilah Tashrifiyah, Fathul Qorib bab thaharah & sholat. Kartu ujian diambil di kantor diniyah.",
+   "prioritas": "Penting"
+  },
+  {
+   "tgl": "21 Agu 2026",
+   "kategori": "Kepesantrenan",
+   "judul": "Wisuda tahfidz 30 juz — 30 Agustus",
+   "isi": "Empat santri diwisuda di Masjid Jami'. Seluruh santri hadir berseragam putih, pukul 08.00. Wali santri diundang.",
+   "prioritas": "Info"
+  },
+  {
+   "tgl": "20 Agu 2026",
+   "kategori": "LMS",
+   "judul": "Tugas Matematika ditutup 24 Agustus",
+   "isi": "Latihan Pythagoras nomor 1–20 dikumpulkan lewat LMS. Keterlambatan mengurangi nilai 10 poin.",
+   "prioritas": "Penting"
+  },
+  {
+   "tgl": "19 Agu 2026",
+   "kategori": "Keuangan",
+   "judul": "Batas syahriyah Agustus: 2 September",
+   "isi": "Santri yang tagihannya belum lunas agar mengingatkan wali. Konfirmasi pembayaran melalui bendahara.",
+   "prioritas": "Info"
+  },
+  {
+   "tgl": "18 Agu 2026",
+   "kategori": "Umum",
+   "judul": "Kunjungan wali dibuka tiap Ahad",
+   "isi": "Pukul 09.00–15.00 di aula tamu. Santri tidak diperkenankan menerima HP dari wali.",
+   "prioritas": "Info"
+  },
+  {
+   "tgl": "17 Agu 2026",
+   "kategori": "Kepesantrenan",
+   "judul": "Lomba MTQ tingkat kabupaten",
+   "isi": "Pendaftaran peserta cabang tilawah, tahfidz 5 juz, dan kaligrafi dibuka sampai 25 Agustus di kantor pondok.",
+   "prioritas": "Info"
+  }
+ ],
+ "strukturKurikulum": [
+  {
+   "kelompok": "A. Muatan Nasional",
+   "mapel": "Pendidikan Agama Islam (Al-Qur'an Hadits)",
+   "jp": 2,
+   "guru": "Ust. Nur Hasan",
+   "kkm": 75,
+   "kur": "Kurikulum Merdeka"
+  },
+  {
+   "kelompok": "A. Muatan Nasional",
+   "mapel": "Fiqih",
+   "jp": 2,
+   "guru": "Ust. Mahfudz Ridwan",
+   "kkm": 75,
+   "kur": "Kurikulum Merdeka"
+  },
+  {
+   "kelompok": "A. Muatan Nasional",
+   "mapel": "Akidah Akhlak",
+   "jp": 2,
+   "guru": "Ust. Abdul Karim",
+   "kkm": 75,
+   "kur": "Kurikulum Merdeka"
+  },
+  {
+   "kelompok": "A. Muatan Nasional",
+   "mapel": "SKI",
+   "jp": 2,
+   "guru": "Ust. Nur Hasan",
+   "kkm": 72,
+   "kur": "Kurikulum Merdeka"
+  },
+  {
+   "kelompok": "A. Muatan Nasional",
+   "mapel": "Bahasa Arab",
+   "jp": 3,
+   "guru": "Ust. Syamsul Arifin",
+   "kkm": 72,
+   "kur": "Kurikulum Merdeka"
+  },
+  {
+   "kelompok": "A. Muatan Nasional",
+   "mapel": "Bahasa Indonesia",
+   "jp": 4,
+   "guru": "Bu Sri Wahyuni",
+   "kkm": 72,
+   "kur": "Kurikulum Merdeka"
+  },
+  {
+   "kelompok": "A. Muatan Nasional",
+   "mapel": "Matematika",
+   "jp": 5,
+   "guru": "Bu Rina Kusuma, S.Pd.",
+   "kkm": 70,
+   "kur": "Kurikulum Merdeka"
+  },
+  {
+   "kelompok": "A. Muatan Nasional",
+   "mapel": "IPA Terpadu",
+   "jp": 5,
+   "guru": "Pak Dedi Kurnia",
+   "kkm": 70,
+   "kur": "Kurikulum Merdeka"
+  },
+  {
+   "kelompok": "A. Muatan Nasional",
+   "mapel": "IPS Terpadu",
+   "jp": 4,
+   "guru": "Pak Agus Salim",
+   "kkm": 72,
+   "kur": "Kurikulum Merdeka"
+  },
+  {
+   "kelompok": "A. Muatan Nasional",
+   "mapel": "Bahasa Inggris",
+   "jp": 4,
+   "guru": "Bu Lilik Hartati",
+   "kkm": 70,
+   "kur": "Kurikulum Merdeka"
+  },
+  {
+   "kelompok": "A. Muatan Nasional",
+   "mapel": "PPKn",
+   "jp": 2,
+   "guru": "Bu Dwi Astuti",
+   "kkm": 75,
+   "kur": "Kurikulum Merdeka"
+  },
+  {
+   "kelompok": "A. Muatan Nasional",
+   "mapel": "PJOK",
+   "jp": 2,
+   "guru": "Pak Agus Salim",
+   "kkm": 75,
+   "kur": "Kurikulum Merdeka"
+  },
+  {
+   "kelompok": "B. Muatan Pesantren",
+   "mapel": "Tahfidz Al-Qur'an",
+   "jp": 8,
+   "guru": "Ust. Abdul Karim",
+   "kkm": 80,
+   "kur": "Kurikulum Pondok"
+  },
+  {
+   "kelompok": "B. Muatan Pesantren",
+   "mapel": "Tahsin & Tajwid",
+   "jp": 3,
+   "guru": "Ust. Mahfudz Ridwan",
+   "kkm": 80,
+   "kur": "Kurikulum Pondok"
+  },
+  {
+   "kelompok": "B. Muatan Pesantren",
+   "mapel": "Nahwu (Jurumiyah)",
+   "jp": 3,
+   "guru": "Ust. Nur Hasan",
+   "kkm": 75,
+   "kur": "Kurikulum Diniyah"
+  },
+  {
+   "kelompok": "B. Muatan Pesantren",
+   "mapel": "Shorof (Amtsilah)",
+   "jp": 3,
+   "guru": "Ust. Mahfudz Ridwan",
+   "kkm": 75,
+   "kur": "Kurikulum Diniyah"
+  },
+  {
+   "kelompok": "B. Muatan Pesantren",
+   "mapel": "Fiqih Kitab (Fathul Qorib)",
+   "jp": 4,
+   "guru": "Ust. Syamsul Arifin",
+   "kkm": 75,
+   "kur": "Kurikulum Diniyah"
+  },
+  {
+   "kelompok": "B. Muatan Pesantren",
+   "mapel": "Akhlak (Ta'lim Muta'allim)",
+   "jp": 2,
+   "guru": "Ust. Abdul Karim",
+   "kkm": 78,
+   "kur": "Kurikulum Diniyah"
+  },
+  {
+   "kelompok": "C. Pengembangan Diri",
+   "mapel": "Kaligrafi",
+   "jp": 2,
+   "guru": "Ust. Nur Hasan",
+   "kkm": 70,
+   "kur": "Ekstrakurikuler"
+  },
+  {
+   "kelompok": "C. Pengembangan Diri",
+   "mapel": "Pramuka & Kepemimpinan",
+   "jp": 2,
+   "guru": "Pak Agus Salim",
+   "kkm": 70,
+   "kur": "Ekstrakurikuler"
+  }
+ ],
+ "perangkatAjar": [
+  {
+   "id": "PA-081",
+   "mapel": "Matematika",
+   "kelas": "8B",
+   "jenis": "Modul Ajar (RPP)",
+   "topik": "Teorema Pythagoras",
+   "pertemuan": 4,
+   "guru": "Bu Rina Kusuma, S.Pd.",
+   "update": "20 Agu 2026",
+   "status": "Disetujui"
+  },
+  {
+   "id": "PA-082",
+   "mapel": "Matematika",
+   "kelas": "8B",
+   "jenis": "Modul Ajar (RPP)",
+   "topik": "Lingkaran",
+   "pertemuan": 5,
+   "guru": "Bu Rina Kusuma, S.Pd.",
+   "update": "22 Agu 2026",
+   "status": "Menunggu review"
+  },
+  {
+   "id": "PA-079",
+   "mapel": "Bahasa Arab",
+   "kelas": "8B",
+   "jenis": "Silabus",
+   "topik": "Fi'il madhi & mudhari'",
+   "pertemuan": 6,
+   "guru": "Ust. Syamsul Arifin",
+   "update": "19 Agu 2026",
+   "status": "Disetujui"
+  },
+  {
+   "id": "PA-083",
+   "mapel": "IPA Terpadu",
+   "kelas": "8B",
+   "jenis": "Modul Ajar (RPP)",
+   "topik": "Sistem pencernaan manusia",
+   "pertemuan": 4,
+   "guru": "Pak Dedi Kurnia",
+   "update": "21 Agu 2026",
+   "status": "Menunggu review"
+  },
+  {
+   "id": "PA-076",
+   "mapel": "Fiqih",
+   "kelas": "8A–8D",
+   "jenis": "Silabus",
+   "topik": "Thaharah & sholat",
+   "pertemuan": 8,
+   "guru": "Ust. Mahfudz Ridwan",
+   "update": "15 Agu 2026",
+   "status": "Disetujui"
+  },
+  {
+   "id": "PA-084",
+   "mapel": "Bahasa Inggris",
+   "kelas": "8B",
+   "jenis": "Modul Ajar (RPP)",
+   "topik": "Descriptive text",
+   "pertemuan": 3,
+   "guru": "Bu Lilik Hartati",
+   "update": "22 Agu 2026",
+   "status": "Draf"
+  },
+  {
+   "id": "PA-078",
+   "mapel": "Tahfidz Al-Qur'an",
+   "kelas": "Halaqah A",
+   "jenis": "Program Semester",
+   "topik": "Target 3 juz semester gasal",
+   "pertemuan": 60,
+   "guru": "Ust. Abdul Karim",
+   "update": "12 Agu 2026",
+   "status": "Disetujui"
+  },
+  {
+   "id": "PA-085",
+   "mapel": "IPS Terpadu",
+   "kelas": "8B",
+   "jenis": "Modul Ajar (RPP)",
+   "topik": "Interaksi sosial & lembaga",
+   "pertemuan": 4,
+   "guru": "Pak Agus Salim",
+   "update": "22 Agu 2026",
+   "status": "Draf"
+  },
+  {
+   "id": "PA-077",
+   "mapel": "Nahwu (Jurumiyah)",
+   "kelas": "Diniyah Ula",
+   "jenis": "Silabus",
+   "topik": "Bab kalam & i'rab",
+   "pertemuan": 10,
+   "guru": "Ust. Nur Hasan",
+   "update": "14 Agu 2026",
+   "status": "Disetujui"
+  },
+  {
+   "id": "PA-086",
+   "mapel": "Matematika",
+   "kelas": "8B",
+   "jenis": "Program Tahunan",
+   "topik": "Prota Matematika 2026/2027",
+   "pertemuan": 0,
+   "guru": "Bu Rina Kusuma, S.Pd.",
+   "update": "10 Agu 2026",
+   "status": "Disetujui"
+  }
+ ],
+ "capaianPembelajaran": [
+  {
+   "kode": "CP-MTK-8.3",
+   "mapel": "Matematika",
+   "fase": "Fase D",
+   "capaian": "Peserta didik dapat menerapkan teorema Pythagoras untuk menyelesaikan masalah kontekstual bangun datar dan ruang.",
+   "tp": [
+    "Menjelaskan hubungan sisi pada segitiga siku-siku",
+    "Menghitung panjang sisi yang belum diketahui",
+    "Menyelesaikan soal cerita kontekstual"
+   ],
+   "alokasi": "4 pertemuan",
+   "asesmen": "Kuis LMS + proyek pengukuran"
+  },
+  {
+   "kode": "CP-ARB-8.2",
+   "mapel": "Bahasa Arab",
+   "fase": "Fase D",
+   "capaian": "Peserta didik mampu memahami dan menyusun kalimat sederhana menggunakan fi'il madhi dan mudhari' dalam konteks kehidupan pesantren.",
+   "tp": [
+    "Mengidentifikasi fi'il madhi & mudhari' dalam teks",
+    "Men-tashrif 14 shighat",
+    "Menyusun 5 kalimat mandiri"
+   ],
+   "alokasi": "6 pertemuan",
+   "asesmen": "Tes tulis tashrif + tugas tarjamah"
+  },
+  {
+   "kode": "CP-IPA-8.4",
+   "mapel": "IPA Terpadu",
+   "fase": "Fase D",
+   "capaian": "Peserta didik dapat menganalisis sistem pencernaan manusia serta mengaitkannya dengan pola makan sehat di lingkungan pesantren.",
+   "tp": [
+    "Mengurutkan organ pencernaan & fungsinya",
+    "Melakukan uji kandungan makanan",
+    "Menyusun rekomendasi menu dapur pondok"
+   ],
+   "alokasi": "4 pertemuan",
+   "asesmen": "Laporan praktikum + presentasi"
+  },
+  {
+   "kode": "CP-FIQ-U.1",
+   "mapel": "Fiqih Kitab",
+   "fase": "Diniyah Ula",
+   "capaian": "Santri mampu mempraktikkan thaharah dan sholat fardhu sesuai kaidah Fathul Qorib beserta dalilnya.",
+   "tp": [
+    "Menyebutkan macam air & najis",
+    "Mempraktikkan wudhu sesuai rukun",
+    "Mempraktikkan sholat dengan thuma'ninah"
+   ],
+   "alokasi": "8 pertemuan",
+   "asesmen": "Observasi praktik + tes lisan"
+  },
+  {
+   "kode": "CP-QUR-T.2",
+   "mapel": "Tahfidz Al-Qur'an",
+   "fase": "Program Tahfidz",
+   "capaian": "Santri mampu menghafal 3 juz baru dengan bacaan bertajwid serta menjaga hafalan lama melalui muroja'ah terjadwal.",
+   "tp": [
+    "Setoran ziyadah 1 halaman/hari",
+    "Muroja'ah 1 juz/pekan",
+    "Ujian sambung ayat per juz"
+   ],
+   "alokasi": "60 pertemuan",
+   "asesmen": "Kartu setoran + berita acara ujian juz"
+  },
+  {
+   "kode": "CP-ING-8.2",
+   "mapel": "Bahasa Inggris",
+   "fase": "Fase D",
+   "capaian": "Peserta didik dapat menyusun teks deskriptif sederhana tentang orang, tempat, dan kegiatan di lingkungan pesantren.",
+   "tp": [
+    "Mengidentifikasi struktur descriptive text",
+    "Menggunakan adjective secara tepat",
+    "Menulis teks 120 kata"
+   ],
+   "alokasi": "3 pertemuan",
+   "asesmen": "Portofolio tulisan + peer review"
+  }
+ ],
+ "bankSoal": [
+  {
+   "kode": "SL-2211",
+   "mapel": "Matematika",
+   "topik": "Pythagoras",
+   "tipe": "Pilihan ganda",
+   "level": "C3 — Aplikasi",
+   "butir": 20,
+   "dipakai": 6,
+   "penulis": "Bu Rina Kusuma, S.Pd."
+  },
+  {
+   "kode": "SL-2212",
+   "mapel": "Matematika",
+   "topik": "Lingkaran",
+   "tipe": "Uraian",
+   "level": "C4 — Analisis",
+   "butir": 8,
+   "dipakai": 2,
+   "penulis": "Bu Rina Kusuma, S.Pd."
+  },
+  {
+   "kode": "SL-2205",
+   "mapel": "Bahasa Arab",
+   "topik": "Tashrif fi'il",
+   "tipe": "Isian singkat",
+   "level": "C2 — Pemahaman",
+   "butir": 25,
+   "dipakai": 9,
+   "penulis": "Ust. Syamsul Arifin"
+  },
+  {
+   "kode": "SL-2208",
+   "mapel": "IPA Terpadu",
+   "topik": "Sistem pencernaan",
+   "tipe": "Pilihan ganda",
+   "level": "C3 — Aplikasi",
+   "butir": 30,
+   "dipakai": 4,
+   "penulis": "Pak Dedi Kurnia"
+  },
+  {
+   "kode": "SL-2201",
+   "mapel": "Fiqih",
+   "topik": "Thaharah",
+   "tipe": "Lisan terstruktur",
+   "level": "C2 — Pemahaman",
+   "butir": 15,
+   "dipakai": 12,
+   "penulis": "Ust. Mahfudz Ridwan"
+  },
+  {
+   "kode": "SL-2214",
+   "mapel": "Bahasa Inggris",
+   "topik": "Descriptive text",
+   "tipe": "Uraian",
+   "level": "C4 — Analisis",
+   "butir": 6,
+   "dipakai": 1,
+   "penulis": "Bu Lilik Hartati"
+  },
+  {
+   "kode": "SL-2209",
+   "mapel": "Nahwu",
+   "topik": "I'rab & kalam",
+   "tipe": "Isian singkat",
+   "level": "C3 — Aplikasi",
+   "butir": 20,
+   "dipakai": 7,
+   "penulis": "Ust. Nur Hasan"
+  },
+  {
+   "kode": "SL-2216",
+   "mapel": "Tahsin & Tajwid",
+   "topik": "Hukum nun sukun",
+   "tipe": "Praktik lisan",
+   "level": "C3 — Aplikasi",
+   "butir": 10,
+   "dipakai": 11,
+   "penulis": "Ust. Mahfudz Ridwan"
+  }
+ ],
+ "kelasGuru": [
+  {
+   "kelas": "8B",
+   "mapel": "Matematika",
+   "peran": "Guru mapel + Wali Kelas",
+   "siswa": 32,
+   "jam": "5 JP/pekan",
+   "nilaiMasuk": 100,
+   "presensiHariIni": "30 hadir · 1 sakit · 1 izin"
+  },
+  {
+   "kelas": "8A",
+   "mapel": "Matematika",
+   "peran": "Guru mapel",
+   "siswa": 31,
+   "jam": "5 JP/pekan",
+   "nilaiMasuk": 84,
+   "presensiHariIni": "30 hadir · 1 alpa"
+  },
+  {
+   "kelas": "8C",
+   "mapel": "Matematika",
+   "peran": "Guru mapel",
+   "siswa": 30,
+   "jam": "5 JP/pekan",
+   "nilaiMasuk": 62,
+   "presensiHariIni": "29 hadir · 1 sakit"
+  },
+  {
+   "kelas": "8D",
+   "mapel": "Matematika",
+   "peran": "Guru mapel",
+   "siswa": 29,
+   "jam": "5 JP/pekan",
+   "nilaiMasuk": 41,
+   "presensiHariIni": "28 hadir · 1 izin"
+  },
+  {
+   "kelas": "9A",
+   "mapel": "Matematika",
+   "peran": "Guru mapel",
+   "siswa": 30,
+   "jam": "5 JP/pekan",
+   "nilaiMasuk": 95,
+   "presensiHariIni": "30 hadir"
+  }
+ ],
+ "lmsModulAdmin": [
+  {
+   "kode": "MDL-ARB-09",
+   "kursus": "Bahasa Arab — Kelas 8",
+   "judul": "Fi'il Madhi & Mudhari'",
+   "tipe": "PDF + latihan",
+   "durasi": "90 menit",
+   "poin": 50,
+   "peserta": 32,
+   "tuntas": 27,
+   "status": "Terbit"
+  },
+  {
+   "kode": "MDL-ARB-10",
+   "kursus": "Bahasa Arab — Kelas 8",
+   "judul": "Isim Isyarah",
+   "tipe": "Video",
+   "durasi": "18 menit",
+   "poin": 40,
+   "peserta": 32,
+   "tuntas": 11,
+   "status": "Terbit"
+  },
+  {
+   "kode": "MDL-MTK-07",
+   "kursus": "Matematika — Kelas 8",
+   "judul": "Teorema Pythagoras",
+   "tipe": "PDF + kuis",
+   "durasi": "120 menit",
+   "poin": 60,
+   "peserta": 32,
+   "tuntas": 19,
+   "status": "Terbit"
+  },
+  {
+   "kode": "MDL-MTK-08",
+   "kursus": "Matematika — Kelas 8",
+   "judul": "Lingkaran",
+   "tipe": "Video + kuis",
+   "durasi": "100 menit",
+   "poin": 60,
+   "peserta": 32,
+   "tuntas": 4,
+   "status": "Draf"
+  },
+  {
+   "kode": "MDL-IPA-06",
+   "kursus": "IPA Terpadu — Kelas 8",
+   "judul": "Sistem Pencernaan",
+   "tipe": "Slide + praktikum",
+   "durasi": "150 menit",
+   "poin": 75,
+   "peserta": 32,
+   "tuntas": 14,
+   "status": "Terbit"
+  },
+  {
+   "kode": "MDL-FIQ-04",
+   "kursus": "Fiqih — Fathul Qorib",
+   "judul": "Bab Thaharah — Air & Najis",
+   "tipe": "Kitab digital",
+   "durasi": "80 menit",
+   "poin": 45,
+   "peserta": 41,
+   "tuntas": 38,
+   "status": "Terbit"
+  },
+  {
+   "kode": "MDL-QUR-08",
+   "kursus": "Tahsin & Tajwid",
+   "judul": "Makhraj huruf halqi",
+   "tipe": "Audio + rekaman",
+   "durasi": "45 menit",
+   "poin": 35,
+   "peserta": 46,
+   "tuntas": 44,
+   "status": "Terbit"
+  },
+  {
+   "kode": "MDL-ING-05",
+   "kursus": "Bahasa Inggris — Kelas 8",
+   "judul": "Descriptive Text",
+   "tipe": "PDF + tugas",
+   "durasi": "90 menit",
+   "poin": 50,
+   "peserta": 32,
+   "tuntas": 12,
+   "status": "Terbit"
+  },
+  {
+   "kode": "MDL-QUR-09",
+   "kursus": "Tahsin & Tajwid",
+   "judul": "Hukum mad far'i",
+   "tipe": "Audio",
+   "durasi": "50 menit",
+   "poin": 35,
+   "peserta": 46,
+   "tuntas": 0,
+   "status": "Draf"
+  },
+  {
+   "kode": "MDL-FIQ-05",
+   "kursus": "Fiqih — Fathul Qorib",
+   "judul": "Bab Sholat — Syarat & Rukun",
+   "tipe": "Kitab digital + kuis",
+   "durasi": "110 menit",
+   "poin": 55,
+   "peserta": 41,
+   "tuntas": 21,
+   "status": "Terbit"
+  }
+ ],
+ "kompetensiList": [
+  {
+   "kode": "KOM-QUR-01",
+   "judul": "Membaca Al-Qur'an sesuai kaidah tajwid",
+   "unit": "Pondok · Tahfidz",
+   "level": "Ula",
+   "asesor": "Ust. Mahfudz Ridwan",
+   "tercapai": 38,
+   "total": 46,
+   "elemen": [
+    {
+     "kode": "E-1.1",
+     "uraian": "Melafalkan makhraj huruf halqi dengan benar",
+     "kriteria": "Tidak lebih dari 2 kesalahan makhraj per halaman",
+     "bukti": "Rekaman audio 1 halaman"
+    },
+    {
+     "kode": "E-1.2",
+     "uraian": "Menerapkan hukum nun sukun & tanwin",
+     "kriteria": "Idzhar, idgham, iqlab, ikhfa' benar 90%",
+     "bukti": "Tes lisan penguji"
+    },
+    {
+     "kode": "E-1.3",
+     "uraian": "Menerapkan hukum mad",
+     "kriteria": "Panjang harakat konsisten pada mad thabi'i & far'i",
+     "bukti": "Rekaman audio + lembar koreksi"
+    }
+   ]
+  },
+  {
+   "kode": "KOM-QUR-02",
+   "judul": "Menghafal dan menjaga hafalan Al-Qur'an",
+   "unit": "Pondok · Tahfidz",
+   "level": "Wustho",
+   "asesor": "Ust. Abdul Karim",
+   "tercapai": 24,
+   "total": 46,
+   "elemen": [
+    {
+     "kode": "E-2.1",
+     "uraian": "Menyetorkan hafalan baru (ziyadah)",
+     "kriteria": "Minimal 1 halaman per hari, nilai ≥ Jayyid",
+     "bukti": "Kartu setoran + nilai penguji"
+    },
+    {
+     "kode": "E-2.2",
+     "uraian": "Menjaga hafalan lama (muroja'ah)",
+     "kriteria": "Maksimal 3 kesalahan per juz",
+     "bukti": "Log muroja'ah mingguan"
+    },
+    {
+     "kode": "E-2.3",
+     "uraian": "Menyambung ayat secara acak",
+     "kriteria": "Benar 8 dari 10 sambungan",
+     "bukti": "Berita acara ujian juz"
+    }
+   ]
+  },
+  {
+   "kode": "KOM-ARB-01",
+   "judul": "Memahami struktur kalimat bahasa Arab dasar",
+   "unit": "Diniyah · Nahwu",
+   "level": "Ula",
+   "asesor": "Ust. Nur Hasan",
+   "tercapai": 29,
+   "total": 41,
+   "elemen": [
+    {
+     "kode": "E-3.1",
+     "uraian": "Mengidentifikasi isim, fi'il, dan harf",
+     "kriteria": "Benar 85% pada teks 10 kalimat",
+     "bukti": "Lembar kerja i'rab"
+    },
+    {
+     "kode": "E-3.2",
+     "uraian": "Men-tashrif fi'il madhi & mudhari'",
+     "kriteria": "14 shighat tanpa kesalahan",
+     "bukti": "Tes tulis tashrif"
+    },
+    {
+     "kode": "E-3.3",
+     "uraian": "Menerjemah teks sederhana",
+     "kriteria": "Makna utuh, maksimal 3 kekeliruan",
+     "bukti": "Tugas tarjamah LMS"
+    }
+   ]
+  },
+  {
+   "kode": "KOM-FIQ-01",
+   "judul": "Melaksanakan ibadah thaharah dan sholat dengan benar",
+   "unit": "Diniyah · Fiqih",
+   "level": "Ula",
+   "asesor": "Ust. Syamsul Arifin",
+   "tercapai": 35,
+   "total": 41,
+   "elemen": [
+    {
+     "kode": "E-4.1",
+     "uraian": "Mempraktikkan wudhu sesuai rukun",
+     "kriteria": "Seluruh rukun & tertib terpenuhi",
+     "bukti": "Observasi praktik + foto"
+    },
+    {
+     "kode": "E-4.2",
+     "uraian": "Mempraktikkan sholat fardhu",
+     "kriteria": "Rukun, bacaan, dan thuma'ninah benar",
+     "bukti": "Observasi asesor"
+    },
+    {
+     "kode": "E-4.3",
+     "uraian": "Menjelaskan macam najis & cara mensucikan",
+     "kriteria": "Benar pada 5 kasus yang diberikan",
+     "bukti": "Tes lisan"
+    }
+   ]
+  },
+  {
+   "kode": "KOM-HDP-01",
+   "judul": "Menerapkan perilaku hidup bersih dan sehat",
+   "unit": "Poskestren",
+   "level": "Umum",
+   "asesor": "Ns. Maimunah, S.Kep.",
+   "tercapai": 52,
+   "total": 60,
+   "elemen": [
+    {
+     "kode": "E-5.1",
+     "uraian": "Menjaga kebersihan diri & pakaian",
+     "kriteria": "Lolos inspeksi mingguan 4x berturut",
+     "bukti": "Ceklis inspeksi musyrif"
+    },
+    {
+     "kode": "E-5.2",
+     "uraian": "Menjaga kebersihan kamar & kasur",
+     "kriteria": "Kasur dijemur minimal 2 pekan sekali",
+     "bukti": "Foto + log piket"
+    },
+    {
+     "kode": "E-5.3",
+     "uraian": "Melakukan pertolongan pertama dasar",
+     "kriteria": "Simulasi luka & demam sesuai SOP",
+     "bukti": "Sertifikat pelatihan kader"
+    }
+   ]
+  },
+  {
+   "kode": "KOM-LDR-01",
+   "judul": "Kepemimpinan dan pengabdian santri",
+   "unit": "Pondok · Organisasi",
+   "level": "Wustho",
+   "asesor": "Ust. Abdul Karim",
+   "tercapai": 18,
+   "total": 46,
+   "elemen": [
+    {
+     "kode": "E-6.1",
+     "uraian": "Memimpin kegiatan kamar/asrama",
+     "kriteria": "Minimal 1 semester sebagai ketua kamar",
+     "bukti": "SK pengurus + laporan"
+    },
+    {
+     "kode": "E-6.2",
+     "uraian": "Menjadi kader Santri Husada / panitia",
+     "kriteria": "Kehadiran piket ≥ 90%",
+     "bukti": "Rekap piket kader"
+    }
+   ]
+  }
+ ],
+ "evidenceList": [
+  {
+   "id": "EV-0231",
+   "santri": "Ahmad Fauzan Ramadhani",
+   "kompetensi": "KOM-QUR-01",
+   "elemen": "E-1.3",
+   "judul": "Rekaman mad far'i — Al-Kahfi 1–10",
+   "jenis": "Audio · 4 menit",
+   "tgl": "22 Agu 2026",
+   "asesor": "Ust. Mahfudz Ridwan",
+   "status": "Menunggu verifikasi"
+  },
+  {
+   "id": "EV-0230",
+   "santri": "Siti Nur Aisyah",
+   "kompetensi": "KOM-ARB-01",
+   "elemen": "E-3.3",
+   "judul": "Tarjamah teks 'Fil Madrasah'",
+   "jenis": "Dokumen · 2 hal",
+   "tgl": "22 Agu 2026",
+   "asesor": "Ust. Nur Hasan",
+   "status": "Menunggu verifikasi"
+  },
+  {
+   "id": "EV-0229",
+   "santri": "Hafidz Nur Rohman",
+   "kompetensi": "KOM-QUR-02",
+   "elemen": "E-2.3",
+   "judul": "Berita acara ujian juz 20",
+   "jenis": "Dokumen",
+   "tgl": "21 Agu 2026",
+   "asesor": "Ust. Abdul Karim",
+   "status": "Valid"
+  },
+  {
+   "id": "EV-0228",
+   "santri": "Zahra Salsabila",
+   "kompetensi": "KOM-FIQ-01",
+   "elemen": "E-4.1",
+   "judul": "Foto praktik wudhu",
+   "jenis": "Foto · 3 file",
+   "tgl": "21 Agu 2026",
+   "asesor": "Ust. Syamsul Arifin",
+   "status": "Perlu perbaikan"
+  },
+  {
+   "id": "EV-0227",
+   "santri": "Halimah Nur Fadhilah",
+   "kompetensi": "KOM-QUR-02",
+   "elemen": "E-2.1",
+   "judul": "Kartu setoran juz 24",
+   "jenis": "Dokumen",
+   "tgl": "20 Agu 2026",
+   "asesor": "Ustzh. Khoirun Nisa",
+   "status": "Valid"
+  },
+  {
+   "id": "EV-0226",
+   "santri": "Umar Abdul Aziz",
+   "kompetensi": "KOM-ARB-01",
+   "elemen": "E-3.2",
+   "judul": "Lembar tashrif fi'il madhi",
+   "jenis": "Foto lembar kerja",
+   "tgl": "20 Agu 2026",
+   "asesor": "Ust. Nur Hasan",
+   "status": "Menunggu verifikasi"
+  },
+  {
+   "id": "EV-0225",
+   "santri": "Aisyah Rahmawati",
+   "kompetensi": "KOM-HDP-01",
+   "elemen": "E-5.2",
+   "judul": "Foto penjemuran kasur kamar A-2",
+   "jenis": "Foto · 2 file",
+   "tgl": "19 Agu 2026",
+   "asesor": "Ns. Maimunah, S.Kep.",
+   "status": "Valid"
+  },
+  {
+   "id": "EV-0224",
+   "santri": "Zaid bin Tsabit Hakim",
+   "kompetensi": "KOM-LDR-01",
+   "elemen": "E-6.2",
+   "judul": "Rekap piket kader Juli–Agustus",
+   "jenis": "Dokumen",
+   "tgl": "19 Agu 2026",
+   "asesor": "Ns. Maimunah, S.Kep.",
+   "status": "Menunggu verifikasi"
+  },
+  {
+   "id": "EV-0223",
+   "santri": "Muhammad Rizky Maulana",
+   "kompetensi": "KOM-FIQ-01",
+   "elemen": "E-4.3",
+   "judul": "Tes lisan macam najis",
+   "jenis": "Berita acara",
+   "tgl": "18 Agu 2026",
+   "asesor": "Ust. Syamsul Arifin",
+   "status": "Valid"
+  },
+  {
+   "id": "EV-0222",
+   "santri": "Ruqoyyah Salma Dewi",
+   "kompetensi": "KOM-QUR-01",
+   "elemen": "E-1.2",
+   "judul": "Rekaman nun sukun & tanwin",
+   "jenis": "Audio · 5 menit",
+   "tgl": "18 Agu 2026",
+   "asesor": "Ustzh. Maimunah",
+   "status": "Perlu perbaikan"
+  },
+  {
+   "id": "EV-0221",
+   "santri": "Bilal Ramadhan Putra",
+   "kompetensi": "KOM-HDP-01",
+   "elemen": "E-5.3",
+   "judul": "Simulasi P3K luka lecet",
+   "jenis": "Video · 3 menit",
+   "tgl": "17 Agu 2026",
+   "asesor": "dr. Hendra Wijaya",
+   "status": "Valid"
+  },
+  {
+   "id": "EV-0220",
+   "santri": "Fatimah Az-Zahra",
+   "kompetensi": "KOM-QUR-02",
+   "elemen": "E-2.2",
+   "judul": "Log muroja'ah pekan 3",
+   "jenis": "Dokumen",
+   "tgl": "17 Agu 2026",
+   "asesor": "Ustzh. Khoirun Nisa",
+   "status": "Menunggu verifikasi"
+  }
+ ],
+ "sertifikatList": [
+  {
+   "no": "SRT/NH/2026/0118",
+   "santri": "Hafidz Nur Rohman",
+   "judul": "Sertifikat Kompetensi Tahfidz 20 Juz",
+   "kompetensi": "KOM-QUR-02",
+   "terbit": "21 Agu 2026",
+   "berlaku": "Seumur hidup",
+   "asesor": "Ust. Abdul Karim",
+   "status": "Terbit"
+  },
+  {
+   "no": "SRT/NH/2026/0117",
+   "santri": "Halimah Nur Fadhilah",
+   "judul": "Sertifikat Kompetensi Tahfidz 24 Juz",
+   "kompetensi": "KOM-QUR-02",
+   "terbit": "20 Agu 2026",
+   "berlaku": "Seumur hidup",
+   "asesor": "Ustzh. Khoirun Nisa",
+   "status": "Terbit"
+  },
+  {
+   "no": "SRT/NH/2026/0119",
+   "santri": "Ahmad Fauzan Ramadhani",
+   "judul": "Sertifikat Tahsin & Tajwid Tingkat Ula",
+   "kompetensi": "KOM-QUR-01",
+   "terbit": "—",
+   "berlaku": "3 tahun",
+   "asesor": "Ust. Mahfudz Ridwan",
+   "status": "Menunggu tanda tangan"
+  },
+  {
+   "no": "SRT/NH/2026/0120",
+   "santri": "Siti Nur Aisyah",
+   "judul": "Sertifikat Nahwu Dasar (Jurumiyah)",
+   "kompetensi": "KOM-ARB-01",
+   "terbit": "—",
+   "berlaku": "3 tahun",
+   "asesor": "Ust. Nur Hasan",
+   "status": "Menunggu tanda tangan"
+  },
+  {
+   "no": "SRT/NH/2026/0116",
+   "santri": "Muhammad Rizky Maulana",
+   "judul": "Sertifikat Fiqih Ibadah Tingkat Ula",
+   "kompetensi": "KOM-FIQ-01",
+   "terbit": "18 Agu 2026",
+   "berlaku": "3 tahun",
+   "asesor": "Ust. Syamsul Arifin",
+   "status": "Terbit"
+  },
+  {
+   "no": "SRT/NH/2026/0115",
+   "santri": "Bilal Ramadhan Putra",
+   "judul": "Sertifikat Kader Santri Husada",
+   "kompetensi": "KOM-HDP-01",
+   "terbit": "17 Agu 2026",
+   "berlaku": "2 tahun",
+   "asesor": "dr. Hendra Wijaya",
+   "status": "Terbit"
+  },
+  {
+   "no": "SRT/NH/2026/0121",
+   "santri": "Zaid bin Tsabit Hakim",
+   "judul": "Sertifikat Kepemimpinan Santri",
+   "kompetensi": "KOM-LDR-01",
+   "terbit": "—",
+   "berlaku": "3 tahun",
+   "asesor": "Ust. Abdul Karim",
+   "status": "Draf"
+  },
+  {
+   "no": "SRT/NH/2026/0114",
+   "santri": "Aisyah Rahmawati",
+   "judul": "Sertifikat PHBS Pesantren",
+   "kompetensi": "KOM-HDP-01",
+   "terbit": "15 Agu 2026",
+   "berlaku": "2 tahun",
+   "asesor": "Ns. Maimunah, S.Kep.",
+   "status": "Terbit"
+  }
+ ],
+ "badgeList": [
+  {
+   "nama": "Hafidz Pemula",
+   "ikon": "١",
+   "kriteria": "Menuntaskan hafalan 1 juz penuh",
+   "poin": 100,
+   "pemilik": 34,
+   "warna": "#0F6B3D",
+   "bg": "#DCF0E3"
+  },
+  {
+   "nama": "Penjaga Muroja'ah",
+   "ikon": "٢",
+   "kriteria": "Muroja'ah 30 hari berturut tanpa absen",
+   "poin": 150,
+   "pemilik": 21,
+   "warna": "#E8973A",
+   "bg": "#FEF3C7"
+  },
+  {
+   "nama": "Ahli Tajwid",
+   "ikon": "٣",
+   "kriteria": "Kompetensi KOM-QUR-01 tercapai penuh",
+   "poin": 200,
+   "pemilik": 38,
+   "warna": "#1D4ED8",
+   "bg": "#DBEAFE"
+  },
+  {
+   "nama": "Jamaah Istiqomah",
+   "ikon": "٤",
+   "kriteria": "Hadir 5 waktu jamaah selama 1 bulan",
+   "poin": 120,
+   "pemilik": 47,
+   "warna": "#5B21B6",
+   "bg": "#EDE9FE"
+  },
+  {
+   "nama": "Santri Husada",
+   "ikon": "٥",
+   "kriteria": "Menuntaskan pelatihan kader kesehatan",
+   "poin": 180,
+   "pemilik": 12,
+   "warna": "#B91C1C",
+   "bg": "#FEE2E2"
+  },
+  {
+   "nama": "Kutu Kitab",
+   "ikon": "٦",
+   "kriteria": "Menuntaskan 10 modul diniyah di LMS",
+   "poin": 150,
+   "pemilik": 26,
+   "warna": "#9A3412",
+   "bg": "#FFEDD5"
+  },
+  {
+   "nama": "Tepat Waktu",
+   "ikon": "٧",
+   "kriteria": "Tidak pernah terlambat mengumpulkan tugas 1 semester",
+   "poin": 130,
+   "pemilik": 19,
+   "warna": "#115E59",
+   "bg": "#CCFBF1"
+  },
+  {
+   "nama": "Duta Kebersihan",
+   "ikon": "٨",
+   "kriteria": "Kamar lolos inspeksi 8 pekan berturut",
+   "poin": 110,
+   "pemilik": 15,
+   "warna": "#0F6B3D",
+   "bg": "#EFF9F2"
+  }
+ ],
+ "levelList": [
+  {
+   "nama": "Mubtadi'",
+   "arti": "Pemula",
+   "min": 0,
+   "max": 499,
+   "warna": "#86B79C",
+   "jumlah": 142
+  },
+  {
+   "nama": "Mutawassith",
+   "arti": "Menengah",
+   "min": 500,
+   "max": 1199,
+   "warna": "#17804A",
+   "jumlah": 168
+  },
+  {
+   "nama": "Mutaqaddim",
+   "arti": "Lanjut",
+   "min": 1200,
+   "max": 2199,
+   "warna": "#0F6B3D",
+   "jumlah": 96
+  },
+  {
+   "nama": "Mutqin",
+   "arti": "Mahir",
+   "min": 2200,
+   "max": 3499,
+   "warna": "#E8973A",
+   "jumlah": 41
+  },
+  {
+   "nama": "Ustadz Muda",
+   "arti": "Teladan",
+   "min": 3500,
+   "max": 4999,
+   "warna": "#9A3412",
+   "jumlah": 11
+  },
+  {
+   "nama": "Legend Pondok",
+   "arti": "Legenda — hall of fame",
+   "min": 5000,
+   "max": 99999,
+   "warna": "#5B21B6",
+   "jumlah": 2
+  }
+ ],
+ "poinLog": [
+  {
+   "tgl": "22 Agu 2026",
+   "santri": "Ahmad Fauzan Ramadhani",
+   "aktivitas": "Setoran ziyadah Al-Kahfi 1–20 (Jayyid Jiddan)",
+   "poin": 40
+  },
+  {
+   "tgl": "22 Agu 2026",
+   "santri": "Hafidz Nur Rohman",
+   "aktivitas": "Menuntaskan modul MDL-QUR-08",
+   "poin": 35
+  },
+  {
+   "tgl": "21 Agu 2026",
+   "santri": "Halimah Nur Fadhilah",
+   "aktivitas": "Badge diberikan: Penjaga Muroja'ah",
+   "poin": 150
+  },
+  {
+   "tgl": "21 Agu 2026",
+   "santri": "Zaid bin Tsabit Hakim",
+   "aktivitas": "Delegasi lomba MTQ kabupaten",
+   "poin": 100
+  },
+  {
+   "tgl": "20 Agu 2026",
+   "santri": "Siti Nur Aisyah",
+   "aktivitas": "Tugas LMS tepat waktu (Bahasa Arab)",
+   "poin": 25
+  },
+  {
+   "tgl": "20 Agu 2026",
+   "santri": "Salman Al-Farisi Nur",
+   "aktivitas": "Pelanggaran: tidak ikut jamaah Subuh",
+   "poin": -20
+  },
+  {
+   "tgl": "19 Agu 2026",
+   "santri": "Aisyah Rahmawati",
+   "aktivitas": "Evidence PHBS diverifikasi valid",
+   "poin": 30
+  },
+  {
+   "tgl": "19 Agu 2026",
+   "santri": "Yusuf Abdurrahman",
+   "aktivitas": "Pelanggaran: membawa HP ke asrama",
+   "poin": -60
+  },
+  {
+   "tgl": "18 Agu 2026",
+   "santri": "Bilal Ramadhan Putra",
+   "aktivitas": "Sertifikat Kader Santri Husada terbit",
+   "poin": 180
+  },
+  {
+   "tgl": "18 Agu 2026",
+   "santri": "Umar Abdul Aziz",
+   "aktivitas": "Piket kader Poskestren",
+   "poin": 20
+  }
+ ],
+ "pegawai": [
+  {
+   "id": 1,
+   "nama": "Drs. Sulaiman Hadi, M.Pd.",
+   "nip": "PEG-0012",
+   "jabatan": "Kepala SMP",
+   "unit": "SMP",
+   "status": "Tetap",
+   "pokok": 4200000,
+   "tunjJab": 1500000,
+   "tunjKel": 600000,
+   "jam": 0,
+   "tarifJam": 0,
+   "transport": 400000,
+   "bpjs": 210000,
+   "koperasi": 150000,
+   "pph": 0,
+   "rek": "BSI 7011 2288 1123"
+  },
+  {
+   "id": 2,
+   "nama": "Nur Kholis Majid, M.Pd.I.",
+   "nip": "PEG-0018",
+   "jabatan": "Kepala MA",
+   "unit": "MA",
+   "status": "Tetap",
+   "pokok": 4200000,
+   "tunjJab": 1500000,
+   "tunjKel": 600000,
+   "jam": 0,
+   "tarifJam": 0,
+   "transport": 400000,
+   "bpjs": 210000,
+   "koperasi": 150000,
+   "pph": 0,
+   "rek": "BSI 7011 5540 2201"
+  },
+  {
+   "id": 3,
+   "nama": "Ust. Abdul Karim",
+   "nip": "PEG-0021",
+   "jabatan": "Pengasuh / Lurah Pondok",
+   "unit": "Pondok",
+   "status": "Tetap",
+   "pokok": 3600000,
+   "tunjJab": 1200000,
+   "tunjKel": 600000,
+   "jam": 12,
+   "tarifJam": 45000,
+   "transport": 300000,
+   "bpjs": 180000,
+   "koperasi": 100000,
+   "pph": 0,
+   "rek": "BSI 7011 3390 8877"
+  },
+  {
+   "id": 4,
+   "nama": "Ns. Maimunah, S.Kep.",
+   "nip": "PEG-0034",
+   "jabatan": "Perawat Poskestren",
+   "unit": "Poskestren",
+   "status": "Tetap",
+   "pokok": 3300000,
+   "tunjJab": 900000,
+   "tunjKel": 400000,
+   "jam": 0,
+   "tarifJam": 0,
+   "transport": 300000,
+   "bpjs": 165000,
+   "koperasi": 100000,
+   "pph": 0,
+   "rek": "BSI 7011 6612 4590"
+  },
+  {
+   "id": 5,
+   "nama": "Ust. Syamsul Arifin",
+   "nip": "PEG-0027",
+   "jabatan": "Musyrif Asrama + Pengampu Kitab",
+   "unit": "Pondok",
+   "status": "Tetap",
+   "pokok": 2900000,
+   "tunjJab": 700000,
+   "tunjKel": 400000,
+   "jam": 18,
+   "tarifJam": 45000,
+   "transport": 250000,
+   "bpjs": 145000,
+   "koperasi": 100000,
+   "pph": 0,
+   "rek": "BSI 7011 7788 3312"
+  },
+  {
+   "id": 6,
+   "nama": "Hj. Siti Fatimah, S.E.",
+   "nip": "PEG-0009",
+   "jabatan": "Bendahara Yayasan",
+   "unit": "Yayasan",
+   "status": "Tetap",
+   "pokok": 3800000,
+   "tunjJab": 1100000,
+   "tunjKel": 600000,
+   "jam": 0,
+   "tarifJam": 0,
+   "transport": 350000,
+   "bpjs": 190000,
+   "koperasi": 150000,
+   "pph": 45000,
+   "rek": "BSI 7011 1102 6654"
+  },
+  {
+   "id": 7,
+   "nama": "Ustzh. Maimunah",
+   "nip": "PEG-0041",
+   "jabatan": "Pengampu Halaqah Putri",
+   "unit": "Pondok",
+   "status": "Tetap",
+   "pokok": 2700000,
+   "tunjJab": 600000,
+   "tunjKel": 0,
+   "jam": 20,
+   "tarifJam": 45000,
+   "transport": 250000,
+   "bpjs": 135000,
+   "koperasi": 75000,
+   "pph": 0,
+   "rek": "BSI 7011 9931 0087"
+  },
+  {
+   "id": 8,
+   "nama": "Dwi Astuti",
+   "nip": "PEG-0052",
+   "jabatan": "Tata Usaha SMP",
+   "unit": "SMP",
+   "status": "Kontrak",
+   "pokok": 2300000,
+   "tunjJab": 300000,
+   "tunjKel": 0,
+   "jam": 0,
+   "tarifJam": 0,
+   "transport": 200000,
+   "bpjs": 115000,
+   "koperasi": 50000,
+   "pph": 0,
+   "rek": "BSI 7011 4423 1198"
+  },
+  {
+   "id": 9,
+   "nama": "Ust. Nur Hasan",
+   "nip": "PEG-0037",
+   "jabatan": "Guru Nahwu Shorof",
+   "unit": "Pondok",
+   "status": "Honorer",
+   "pokok": 1200000,
+   "tunjJab": 0,
+   "tunjKel": 400000,
+   "jam": 24,
+   "tarifJam": 45000,
+   "transport": 200000,
+   "bpjs": 0,
+   "koperasi": 50000,
+   "pph": 0,
+   "rek": "BSI 7011 2255 7741"
+  },
+  {
+   "id": 10,
+   "nama": "Ust. Mahfudz Ridwan",
+   "nip": "PEG-0029",
+   "jabatan": "Musyrif + Penguji Tahfidz",
+   "unit": "Pondok",
+   "status": "Tetap",
+   "pokok": 2900000,
+   "tunjJab": 700000,
+   "tunjKel": 400000,
+   "jam": 16,
+   "tarifJam": 45000,
+   "transport": 250000,
+   "bpjs": 145000,
+   "koperasi": 100000,
+   "pph": 0,
+   "rek": "BSI 7011 8834 5520"
+  },
+  {
+   "id": 11,
+   "nama": "dr. Hendra Wijaya",
+   "nip": "PEG-0060",
+   "jabatan": "Dokter Kunjung (2x/pekan)",
+   "unit": "Poskestren",
+   "status": "Mitra",
+   "pokok": 0,
+   "tunjJab": 0,
+   "tunjKel": 0,
+   "jam": 8,
+   "tarifJam": 250000,
+   "transport": 400000,
+   "bpjs": 0,
+   "koperasi": 0,
+   "pph": 100000,
+   "rek": "BSI 7011 5501 9932"
+  },
+  {
+   "id": 12,
+   "nama": "Ustzh. Khoirun Nisa",
+   "nip": "PEG-0044",
+   "jabatan": "Pengampu Halaqah Putri B",
+   "unit": "Pondok",
+   "status": "Tetap",
+   "pokok": 2700000,
+   "tunjJab": 600000,
+   "tunjKel": 400000,
+   "jam": 18,
+   "tarifJam": 45000,
+   "transport": 250000,
+   "bpjs": 135000,
+   "koperasi": 75000,
+   "pph": 0,
+   "rek": "BSI 7011 6678 2043"
+  }
+ ],
+ "waCases": [
+  {
+   "kode": "WA-ABS-01",
+   "role": "Wali Santri",
+   "judul": "Anak tidak masuk sekolah (Alpa)",
+   "pemicu": "Presensi kelas ditandai A dan belum ada izin",
+   "waktu": "Otomatis · 09.15 tiap hari sekolah",
+   "isi": "Assalamu'alaikum Bpk/Ibu {wali}. Kami informasikan {santri} ({kelas}) tercatat TIDAK MASUK pada {tanggal} tanpa keterangan. Mohon konfirmasi ke wali kelas. — SMP Nurul Huda Mergosono",
+   "aktif": true
+  },
+  {
+   "kode": "WA-ABS-02",
+   "role": "Wali Santri",
+   "judul": "Anak tidak ikut jamaah 2x berturut",
+   "pemicu": "Absensi jamaah A/alpa ≥ 2 waktu sholat",
+   "waktu": "Otomatis · setelah Isya",
+   "isi": "Assalamu'alaikum Bpk/Ibu {wali}. {santri} tidak mengikuti jamaah {waktu} hari ini. Musyrif {musyrif} akan melakukan pembinaan. Mohon dukungan dari rumah.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-IZN-01",
+   "role": "Wali Santri",
+   "judul": "Permohonan izin tidak masuk diterima",
+   "pemicu": "Wali mengirim izin via portal / musyrif input",
+   "waktu": "Otomatis · saat pengajuan",
+   "isi": "Izin tidak masuk untuk {santri} pada {tanggal} dengan alasan {alasan} sudah kami terima dan diteruskan ke wali kelas. Status: MENUNGGU PERSETUJUAN.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-IZN-02",
+   "role": "Wali Santri",
+   "judul": "Izin keluar pondok disetujui",
+   "pemicu": "Pengasuh menyetujui pengajuan izin",
+   "waktu": "Otomatis · saat disetujui",
+   "isi": "Izin {kode} untuk {santri} DISETUJUI. Keluar {keluar}, wajib kembali {kembali}. Penjemput: {penjemput}. Mohon membawa kartu wali saat penjemputan.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-IZN-03",
+   "role": "Wali Santri",
+   "judul": "Santri belum kembali dari izin",
+   "pemicu": "Melewati jam kembali > 3 jam",
+   "waktu": "Otomatis · tiap 3 jam",
+   "isi": "Bpk/Ibu {wali}, {santri} belum kembali ke pondok padahal batas kembali {kembali}. Mohon segera konfirmasi ke musyrif {musyrif} (0812-xxxx).",
+   "aktif": true
+  },
+  {
+   "kode": "WA-IZN-04",
+   "role": "Wali Santri",
+   "judul": "Santri sudah kembali ke pondok",
+   "pemicu": "Musyrif menandai 'sudah kembali'",
+   "waktu": "Otomatis · saat check-in",
+   "isi": "Alhamdulillah, {santri} telah kembali ke pondok pada {jam}. Terima kasih atas kerja samanya.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KES-01",
+   "role": "Wali Santri",
+   "judul": "Anak diperiksa di Poskestren",
+   "pemicu": "Rekam medis baru disimpan",
+   "waktu": "Otomatis · saat input",
+   "isi": "Bpk/Ibu {wali}, {santri} diperiksa Poskestren pada {tanggal}. Diagnosis: {diagnosis}. Terapi: {terapi}. Tindak lanjut: {lanjut}. Kondisi terpantau petugas.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KES-02",
+   "role": "Wali Santri",
+   "judul": "Rujukan ke Puskesmas / RS",
+   "pemicu": "Tindak lanjut = Rujuk Puskesmas",
+   "waktu": "Otomatis · saat input",
+   "isi": "Bpk/Ibu {wali}, {santri} kami rujuk ke {faskes} hari ini didampingi {petugas}. Mohon wali dapat menyusul ke lokasi. Nomor petugas: 0813-xxxx.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KEU-01",
+   "role": "Wali Santri",
+   "judul": "Tagihan SPP terbit",
+   "pemicu": "Tagihan bulanan digenerate",
+   "waktu": "Terjadwal · tgl 1 setiap bulan",
+   "isi": "Tagihan {periode} untuk {santri}: {nominal} ({komponen}). Jatuh tempo {jatuh}. Pembayaran via BSI 7011-xxxx a.n. Nurul Huda Mergosono atau tunai di kantor.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KEU-02",
+   "role": "Wali Santri",
+   "judul": "Pengingat jatuh tempo H-3",
+   "pemicu": "Tagihan belum lunas, H-3 jatuh tempo",
+   "waktu": "Terjadwal · 08.00",
+   "isi": "Pengingat: tagihan {periode} {santri} sebesar {sisa} jatuh tempo {jatuh} (3 hari lagi). Abaikan pesan ini bila sudah membayar.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KEU-03",
+   "role": "Wali Santri",
+   "judul": "Pembayaran diterima (kuitansi digital)",
+   "pemicu": "Bendahara memverifikasi pembayaran",
+   "waktu": "Otomatis · saat verifikasi",
+   "isi": "Pembayaran {nominal} untuk {santri} ({komponen}) TELAH DITERIMA. No. kuitansi {kuitansi}. Sisa tagihan: {sisa}. Jazakumullah khairan.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KEU-04",
+   "role": "Wali Santri",
+   "judul": "Tunggakan lewat 30 hari",
+   "pemicu": "Tagihan belum lunas > 30 hari",
+   "waktu": "Terjadwal · Senin 08.00",
+   "isi": "Bpk/Ibu {wali}, tagihan {santri} sebesar {sisa} telah melewati jatuh tempo {jatuh}. Kami mohon konfirmasi rencana pembayaran atau pengajuan keringanan ke bendahara.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KUN-01",
+   "role": "Wali Santri",
+   "judul": "Konfirmasi jadwal kunjungan",
+   "pemicu": "Wali mengajukan kunjungan",
+   "waktu": "Otomatis · saat diverifikasi",
+   "isi": "Kunjungan Bpk/Ibu {wali} ke {santri} pada {tanggal} pukul {jam} DISETUJUI. Lokasi: aula tamu. Mohon lapor ke petugas dan tidak membawa makanan basah.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-AKD-01",
+   "role": "Wali Santri",
+   "judul": "Nilai rapor tersedia",
+   "pemicu": "Rapor semester dipublikasikan",
+   "waktu": "Manual · oleh kepala unit",
+   "isi": "Rapor semester {semester} {santri} sudah dapat dilihat di portal wali. Rata-rata nilai: {rata}. Capaian hafalan: {hafalan}.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-PES-01",
+   "role": "Wali Santri",
+   "judul": "Capaian hafalan bertambah 1 juz",
+   "pemicu": "Setoran ziyadah menembus juz baru",
+   "waktu": "Otomatis · saat penguji input",
+   "isi": "Alhamdulillah, {santri} menuntaskan juz {juz}. Total capaian {capaian}. Penguji: {penguji}. Mohon doa dan dukungan terus.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-PES-02",
+   "role": "Wali Santri",
+   "judul": "Akumulasi poin ta'zir ≥ 25",
+   "pemicu": "Poin pelanggaran mencapai ambang",
+   "waktu": "Otomatis · saat input ta'zir",
+   "isi": "Bpk/Ibu {wali}, akumulasi poin pelanggaran {santri} mencapai {poin}. Sesuai aturan pondok, kami mohon kehadiran wali untuk pembinaan bersama pada {tanggal}.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-SAN-01",
+   "role": "Santri",
+   "judul": "Jadwal halaqah & giliran setoran",
+   "pemicu": "H-1 jadwal halaqah",
+   "waktu": "Terjadwal · 20.00",
+   "isi": "Antum dijadwalkan setoran di {halaqah} besok {waktu} di {tempat} bersama {ustadz}. Siapkan {target}.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-SAN-02",
+   "role": "Santri",
+   "judul": "Hasil setoran & catatan penguji",
+   "pemicu": "Penguji menyimpan nilai setoran",
+   "waktu": "Otomatis · saat input",
+   "isi": "Hasil setoran {surat} {ayat}: {nilai}. Catatan penguji: {catatan}. Muroja'ah wajib sebelum setoran berikutnya.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-SAN-03",
+   "role": "Santri",
+   "judul": "Giliran piket kader Poskestren",
+   "pemicu": "H-1 jadwal piket kader",
+   "waktu": "Terjadwal · 19.00",
+   "isi": "Antum piket kader Santri Husada besok ({hari}) {shift} di Poskestren. Jangan lupa seragam kader dan buku catatan kunjungan.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-SAN-04",
+   "role": "Santri",
+   "judul": "Panggilan kontrol kesehatan",
+   "pemicu": "Tindak lanjut butuh kontrol ulang",
+   "waktu": "Otomatis · H-0 pagi",
+   "isi": "Antum dijadwalkan kontrol ulang di Poskestren hari ini pukul {jam} untuk keluhan {keluhan}. Mohon datang tepat waktu.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-GUR-01",
+   "role": "Guru",
+   "judul": "Batas input nilai mendekat",
+   "pemicu": "H-3 batas input nilai",
+   "waktu": "Terjadwal · 07.00",
+   "isi": "Ustadz/Ustadzah, input nilai {mapel} kelas {kelas} ditutup {tanggal}. Progress saat ini {progress}. Silakan lengkapi di modul Akademik.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-GUR-02",
+   "role": "Guru",
+   "judul": "Siswa alpa 3x dalam sepekan",
+   "pemicu": "Rekap presensi mingguan",
+   "waktu": "Terjadwal · Sabtu 13.00",
+   "isi": "Laporan: {santri} ({kelas}) alpa {jumlah}x pekan ini. Mohon koordinasi dengan BK dan musyrif asrama {asrama}.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-GUR-03",
+   "role": "Guru",
+   "judul": "Perubahan jadwal mengajar",
+   "pemicu": "Admin mengubah jadwal",
+   "waktu": "Otomatis · saat perubahan",
+   "isi": "Perubahan jadwal: {mapel} kelas {kelas} pindah ke {waktu} di {ruang} mulai {tanggal}. Mohon konfirmasi.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-GUR-04",
+   "role": "Guru",
+   "judul": "Pengingat piket",
+   "pemicu": "Penjadwal — H-1 pukul 19.00 dan H-0 45 menit sebelum shift",
+   "waktu": "Terjadwal · H-1 19.00 & H-0 -45 menit",
+   "isi": "Assalamu'alaikum Ustadz/Ustadzah {{nama}}, {{catatan}} piket hari {{hari}} pukul {{jamMulai}}–{{jamSelesai}}. Mohon hadir tepat waktu di pos piket. — SIMTERPADU Nurul Huda Mergosono",
+   "aktif": true
+  },
+  {
+   "kode": "WA-GUR-05",
+   "role": "Guru",
+   "judul": "Rekap jadwal mengajar hari ini",
+   "pemicu": "Penjadwal — setiap pagi pukul 06.30",
+   "waktu": "Terjadwal · 06.30 tiap hari",
+   "isi": "Assalamu'alaikum Ustadz/Ustadzah {{nama}}, berikut jadwal mengajar Anda hari {{hari}}:\n{{daftarJam}}\n\nSelamat mengajar, semoga berkah. — SIMTERPADU Nurul Huda Mergosono",
+   "aktif": true
+  },
+  {
+   "kode": "WA-UST-01",
+   "role": "Ustadz / Musyrif",
+   "judul": "Rekap absensi jamaah kamar",
+   "pemicu": "Setelah absensi Isya disimpan",
+   "waktu": "Otomatis · 20.30",
+   "isi": "Rekap jamaah {asrama} hari ini: hadir {hadir}, izin {izin}, sakit {sakit}, alpa {alpa}. Santri perlu pembinaan: {daftar}.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-UST-02",
+   "role": "Ustadz / Musyrif",
+   "judul": "Santri kamar sakit / dirawat",
+   "pemicu": "Rekam medis: rawat Poskestren",
+   "waktu": "Otomatis · saat input",
+   "isi": "{santri} kamar {kamar} dirawat di Poskestren ({diagnosis}). Mohon dibebaskan dari jamaah & halaqah sampai {tanggal} dan dipantau kondisinya.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-UST-03",
+   "role": "Ustadz / Musyrif",
+   "judul": "Izin butuh verifikasi musyrif",
+   "pemicu": "Pengajuan izin baru masuk",
+   "waktu": "Otomatis · saat pengajuan",
+   "isi": "Pengajuan izin {kode} — {santri} kamar {kamar}, alasan {alasan}, penjemput {penjemput}. Mohon verifikasi sebelum diteruskan ke pengasuh.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KIA-01",
+   "role": "Kiai / Pengasuh",
+   "judul": "Ringkasan harian pondok",
+   "pemicu": "Tutup hari",
+   "waktu": "Terjadwal · 21.30",
+   "isi": "Ringkasan {tanggal}: jamaah {jamaah}, santri sakit {sakit}, izin aktif {izin}, pelanggaran {tazir}, setoran {setoran}. Perlu perhatian: {catatan}.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KIA-02",
+   "role": "Kiai / Pengasuh",
+   "judul": "Peringatan dini KLB kesehatan",
+   "pemicu": "≥3 kasus sama / asrama / 7 hari",
+   "waktu": "Otomatis · segera",
+   "isi": "PERINGATAN: {kasus} di {asrama} dalam 7 hari. Poskestren menyarankan pemeriksaan massal dan sterilisasi kasur. Mohon arahan Kiai.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KIA-03",
+   "role": "Kiai / Pengasuh",
+   "judul": "Pelanggaran berat perlu keputusan",
+   "pemicu": "Poin ta'zir ≥ 50 atau kasus berat",
+   "waktu": "Otomatis · segera",
+   "isi": "Kasus berat: {santri} — {pelanggaran} (akumulasi {poin} poin). Rekomendasi pengurus: {rekomendasi}. Menunggu keputusan sidang pengasuh.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-STF-01",
+   "role": "Staff / TU",
+   "judul": "Berkas PPDB belum lengkap",
+   "pemicu": "Verifikasi berkas menemukan kekurangan",
+   "waktu": "Terjadwal · 10.00",
+   "isi": "{jumlah} pendaftar berkasnya belum lengkap ({daftar}). Mohon hubungi wali dan perbarui status di modul PPDB.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-STF-02",
+   "role": "Staff / TU",
+   "judul": "Stok obat di bawah minimum",
+   "pemicu": "Stok < stok minimum",
+   "waktu": "Terjadwal · 06.00",
+   "isi": "{jumlah} item obat di bawah minimum: {daftar}. Mohon ajukan permintaan belanja ke bendahara hari ini.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-STF-03",
+   "role": "Staff / TU",
+   "judul": "Rekap kunjungan wali harian",
+   "pemicu": "Tutup jam kunjungan",
+   "waktu": "Terjadwal · 15.30",
+   "isi": "Kunjungan wali hari ini: {jumlah} tamu, {selesai} selesai, {aktif} masih di area. Barang titipan belum diambil: {titipan}.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KEP-01",
+   "role": "Kepala Sekolah",
+   "judul": "Rekap kehadiran mingguan unit",
+   "pemicu": "Tutup pekan",
+   "waktu": "Terjadwal · Sabtu 14.00",
+   "isi": "Kehadiran {unit} pekan ini {persen}. Rombel terendah: {rombel}. Alpa terbanyak: {santri}. Detail di modul Akademik.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KEP-02",
+   "role": "Kepala Sekolah",
+   "judul": "Agenda supervisi / akreditasi",
+   "pemicu": "H-7 agenda eksternal",
+   "waktu": "Terjadwal · 08.00",
+   "isi": "Agenda {agenda} pada {tanggal} pukul {jam}. Dokumen yang perlu disiapkan: {dokumen}. Mohon koordinasi dengan TU.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-KEP-03",
+   "role": "Kepala Sekolah",
+   "judul": "Laporan bulanan siap ditandatangani",
+   "pemicu": "Rekap bulanan selesai digenerate",
+   "waktu": "Terjadwal · tgl 28",
+   "isi": "Laporan bulanan {periode} unit {unit} sudah siap: populasi {populasi}, kehadiran {hadir}, keuangan {keuangan}. Mohon review & tanda tangan.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-BND-01",
+   "role": "Bendahara",
+   "judul": "Rekap harian penerimaan kas",
+   "pemicu": "Tutup kas harian",
+   "waktu": "Terjadwal · 16.30",
+   "isi": "Kas {tanggal}: masuk {masuk}, keluar {keluar}, saldo {saldo}. Pembayaran menunggu verifikasi: {pending}.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-BND-02",
+   "role": "Bendahara",
+   "judul": "Slip gaji siap dikirim",
+   "pemicu": "Payroll bulanan disetujui",
+   "waktu": "Manual · setelah approve",
+   "isi": "Payroll {periode} siap: {jumlah} pegawai, total {total}. Slip akan dikirim ke masing-masing WA setelah transfer dieksekusi.",
+   "aktif": true
+  },
+  {
+   "kode": "WA-PEG-01",
+   "role": "Guru",
+   "judul": "Slip gaji bulan ini",
+   "pemicu": "Transfer payroll selesai",
+   "waktu": "Otomatis · setelah transfer",
+   "isi": "Slip gaji {periode}: penerimaan {bruto}, potongan {potongan}, dibayarkan {netto} ke {rek}. Rincian dapat diunduh di portal pegawai.",
+   "aktif": true
+  }
+ ],
+ "waLogSeed": [
+  {
+   "waktu": "22 Agu 09.18",
+   "role": "Wali Santri",
+   "kode": "WA-ABS-01",
+   "tujuan": "Bpk. Yusuf Efendi",
+   "hp": "0878-5512-0033",
+   "ringkas": "Ilham Maulana Yusuf (8A) tidak masuk tanpa keterangan 22 Agu 2026.",
+   "status": "Dibaca"
+  },
+  {
+   "waktu": "22 Agu 08.40",
+   "role": "Wali Santri",
+   "kode": "WA-KES-01",
+   "tujuan": "Bpk. Nur Hasyim",
+   "hp": "0877-0055-1122",
+   "ringkas": "Salman Al-Farisi Nur diperiksa Poskestren — Scabies, rawat Poskestren.",
+   "status": "Dibaca"
+  },
+  {
+   "waktu": "22 Agu 08.05",
+   "role": "Ustadz / Musyrif",
+   "kode": "WA-UST-02",
+   "tujuan": "Ust. Mahfudz Ridwan",
+   "hp": "0813-3390-8877",
+   "ringkas": "Bilal Ramadhan Putra (C-1) dirawat — bebas jamaah & halaqah 2 hari.",
+   "status": "Terkirim"
+  },
+  {
+   "waktu": "22 Agu 07.35",
+   "role": "Kiai / Pengasuh",
+   "kode": "WA-KIA-02",
+   "tujuan": "Ust. Abdul Karim",
+   "hp": "0812-3455-2310",
+   "ringkas": "3 kasus scabies di Asrama Imam Syafi'i dalam 7 hari — usul pemeriksaan massal.",
+   "status": "Dibaca"
+  },
+  {
+   "waktu": "22 Agu 06.02",
+   "role": "Staff / TU",
+   "kode": "WA-STF-02",
+   "tujuan": "Dwi Astuti",
+   "hp": "0852-3341-9087",
+   "ringkas": "4 item obat di bawah minimum: Permetrin, Kasa steril, Salep antihistamin, Oralit.",
+   "status": "Terkirim"
+  },
+  {
+   "waktu": "21 Agu 20.31",
+   "role": "Kiai / Pengasuh",
+   "kode": "WA-KIA-01",
+   "tujuan": "Ust. Abdul Karim",
+   "hp": "0812-3455-2310",
+   "ringkas": "Ringkasan harian: jamaah 94%, sakit 5, izin aktif 3, ta'zir 2.",
+   "status": "Dibaca"
+  },
+  {
+   "waktu": "21 Agu 18.06",
+   "role": "Wali Santri",
+   "kode": "WA-IZN-03",
+   "tujuan": "Bpk. Abdurrahman Wahid",
+   "hp": "0822-5511-3309",
+   "ringkas": "Yusuf Abdurrahman belum kembali — batas kembali 20 Agu 17.00.",
+   "status": "Gagal"
+  },
+  {
+   "waktu": "21 Agu 16.20",
+   "role": "Wali Santri",
+   "kode": "WA-IZN-02",
+   "tujuan": "Ust. Syamsul Arifin",
+   "hp": "0856-4412-0099",
+   "ringkas": "Izin IZ-239 Zaid bin Tsabit Hakim disetujui — lomba MTQ Kabupaten.",
+   "status": "Dibaca"
+  },
+  {
+   "waktu": "21 Agu 10.15",
+   "role": "Santri",
+   "kode": "WA-SAN-02",
+   "tujuan": "Ahmad Fauzan Ramadhani",
+   "hp": "0813-3455-2311",
+   "ringkas": "Hasil setoran Al-Kahfi 1–20: Jayyid Jiddan. Muroja'ah sebelum setoran berikutnya.",
+   "status": "Dibaca"
+  },
+  {
+   "waktu": "20 Agu 08.02",
+   "role": "Wali Santri",
+   "kode": "WA-KEU-03",
+   "tujuan": "Bpk. Muhaimin",
+   "hp": "0812-1177-4590",
+   "ringkas": "Pembayaran Rp 400.000 untuk Fatimah Az-Zahra diterima. Sisa Rp 1.000.000.",
+   "status": "Dibaca"
+  },
+  {
+   "waktu": "19 Agu 08.00",
+   "role": "Wali Santri",
+   "kode": "WA-KEU-02",
+   "tujuan": "Bpk. Hasan Basri",
+   "hp": "0896-1234-0088",
+   "ringkas": "Pengingat H-3: tagihan Zahra Salsabila Rp 1.130.000 jatuh tempo 10 Agu.",
+   "status": "Terkirim"
+  },
+  {
+   "waktu": "18 Agu 14.10",
+   "role": "Kepala Sekolah",
+   "kode": "WA-KEP-01",
+   "tujuan": "Drs. Sulaiman Hadi, M.Pd.",
+   "hp": "0813-3390-1122",
+   "ringkas": "Kehadiran SMP pekan ini 95,4%. Rombel terendah 8B (92%).",
+   "status": "Dibaca"
+  },
+  {
+   "waktu": "18 Agu 07.05",
+   "role": "Guru",
+   "kode": "WA-GUR-01",
+   "tujuan": "Ust. Nur Hasan",
+   "hp": "0822-5511-7741",
+   "ringkas": "Input nilai Nahwu Shorof kelas 8 ditutup 25 Agu — progress 60%.",
+   "status": "Terkirim"
+  },
+  {
+   "waktu": "17 Agu 19.02",
+   "role": "Santri",
+   "kode": "WA-SAN-03",
+   "tujuan": "Hafidz Nur Rohman",
+   "hp": "0857-0011-4523",
+   "ringkas": "Piket kader Santri Husada besok (Senin) 16.00–21.00.",
+   "status": "Dibaca"
+  },
+  {
+   "waktu": "16 Agu 16.32",
+   "role": "Staff / TU",
+   "kode": "WA-STF-03",
+   "tujuan": "Dwi Astuti",
+   "hp": "0852-3341-9087",
+   "ringkas": "Kunjungan wali: 9 tamu, 8 selesai, 1 masih di area. 2 titipan belum diambil.",
+   "status": "Terkirim"
+  },
+  {
+   "waktu": "15 Agu 16.40",
+   "role": "Bendahara",
+   "kode": "WA-BND-01",
+   "tujuan": "Hj. Siti Fatimah, S.E.",
+   "hp": "0813-1102-6654",
+   "ringkas": "Kas 15 Agu: masuk Rp 1.750.000, keluar Rp 1.200.000.",
+   "status": "Dibaca"
+  }
+ ],
+ "kunjunganWali": [
+  {
+   "id": "KJ-0091",
+   "tgl": "22 Agu 2026",
+   "wali": "Bpk. Sulaiman Hadi",
+   "hub": "Ayah",
+   "santri": "Ahmad Fauzan Ramadhani",
+   "masuk": "09.12",
+   "keluar": "-",
+   "keperluan": "Menengok + antar perlengkapan",
+   "titipan": "1 tas pakaian, kitab",
+   "status": "Sedang berkunjung",
+   "petugas": "Dwi Astuti"
+  },
+  {
+   "id": "KJ-0090",
+   "tgl": "22 Agu 2026",
+   "wali": "Ibu Zulaikha",
+   "hub": "Ibu",
+   "santri": "Siti Nur Aisyah",
+   "masuk": "08.45",
+   "keluar": "-",
+   "keperluan": "Antar ke kontrol gigi",
+   "titipan": "—",
+   "status": "Sedang berkunjung",
+   "petugas": "Dwi Astuti"
+  },
+  {
+   "id": "KJ-0089",
+   "tgl": "22 Agu 2026",
+   "wali": "Bpk. Rahmat Hidayat",
+   "hub": "Ayah",
+   "santri": "Aisyah Rahmawati",
+   "masuk": "-",
+   "keluar": "-",
+   "keperluan": "Konsultasi hafalan dengan ustadzah",
+   "titipan": "—",
+   "status": "Menunggu verifikasi",
+   "petugas": "—"
+  },
+  {
+   "id": "KJ-0088",
+   "tgl": "21 Agu 2026",
+   "wali": "Bpk. Fadhil Ahmad",
+   "hub": "Ayah",
+   "santri": "Halimah Nur Fadhilah",
+   "masuk": "10.05",
+   "keluar": "11.40",
+   "keperluan": "Menengok pasca izin wisuda kakak",
+   "titipan": "Makanan kering",
+   "status": "Selesai",
+   "petugas": "Dwi Astuti"
+  },
+  {
+   "id": "KJ-0087",
+   "tgl": "21 Agu 2026",
+   "wali": "Bpk. Nurhadi",
+   "hub": "Ayah",
+   "santri": "Maryam Nur Azizah",
+   "masuk": "13.20",
+   "keluar": "14.05",
+   "keperluan": "Ambil rapor tengah semester",
+   "titipan": "—",
+   "status": "Selesai",
+   "petugas": "Dwi Astuti"
+  },
+  {
+   "id": "KJ-0086",
+   "tgl": "20 Agu 2026",
+   "wali": "Bpk. Zainal Arifin",
+   "hub": "Ayah",
+   "santri": "Siti Nur Aisyah",
+   "masuk": "09.30",
+   "keluar": "11.15",
+   "keperluan": "Konsultasi kesehatan dengan Poskestren",
+   "titipan": "Obat pribadi (diserahkan Poskestren)",
+   "status": "Selesai",
+   "petugas": "Ns. Maimunah"
+  },
+  {
+   "id": "KJ-0085",
+   "tgl": "20 Agu 2026",
+   "wali": "Bpk. Aziz Fahrurrozi",
+   "hub": "Ayah",
+   "santri": "Umar Abdul Aziz",
+   "masuk": "14.00",
+   "keluar": "15.10",
+   "keperluan": "Pembinaan bersama musyrif (poin ta'zir)",
+   "titipan": "—",
+   "status": "Selesai",
+   "petugas": "Ust. Syamsul Arifin"
+  },
+  {
+   "id": "KJ-0084",
+   "tgl": "19 Agu 2026",
+   "wali": "Bpk. Sutrisno Bakri",
+   "hub": "Ayah",
+   "santri": "Bilal Ramadhan Putra",
+   "masuk": "-",
+   "keluar": "-",
+   "keperluan": "Menengok santri dirawat",
+   "titipan": "—",
+   "status": "Ditolak — di luar jam kunjungan",
+   "petugas": "Dwi Astuti"
+  },
+  {
+   "id": "KJ-0083",
+   "tgl": "18 Agu 2026",
+   "wali": "Bpk. Hakim Mustofa",
+   "hub": "Ayah",
+   "santri": "Zaid bin Tsabit Hakim",
+   "masuk": "09.50",
+   "keluar": "12.00",
+   "keperluan": "Pendampingan persiapan MTQ",
+   "titipan": "Mushaf baru",
+   "status": "Selesai",
+   "petugas": "Ust. Syamsul Arifin"
+  },
+  {
+   "id": "KJ-0082",
+   "tgl": "17 Agu 2026",
+   "wali": "Bpk. Dewa Saputra",
+   "hub": "Ayah",
+   "santri": "Ruqoyyah Salma Dewi",
+   "masuk": "10.10",
+   "keluar": "11.30",
+   "keperluan": "Menengok rutin bulanan",
+   "titipan": "1 kardus perlengkapan mandi",
+   "status": "Selesai",
+   "petugas": "Dwi Astuti"
+  }
+ ],
+ "menuDefs": [
+  {
+   "key": "dashboard",
+   "label": "Dashboard",
+   "icon": "M3 12l9-8 9 8M5 10v10h14V10",
+   "roles": [
+    "ketua",
+    "kepsmp",
+    "kepma",
+    "guru",
+    "pengasuh",
+    "poskestren",
+    "bendahara"
+   ]
+  },
+  {
+   "key": "induk",
+   "label": "Data Induk",
+   "icon": "M12 12a4 4 0 100-8 4 4 0 000 8zM4 21c0-4 3.6-6 8-6s8 2 8 6",
+   "roles": [
+    "ketua",
+    "kepsmp",
+    "kepma",
+    "guru",
+    "pengasuh",
+    "poskestren",
+    "bendahara"
+   ]
+  },
+  {
+   "key": "akademik",
+   "label": "Akademik",
+   "icon": "M22 10L12 5 2 10l10 5zM6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5",
+   "roles": [
+    "ketua",
+    "kepsmp",
+    "kepma",
+    "guru"
+   ]
+  },
+  {
+   "key": "kurikulum",
+   "label": "Kurikulum",
+   "icon": "M6 4h11a2 2 0 012 2v14H8a2 2 0 01-2-2zM6 4v14M10 9h6",
+   "roles": [
+    "ketua",
+    "kepsmp",
+    "kepma",
+    "guru"
+   ]
+  },
+  {
+   "key": "pesantren",
+   "label": "Kepesantrenan",
+   "icon": "M4 21V10l8-6 8 6v11M9 21v-6h6v6",
+   "roles": [
+    "ketua",
+    "pengasuh"
+   ]
+  },
+  {
+   "key": "poskestren",
+   "label": "Poskestren",
+   "icon": "M12 6v12M6 12h12",
+   "roles": [
+    "ketua",
+    "poskestren",
+    "pengasuh"
+   ]
+  },
+  {
+   "key": "keuangan",
+   "label": "Keuangan",
+   "icon": "M3 7h18v12H3zM3 11h18M7 15h4",
+   "roles": [
+    "ketua",
+    "bendahara"
+   ]
+  },
+  {
+   "key": "lms",
+   "label": "LMS & Kompetensi",
+   "icon": "M4 5h16v13H4zM8 9h8M8 13h5",
+   "roles": [
+    "ketua",
+    "kepsmp",
+    "kepma",
+    "guru",
+    "pengasuh"
+   ]
+  },
+  {
+   "key": "gaji",
+   "label": "Penggajian",
+   "icon": "M4 6h16v12H4zM4 10h16M8 14h4",
+   "roles": [
+    "ketua",
+    "bendahara"
+   ]
+  },
+  {
+   "key": "wa",
+   "label": "Notifikasi WA",
+   "icon": "M21 12a9 9 0 11-3.2-6.9M21 3v6h-6",
+   "roles": [
+    "ketua",
+    "kepsmp",
+    "kepma",
+    "guru",
+    "pengasuh",
+    "poskestren",
+    "bendahara"
+   ]
+  },
+  {
+   "key": "kunjungan",
+   "label": "Kunjungan Wali",
+   "icon": "M12 12a4 4 0 100-8 4 4 0 000 8zM3 21c0-3.3 4-5 9-5s9 1.7 9 5",
+   "roles": [
+    "ketua",
+    "pengasuh",
+    "kepsmp",
+    "kepma",
+    "guru"
+   ]
+  },
+  {
+   "key": "ppdb",
+   "label": "PPDB",
+   "icon": "M6 3h9l4 4v14H6zM9 12h7M9 16h5",
+   "roles": [
+    "ketua",
+    "kepsmp",
+    "kepma",
+    "bendahara"
+   ]
+  },
+  {
+   "key": "laporan",
+   "label": "Laporan",
+   "icon": "M4 20V6M9 20V10M14 20V4M19 20v-8",
+   "roles": [
+    "ketua",
+    "kepsmp",
+    "kepma",
+    "guru",
+    "pengasuh",
+    "poskestren",
+    "bendahara"
+   ]
+  },
+  {
+   "key": "pengaturan",
+   "label": "Pengaturan",
+   "icon": "M12 15a3 3 0 100-6 3 3 0 000 6zM4 12h2M18 12h2M12 4v2M12 18v2",
+   "roles": [
+    "ketua"
+   ]
+  }
+ ]
+}

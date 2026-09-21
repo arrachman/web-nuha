@@ -1,0 +1,5 @@
+kode,tgl,uraian,kategori,metode,arah,nominal
+KAS-2026-0001,2026-09-01,Penerimaan SPP September,SPP,Transfer,Masuk,3500000
+KAS-2026-0002,2026-09-03,Pembelian ATK kantor MA,Operasional,Tunai,Keluar,450000
+KAS-2026-0003,2026-09-05,Gaji pegawai September,Penggajian,Transfer,Keluar,12000000
+KAS-2026-0004,2026-09-10,Donasi wali santri,Donasi,Transfer,Masuk,2000000
