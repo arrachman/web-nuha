@@ -1,6 +1,6 @@
 # Riwayat Perubahan — web-nuha
 
-## 2026-09-21 — beranda: section Kata Alumni + agenda mendatang (2e182cf)
+## 2026-09-21 — beranda: section Kata Alumni + agenda mendatang (394e8a2)
 
 Tabel `testimoni` baru ditambahkan ke schema Prisma (kolom: nama, inisial, ket, kata)
 bersama migration `20260921000000_add_testimoni`. Seed idempoten di `prisma/seed.ts`
@@ -10,8 +10,10 @@ beranda hanya menampilkan agenda masa lalu yang filtrasi `gte: now` mengosongkan
 daftar.
 
 Halaman `/beranda` merender dua kolom berdampingan: marquee infinite Kata Alumni
-di kiri dan daftar Agenda terdekat di kanan. Lebar marquee diperbaiki (01fc335)
-agar tidak dipotong class `.mq` bawaan yang dimaksudkan untuk ticker agenda.
+di kiri dan daftar Agenda terdekat di kanan. Perbaikan lebar marquee (01fc335)
+mengatasi class `.mq` bawaan yang membatasi `max-width: 520px` — sebelumnya
+mengikuti class selector dan memotong kartu testimoni. Fade mask kedua sisi
+ditambahkan (5f33a10) agar transisi masuk/keluar kartu halus seperti prototype.
 
 ## 2026-09-21 — perbaiki UI Alur Pendaftaran (d2253af)
 

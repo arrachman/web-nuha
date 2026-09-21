@@ -238,7 +238,7 @@ export default async function BerandaPage() {
           <div>
             <div className="pub-eyebrow">Kata Alumni</div>
             <h2 className="pub-h2" style={{ marginBottom: 24 }}>Jejak yang mereka bawa</h2>
-            <div className="mq" style={{ maxWidth: '100% !important' }}>
+            <div className="mq" style={{ maxWidth: '100% !important', maskImage: 'linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent)', WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent)' }}>
               <div className="mqtrack" style={{ gap: 14, animationDuration: '38s' }}>
                 {testimoni.map((t) => (
                   <div key={t.id} style={{ width: 330, flex: '0 0 auto', background: '#fff', border: '1px solid #e8e3d9', borderRadius: 16, padding: 20, display: 'flex', gap: 14 }}>
