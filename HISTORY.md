@@ -1,5 +1,15 @@
 # Riwayat Perubahan — web-nuha
 
+## 2026-09-22 — push ke repository publik arrachman/web-nuha (a89943f)
+
+Repo `https://github.com/arrachman/web-nuha` (publik, default branch `main`) sekarang
+menerima push dari local `main`. Remote sebelumnya `jiramv25-ui/test-codex`
+diganti; branch `main` di-set tracking ke `origin/main`. Branch lokal tidak
+dihapus — tetap ada di `/opt/web-nuha` untuk iterasi lanjutan (`npm run dev` port
+3226). `.env` tetap di-ignore, yang di-track hanya `.env.example` berisi placeholder
+(`change_me`, `dev-secret-change-me-in-production-32b`) — tidak ada rahasia asli
+yang ter-commit.
+
 ## 2026-09-21 — beranda: section Kata Alumni + agenda mendatang (87c110e)
 
 Tabel `testimoni` baru ditambahkan ke schema Prisma (kolom: nama, inisial, ket, kata)
