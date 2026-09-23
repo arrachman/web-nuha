@@ -1,5 +1,30 @@
 # Riwayat Perubahan — web-nuha
 
+## 2026-09-23 — Penerapan pembaruan test-aja (f2adf98) ke repo lokal
+
+- Pembaruan dari sesi pengembangan lain diterapkan ke `main` sebagai satu
+  commit `0ea736d` di atas basis `b579955` (origin/main). Komit lokal
+  sebelumnya (`b579955..fdabe9e`, modul aset/presensi versi lama)
+  disimpan di branch `backup/lokal-sebelum-update-test-aja`.
+- Bundle `test-aja.bundle` tidak tersedia; pembaruan diambil dari snapshot
+  `test-aja-source.zip` (tanpa `.git`), dipasang via `rsync --delete`
+  (mengecualikan `.env`, `node_modules`, `.next`, `storage`, dump SQL) lalu
+  di-commit apa adanya (123 file, +11.5k baris).
+- DB `nuha_simterpadu` di-reset dari dump `mysql-full.sql` lalu
+  `prisma migrate deploy` (4 migrasi fase A/rekrutmen/sarpras/presensi)
+  + `seed-dasar` + `seed-sarpras` + `seed-presensi` + data demo rekrutmen
+  (lowongan `LOW-2026-0001`). Penyesuaian: `playwright.config.ts`
+  `executablePath` diubah ke `~/.cache/ms-playwright/chromium-1234`
+  (`/opt/pengaya/browser` dari sandbox tidak ada di VPS ini).
+- Verifikasi: `tsc --noEmit` bersih; `vitest` 116/118 (2 tes
+  prasebelum-update `Payroll calculation` & `parseCsv` masih gagal —
+  sesuai catatan prompt, tidak diperbaiki di tugas ini);
+  `playwright test` **19/19 lulus**; cek manual via IP publik
+  `http://202.59.200.26:3226` — login superadmin, sidebar menampilkan
+  Rekrutmen/Sarpras/Presensi + sub-link (Lapor Kerusakan, Pinjam Aset,
+  Presensi Saya, Halaman Karir), 22 tab modul baru HTTP 200 tanpa
+  `pageerror`. `WA_DRY_RUN=true` default di kode.
+
 ## 2026-09-23 — Navigasi publik: tautan Karir
 
 - `app/(publik)/layout.tsx`: menu atas & mobile menambah "Karir" (/karir);

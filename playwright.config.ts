@@ -27,10 +27,9 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         launchOptions: {
-          // Sandbox ini pin chromium-1194, beda dari yang diharapkan versi
-          // @playwright/test terpasang — pakai binary yang sudah ada, jangan
-          // `playwright install` (lihat catatan lingkungan sesi).
-          executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+          // Chromium untuk Playwright 1.61.1 di VPS ini. /opt/pw-browsers
+          // (sandbox sesi lain) tidak tersedia, jadi pakai binary cache standar.
+          executablePath: '/home/rania/.cache/ms-playwright/chromium-1234/chrome-linux64/chrome',
           args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
         },
         permissions: ['camera', 'geolocation'],
