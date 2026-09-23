@@ -12,3 +12,5 @@ export * from './Tabs';
 export * from './PemilihBanyakOrang';
 export * from './PemilihWilayah';
 export * from './PenyaringOtomatis';
+export * from './PesanAksi';
+export * from './FormKeputusan';

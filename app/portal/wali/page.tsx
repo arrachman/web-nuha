@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { KalenderPresensi } from '@/components/organisms/KalenderPresensi';
 import { requirePage } from '@/lib/access';
 import { prisma } from '@/lib/prisma';
 import { LogoutButton } from '@/components/LogoutButton';
@@ -20,6 +21,7 @@ const TABS = [
   { key: 'bayar', label: 'Bayar' },
   { key: 'riwayat', label: 'Riwayat SPP' },
   { key: 'kunjungan', label: 'Kunjungan' },
+  { key: 'presensi', label: 'Presensi' },
   { key: 'izin', label: 'Izin' },
 ];
 
@@ -99,6 +101,7 @@ export default async function PortalWaliPage({ searchParams }: { searchParams: P
         {tabAktif === 'bayar' && <TabBayar santriId={santri.id} />}
         {tabAktif === 'riwayat' && <TabRiwayat santriId={santri.id} />}
         {tabAktif === 'kunjungan' && <TabKunjungan santriId={santri.id} namaWaliDefault={session.nama} hubungan={relasiDipilih.hubungan} />}
+        {tabAktif === 'presensi' && <KalenderPresensi santriId={santri.id} bulan={Array.isArray(sp.bulan) ? sp.bulan[0] : sp.bulan} />}
         {tabAktif === 'izin' && <TabIzin santriId={santri.id} />}
       </div>
     </PortalFrame>

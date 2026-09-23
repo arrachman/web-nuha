@@ -5,6 +5,7 @@ const WARNA_IKON: Record<string, string> = {
   lms: '#7DD3FC', wa: '#4ADE80', kunjungan: '#F9A8D4', ppdb: '#A5B4FC',
   laporan: '#67E8F9', pengaturan: '#D6D3D1', data: '#D6D3D1', kepegawaian: '#93C5FD',
   'portal-santri': '#7DD3FC', 'portal-wali': '#F9A8D4',
+  rekrutmen: '#F0ABFC', sarpras: '#FDBA74', presensi: '#86EFAC',
 };
 
 const IKON_CADANGAN = 'M4 6h16v12H4z';

@@ -2,6 +2,8 @@ import { PrismaClient, JenisKelamin, ApplicantStatus, StatusSantri } from '@pris
 import bcrypt from 'bcryptjs';
 import data from './proto-data.json';
 import { seedCbt } from './seed-cbt';
+import { seedAkunPeranBaru, seedSarprasDemo } from './seed-sarpras';
+import { seedPresensiDemo } from './seed-presensi';
 import { seedAcademicYear as seedAcademicYearRows } from './tahun-ajaran';
 
 const prisma = new PrismaClient();
@@ -701,9 +703,66 @@ async function main() {
   await seedPortalAccess();
   await seedOperational();
   await seedCbt(prisma);
+  await seedRekrutmenDemo();
+  await seedAkunPeranBaru(prisma, passwordHash);
+  await seedSarprasDemo(prisma);
+  await seedPresensiDemo(prisma);
 
   console.log('Seed complete: 20 santri, 12 pegawai, 18 pendaftar, and operational master data.');
   console.log('Demo login: ketua@nuha.pesantren.web.id / Nuha2026!');
+}
+
+/** Satu lowongan Open + berkas wajibnya (03 §3) — dipakai smoke test & Playwright, bukan target C2. */
+async function seedRekrutmenDemo() {
+  const smp = await prisma.unit.findUnique({ where: { key: 'SMP' } });
+  const superadmin = await prisma.user.findUnique({ where: { username: 'superadmin' } });
+  if (!smp || !superadmin) return;
+
+  const now = new Date();
+  const job = await prisma.jobPosting.upsert({
+    where: { code: 'LOW-2026-0001' },
+    create: {
+      code: 'LOW-2026-0001',
+      title: 'Guru Matematika SMP',
+      type: 'Guru',
+      unitId: smp.id,
+      subject: 'Matematika',
+      quota: 1,
+      employmentType: 'Kontrak',
+      minEducation: 'S1',
+      description: 'Mengajar Matematika kelas 7-9, menyusun perangkat ajar Kurikulum Merdeka.',
+      requirements: 'S1 Pendidikan Matematika, pengalaman mengajar minimal 1 tahun, mampu membaca Al-Qur\'an.',
+      benefits: 'Tempat tinggal dinas, BPJS Kesehatan.',
+      openAt: new Date(now.getTime() - 7 * 24 * 3600 * 1000),
+      closeAt: new Date(now.getTime() + 30 * 24 * 3600 * 1000),
+      status: 'Open',
+      createdBy: superadmin.id,
+    },
+    update: { status: 'Open', closeAt: new Date(now.getTime() + 30 * 24 * 3600 * 1000) },
+  });
+
+  const dokumen = [
+    { code: 'SURAT_LAMARAN', label: 'Surat Lamaran', required: true },
+    { code: 'CV', label: 'Curriculum Vitae', required: true },
+    { code: 'IJAZAH', label: 'Ijazah Terakhir', required: true },
+    { code: 'KTP', label: 'KTP', required: true },
+    { code: 'FOTO', label: 'Pas Foto 3x4', required: false },
+  ];
+  for (const d of dokumen) {
+    await prisma.jobRequiredDocument.upsert({
+      where: { jobId_code: { jobId: job.id, code: d.code } },
+      create: { jobId: job.id, code: d.code, label: d.label, required: d.required },
+      update: { label: d.label, required: d.required },
+    });
+  }
+  const tahapan = [
+    { order: 1, name: 'Seleksi Berkas', weight: 20 },
+    { order: 2, name: 'Tes Baca Qur\'an', weight: 30 },
+    { order: 3, name: 'Wawancara', weight: 50 },
+  ];
+  for (const t of tahapan) {
+    await prisma.jobStage.upsert({ where: { jobId_order: { jobId: job.id, order: t.order } }, create: { jobId: job.id, ...t }, update: { name: t.name, weight: t.weight } });
+  }
 }
 
 main().catch((error) => { console.error(error); process.exit(1); }).finally(() => prisma.$disconnect());

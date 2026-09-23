@@ -27,6 +27,9 @@ const HREF_BY_KEY: Record<string, string> = {
   'portal-santri': '/portal/santri',
   'portal-wali': '/portal/wali',
   data: '/data',
+  rekrutmen: '/rekrutmen',
+  sarpras: '/sarpras',
+  presensi: '/presensi',
 };
 
 /**

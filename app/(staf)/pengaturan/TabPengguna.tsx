@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { aturAktifPengguna } from './actions';
+import { TombolResetSandi } from './TombolResetSandi';
 import { Avatar, Badge, Kosong, Tabel, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
 
 function hrefPengguna(params: Record<string, string>) {
@@ -40,7 +42,7 @@ export async function TabPengguna({ searchParams }: { searchParams: SearchParams
       {users.length === 0 ? (
         <Kosong pesan="Belum ada pengguna yang cocok." />
       ) : (
-        <Tabel kolom={['Pengguna', 'Peran', 'Cakupan unit', 'Status']}>
+        <Tabel kolom={['Pengguna', 'Peran', 'Cakupan unit', 'Status', 'Aksi']}>
           {users.map((user) => (
             <tr key={String(user.id)}>
               <td>
@@ -54,7 +56,17 @@ export async function TabPengguna({ searchParams }: { searchParams: SearchParams
               </td>
               <td>{user.roles.map((r) => r.role.name).join(', ') || '-'}</td>
               <td className="muted">{user.unitScope ?? 'Seluruh unit'}</td>
-              <td><Badge status={user.aktif ? 'Aktif' : 'Nonaktif'} /></td>
+              <td><Badge status={user.aktif ? 'Aktif' : 'Nonaktif'} />{user.mustChangePassword && <div className="muted" style={{ fontSize: 11 }}>wajib ganti sandi</div>}</td>
+              <td data-testid={`aksi-pengguna-${user.username ?? user.id}`}>
+                <div style={{ display: 'flex', gap: 6, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                  <TombolResetSandi userId={String(user.id)} nama={user.person.fullName} />
+                  <form action={aturAktifPengguna}>
+                    <input type="hidden" name="_kembali" value={hrefPengguna({ q, halaman: String(halaman) })} />
+                    <input type="hidden" name="id" value={String(user.id)} /><input type="hidden" name="aktif" value={user.aktif ? '0' : '1'} />
+                    <button type="submit" className="btn-sekunder" style={{ fontSize: 12, padding: '6px 10px' }}>{user.aktif ? 'Nonaktifkan' : 'Aktifkan'}</button>
+                  </form>
+                </div>
+              </td>
             </tr>
           ))}
         </Tabel>

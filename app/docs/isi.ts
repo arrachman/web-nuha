@@ -25,6 +25,10 @@ export const AKUN: { peran: string; login: string; menu: string; catatan: string
   { peran: 'Poskestren', login: 'poskestren@nuha.pesantren.web.id', menu: '6', catatan: 'Periksa, rekam medis, stok obat.' },
   { peran: 'Musyrif Asrama', login: 'musyrif.b@nuha.pesantren.web.id', menu: '1', catatan: 'Belum diberi hak menu — atur lewat Pengaturan.' },
   { peran: 'Tata Usaha', login: 'tu.smp@nuha.pesantren.web.id', menu: '1', catatan: 'Akun nonaktif; belum diberi hak menu.' },
+  { peran: 'Pengelola Sarpras', login: 'sarpras.yayasan · sarpras.smp · sarpras.ma', menu: '1', catatan: 'Menu Sarpras penuh; .smp/.ma dibatasi unitnya (UserUnit), .yayasan seluruh unit.' },
+  { peran: 'Teknisi', login: 'teknisi.1', menu: '1', catatan: 'Sarpras: hanya tiket & pemeliharaan yang ditugaskan kepadanya.' },
+  { peran: 'Pegawai / Staf', login: 'pegawai.1', menu: '1', catatan: 'Sarpras: Aset (ruang PIC/aset yang dipegang, tanpa harga), Peminjaman, Kerusakan.' },
+  { peran: 'Admin SDM', login: 'sdm', menu: '1', catatan: 'Rekrutmen.' },
   { peran: 'Santri', login: 'santri.<NIS>', menu: '1', catatan: '16 akun; hanya Portal Santri, baca-saja.' },
   { peran: 'Wali Santri', login: 'wali.<NIS>', menu: '1', catatan: '16 akun; hanya Portal Wali.' },
 ];
@@ -250,6 +254,68 @@ export const BAGIAN: Bagian[] = [
     langkah: [
       { judul: 'Apa yang dicatat', detail: 'Aksi, entitas, id entitas, ringkasan terbaca manusia, perubahan sebelum dan sesudah, pelaku, dan waktu.' },
       { judul: 'Di mana dilihat', detail: 'Menu Master Data untuk peran yang berwenang.' },
+    ],
+  },
+  {
+    id: 'rekrutmen',
+    judul: 'Rekrutmen (lowongan kerja)',
+    ringkas:
+      'Pelamar mendaftar lewat halaman publik /karir tanpa perlu akun, mengunggah berkas asli (bukan simulasi), lalu bisa mengecek status seleksinya sendiri. Panel panitia untuk memproses lamaran menyusul di bagian berikutnya.',
+    langkah: [
+      { judul: 'Daftar lowongan', detail: '/karir menampilkan lowongan berstatus Open yang sedang dalam rentang tanggal buka–tutup, diambil langsung dari database.' },
+      { judul: 'Detail & syarat', detail: '/karir/<kode> menampilkan deskripsi, persyaratan, fasilitas, dan daftar berkas yang perlu disiapkan sebelum melamar.' },
+      { judul: 'Formulir lamaran', detail: '/karir/<kode>/daftar — wizard 4 langkah (Data Diri, Pendidikan & Pengalaman, Berkas, Pernyataan & Kirim). Berkas diunggah sungguhan dan divalidasi dari magic bytes (JPEG/PNG/PDF), disimpan lewat infrastruktur berkas bersama. Draf isian tersimpan di peramban pelamar supaya tidak hilang kalau tab tertutup.' },
+      { judul: 'Nomor lamaran', detail: 'Format LMR-<tahun>-NNNN, berurutan per tahun. NIK yang sama tidak bisa melamar dua kali ke lowongan yang sama.' },
+      { judul: 'Cek status', detail: '/karir/status menampilkan riwayat status lamaran (Terkirim, Diperiksa Berkas, dan seterusnya) berdasarkan nomor lamaran.' },
+    ],
+    catatan:
+      'Anti-spam dasar pada formulir publik: kolom honeypot tersembunyi dan jebakan waktu (pengiriman kurang dari beberapa detik ditolak). Panel panitia ada di menu Rekrutmen (/rekrutmen): buat & setujui lowongan, verifikasi berkas, nilai per tahap, ubah status, dan konversi pelamar Hired jadi pegawai + akun. Sidebar menampilkan tautan cepat ke halaman karir publik di bawah menu Rekrutmen.',
+  },
+  {
+    id: 'sarpras',
+    judul: 'Sarana & Prasarana (aset)',
+    ringkas:
+      'Register aset tetap per unit pemilik dan lokasi, label QR, laporan kerusakan dari HP, peminjaman aset/ruang, pengadaan dan penghapusan berjenjang, pemeliharaan terjadwal, stock opname, penyusutan, serta laporan KIB/KIR/sumber dana. Tab yang tampil mengikuti izin: pegawai/guru hanya melihat Aset (ruang yang ia tanggung jawabi / aset yang ia pegang, tanpa harga), Peminjaman, dan Kerusakan.',
+    langkah: [
+      { judul: 'Lokasi', detail: 'Tab Lokasi menyusun pohon Kampus → Gedung → Lantai → Ruang/Area. Tombol "Bangkitkan dari data kelas & kamar asrama" membuat lokasi dari Kelas dan Room yang sudah ada. Tombol "KIR + QR" mencetak Kartu Inventaris Ruangan dengan QR pintu (/cetak/kir/<id>).' },
+      { judul: 'Registrasi aset', detail: 'Tab Aset → "+ Registrasi aset". Kode inventaris NH/{UNIT}/{KATEGORI}/{TAHUN}/{URUT} dan token QR acak dibangkitkan otomatis (aman dari pendaftaran bersamaan). Aset lama bisa diimpor dari CSV (templat di tab Aset). Centang beberapa aset lalu "Cetak label QR" untuk label A4 24 per lembar.' },
+      { judul: 'Lapor kerusakan', detail: 'Siapa pun yang login: menu Sarpras → "Lapor Kerusakan" di sidebar, atau pindai QR ruang (/r/<token>) / QR aset (/a/<token>) dari HP. Isi apa yang rusak, tingkat, foto. Tingkat Darurat memicu WA ke petugas sarpras (tunduk WA_DRY_RUN).' },
+      { judul: 'Tangani tiket', detail: 'Tab Kerusakan: sarpras memverifikasi, menugaskan teknisi/vendor, dan menutup dengan biaya. Kondisi aset ikut berubah (Rusak Ringan/Berat → Dalam Perbaikan → kembali Baik & Aktif). Teknisi hanya bisa mengubah tiket yang ditugaskan kepadanya. Aset rusak ≥ 3 kali dalam 6 bulan ditandai kandidat penggantian.' },
+      { judul: 'Peminjaman', detail: 'Tab Peminjaman: pilih aset yang bisa dipinjam dan/atau ruang (aula, lab, masjid, kelas), waktu mulai–selesai. Bentrok waktu ditolak di server. Sarpras menyetujui → menyerahkan → mencatat pengembalian beserta kondisi; bila rusak otomatis dibuat laporan kerusakan. Lewat batas → Terlambat (cron).' },
+      { judul: 'Pengadaan', detail: 'Usulan → persetujuan berjenjang: kepala unit → bendahara, + ketua yayasan bila di atas ambang (bawaan Rp 5 jt, diatur di tab Master). Dana BOS/BOSP tidak lewat yayasan. Setelah dibeli & diterima, tiap barang otomatis jadi aset (per unit bila ≥ ambang kapitalisasi, kolektif bila di bawahnya).' },
+      { judul: 'Pemeliharaan & opname', detail: 'Tab Pemeliharaan: jadwal berulang (servis AC, genset, APAR, pajak kendaraan, dll.) dengan pengingat H-N lewat cron; tugas terlewat merah. Tab Stock Opname: buka per unit/ruang, centang "Ada/Tidak ditemukan" per aset dari HP (tersimpan per baris), tutup → mutasi lokasi otomatis, kondisi diperbarui, yang tidak ditemukan ditandai Hilang.' },
+      { judul: 'Penghapusan', detail: 'Usulan → verifikasi sarpras → kepala unit → ketua yayasan → dilaksanakan (status Dihapus, baris tidak dihapus). Aset wakaf/BOS wajib catatan + lampiran BA; aset wakaf ditandai "perlu keputusan nazhir".' },
+      { judul: 'Laporan', detail: 'Tab Laporan: Buku Inventaris, KIB A–F, rekap sumber dana, rekap kondisi, kerusakan & biaya, nilai buku (penyusutan garis lurus), aset wakaf, data ruang, persediaan — semua CSV siap Excel.' },
+    ],
+    catatan:
+      'Izin granular sarpras.* (17 izin) diberikan per peran sesuai 05-matriks-peran §6; cakupan unit ditegakkan di server (sarpras SMP tidak bisa mengubah aset MA walau form dimanipulasi). Ekspor dengan kolom persis templat Dapodik/EMIS menunggu berkas templat resmi — sementara pakai laporan "Data ruang". Harga & nilai buku hanya tampil bagi pemegang sarpras.view_value.',
+  },
+  {
+    id: 'presensi',
+    judul: 'Presensi harian',
+    ringkas:
+      'Presensi santri per sesi (sekolah, madin, jamaah Subuh, ngaji malam, apel kamar) diisi per rombel/asrama dengan default Hadir, presensi selfie guru & pegawai dengan GPS dan waktu server, izin/sakit pegawai, antrean tinjau atasan, dashboard, dan ekspor. Tab tampil sesuai izin: pegawai, bendahara, sarpras, teknisi hanya melihat "Presensi Saya".',
+    langkah: [
+      { judul: 'Input santri', detail: 'Tab "Input Siswa/Santri": pilih tanggal, sesi, rombel (atau asrama untuk sesi pondok). Semua otomatis Hadir; klik H/S/I/A/T hanya untuk pengecualian lalu Simpan — satu transaksi, satu entri audit per rombel. Guru hanya melihat rombel yang ia wali-kelasi, ajar hari itu, atau saat piket; musyrif hanya asrama yang ia pegang.' },
+      { judul: 'Izin & Poskestren otomatis', detail: 'Santri dengan izin pondok disetujui (hingga tanggal kembali) otomatis Izin; rekam medis dengan tindak lanjut Istirahat/Rawat/Rujuk otomatis Sakit. Status ini tidak bisa ditimpa guru — hanya pemegang presensi.override (kepala unit, pengasuh, ketua, poskestren).' },
+      { judul: 'Penguncian', detail: 'Presensi bisa diubah sampai 23.59 WIB hari itu. Setelahnya terkunci; kepala unit/pengasuh/ketua (presensi.lock) bisa mengubah dengan alasan wajib, dicatat sebelum/sesudah di audit.' },
+      { judul: 'Presensi Saya (selfie)', detail: 'Menu Presensi → "Presensi Saya" di sidebar. Kamera depan terbuka langsung (tanpa unggah galeri), lokasi GPS dibaca, foto dikompres di HP lalu server menempel nama + waktu server + unit. Di luar radius (bawaan 150 m) tetap boleh dengan alasan dan masuk antrean tinjau. Terlambat = lewat jam masuk + toleransi (bawaan 07.00, 15 menit; pulang 14.00, Jumat 11.00). Tombol berubah jadi Check-out setelah check-in.' },
+      { judul: 'Izin pegawai & tinjau', detail: 'Pegawai mengajukan Sakit/Izin/Cuti/Dinas luar (lampiran opsional). Tab "Perlu Ditinjau" (kepala unit untuk pegawai unitnya, SDM, ketua): setujui izin → hari-harinya otomatis terisi; tinjau presensi luar lokasi / GPS tidak akurat dengan foto selfie berdampingan foto profil dan tautan peta.' },
+      { judul: 'Dashboard & laporan', detail: 'Tab Dashboard: siswa (% hadir, komposisi, tren 30 hari, rombel terendah, alpa terbanyak, rombel yang belum mengisi) dan pegawai (sudah/belum check-in, terlambat, tren tepat waktu, rata-rata menit terlambat per unit, galeri selfie). Tab Laporan: CSV rekap bulanan santri per rombel dan pegawai (bahan laporan, bukan potongan gaji otomatis).' },
+      { judul: 'Portal', detail: 'Portal wali dan portal santri punya tab Presensi berupa kalender bulanan berwarna. Dashboard utama menampilkan kartu kehadiran santri hari ini, pegawai yang sudah check-in, dan kerusakan sarpras terbuka.' },
+    ],
+    catatan:
+      'Cron (scripts/cron.ts): isi otomatis Izin/Sakit, tandai Alpa pegawai yang tidak check-in sampai jam pulang (kecuali libur, izin, atau guru yang hari itu tidak punya jadwal mengajar), WA ke wali bila santri Alpa di sesi sekolah (sekali per hari, batas terlambat + 60 menit, tunduk WA_DRY_RUN), hapus foto presensi > 90 hari (baris tetap). Foto presensi hanya bisa dibuka pemiliknya, kepala unit pegawai itu, SDM, dan ketua. Kamera & GPS butuh HTTPS di produksi. Pengaturan (sesi, jam kerja per unit, hari libur, titik & radius unit) di tab Pengaturan (presensi.setting: ketua, SDM).',
+  },
+  {
+    id: 'izin-peran',
+    judul: 'Izin per peran & reset sandi',
+    ringkas:
+      'Pengaturan → "Izin per peran" menampilkan matriks peran × izin per modul (presensi, sarpras, rekrutmen, dan modul lama). Pengaturan → "Pengguna & peran" kini punya tombol Reset sandi dan Aktifkan/Nonaktifkan.',
+    langkah: [
+      { judul: 'Ubah matriks', detail: 'Pilih modul, centang/hapus centang lalu "Simpan matriks". Berlaku pada request berikutnya pengguna terkait; daftar izin yang ditambah/dicabut dicatat di audit. Super admin tidak ditampilkan karena selalu lolos semua izin.' },
+      { judul: 'Reset sandi', detail: 'Sandi sementara acak ditampilkan SEKALI di layar admin (tidak lewat URL/log), seluruh sesi lama pengguna dicabut, dan pengguna wajib mengganti sandi saat masuk.' },
+      { judul: 'Nonaktifkan akun', detail: 'Menonaktifkan akun juga mencabut sesi yang sedang berjalan.' },
     ],
   },
 ];

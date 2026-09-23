@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { KalenderPresensi } from '@/components/organisms/KalenderPresensi';
 import { requirePage } from '@/lib/access';
 import { prisma } from '@/lib/prisma';
 import { LogoutButton } from '@/components/LogoutButton';
@@ -24,6 +25,7 @@ const TABS = [
   { key: 'tugas', label: 'Tugas' },
   { key: 'ujian', label: 'Ujian CBT' },
   { key: 'hafalan', label: 'Hafalan' },
+  { key: 'presensi', label: 'Presensi' },
   { key: 'izin', label: 'Izin' },
   { key: 'bayar', label: 'Bayar' },
   { key: 'kartu', label: 'Kartu Santri' },
@@ -74,7 +76,8 @@ export default async function PortalSantriPage({ searchParams }: { searchParams:
       {tabAktif === 'tugas' && <TabTugas />}
       {tabAktif === 'ujian' && <TabUjian santriId={santri.id} />}
       {tabAktif === 'hafalan' && <TabHafalan santri={santri} />}
-      {tabAktif === 'izin' && <TabIzin santriId={santri.id} />}
+      {tabAktif === 'presensi' && <KalenderPresensi santriId={santri.id} bulan={Array.isArray(sp.bulan) ? sp.bulan[0] : sp.bulan} />}
+        {tabAktif === 'izin' && <TabIzin santriId={santri.id} />}
       {tabAktif === 'bayar' && <TabBayar santriId={santri.id} />}
       {tabAktif === 'kartu' && <TabKartu santri={santri} nama={user!.person.fullName} />}
 

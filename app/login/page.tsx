@@ -17,7 +17,10 @@ export default function LoginPage() {
     const result = await response.json();
     setIsLoading(false);
     if (!response.ok) return setError(result.error?.message ?? 'Tidak dapat masuk.');
-    router.replace('/');
+    // ?next= dipakai alur pindai QR (/a, /r → /lapor-kerusakan). Hanya path
+    // internal satu garis miring — bukan //host — supaya tidak jadi open redirect.
+    const next = new URLSearchParams(window.location.search).get('next') ?? '';
+    router.replace(next.startsWith('/') && !next.startsWith('//') ? next : '/');
     router.refresh();
   }
 

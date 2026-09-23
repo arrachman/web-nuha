@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import { readSession } from '@/lib/auth';
+import { readSession, isSuperAdmin } from '@/lib/auth';
+import { can } from '@/lib/access';
 import { recordAudit, requestIp } from '@/lib/audit';
 import { castId, coerce, countRows, delegateFor, listRows, serialize } from '@/lib/crud/engine';
 import { getEntity } from '@/lib/crud/registry';
@@ -8,13 +9,30 @@ import { validateActiveVillage, validateDomesticAddressExclusivity } from '@/lib
 
 const idSchema = z.string().regex(/^\d+$/);
 
-async function authorize(entityKey: string) {
+/**
+ * 01-fondasi §3.3: menu (requirePage) hanya mengatur sidebar & lihat/tidaknya
+ * layar; view/write dipisah di sini lewat Permission. Default key mengikuti
+ * konvensi seed (`${menu}.view` / `${menu}.update`) bila entitas tidak
+ * mengisi `perm` sendiri.
+ */
+async function authorize(entityKey: string, mode: 'read' | 'write') {
   const session = await readSession();
   const entity = getEntity(entityKey);
   if (!session || !entity) return { session: null, entity: null, denied: true };
-  const granted = entity.menu === 'dashboard' || await prisma.menuRole.count({ where: { menu: { key: entity.menu }, role: { key: { in: session.peran } } } });
-  return { session, entity, denied: granted === 0 };
+  if (entity.menu === 'dashboard' || isSuperAdmin(session)) return { session, entity, denied: false };
+
+  const menuGranted = await prisma.menuRole.count({ where: { menu: { key: entity.menu }, role: { key: { in: session.peran } } } });
+  if (menuGranted === 0) return { session, entity, denied: true };
+
+  const permKey = mode === 'read'
+    ? (entity.perm?.view ?? `${entity.menu}.view`)
+    : (entity.perm?.write ?? `${entity.menu}.update`);
+  const granted = await can(session, permKey);
+  return { session, entity, denied: !granted };
 }
+
+const authorizeRead = (key: string) => authorize(key, 'read');
+const authorizeWrite = (key: string) => authorize(key, 'write');
 
 function responseError(message: string, status: number) {
   return Response.json({ success: false, data: null, error: { code: status === 403 ? 'FORBIDDEN' : 'VALIDATION_ERROR', message } }, { status });
@@ -27,7 +45,7 @@ function regionValue(entity: NonNullable<ReturnType<typeof getEntity>>, data: Re
 
 export async function GET(request: Request, context: { params: Promise<{ entity: string }> }) {
   const { entity: key } = await context.params;
-  const auth = await authorize(key);
+  const auth = await authorizeRead(key);
   if (auth.denied || !auth.entity) return responseError('Tidak berwenang.', auth.entity ? 403 : 404);
 
   const url = new URL(request.url);
@@ -55,7 +73,7 @@ export async function GET(request: Request, context: { params: Promise<{ entity:
 
 export async function POST(request: Request, context: { params: Promise<{ entity: string }> }) {
   const { entity: key } = await context.params;
-  const auth = await authorize(key);
+  const auth = await authorizeWrite(key);
   if (auth.denied || !auth.entity || !auth.session) return responseError('Tidak berwenang.', auth.entity ? 403 : 404);
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== 'object') return responseError('Data tidak valid.', 400);
@@ -86,7 +104,7 @@ export async function DELETE(request: Request, context: { params: Promise<{ enti
 
 async function updateOrDelete(request: Request, context: { params: Promise<{ entity: string }> }, action: 'update' | 'delete') {
   const { entity: key } = await context.params;
-  const auth = await authorize(key);
+  const auth = await authorizeWrite(key);
   if (auth.denied || !auth.entity || !auth.session) return responseError('Tidak berwenang.', auth.entity ? 403 : 404);
   const body = await request.json().catch(() => null) as Record<string, unknown> | null;
   const idResult = idSchema.safeParse(body?.id);

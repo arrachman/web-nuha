@@ -1,5 +1,326 @@
 # Riwayat Perubahan — web-nuha
 
+## 2026-09-23 — Navigasi publik: tautan Karir
+
+- `app/(publik)/layout.tsx`: menu atas & mobile menambah "Karir" (/karir);
+  footer Layanan menambah "Lowongan Kerja (Karir)" dan "Cek Status Lamaran".
+  Sebelumnya halaman karir publik hanya bisa dicapai lewat URL langsung.
+
+## 2026-09-23 — Fase A sisa: matriks izin per peran + reset sandi oleh admin
+
+- `/pengaturan?tab=izin`: matriks peran × izin per modul (checkbox), simpan =
+  sinkron `RolePermission` untuk modul itu; super admin tidak ditampilkan.
+  Diff (ditambah/dicabut) dicatat di audit `IZIN_MATRIKS_UBAH`.
+- `/pengaturan?tab=pengguna`: tombol **Reset sandi** (sandi sementara acak
+  ditampilkan sekali lewat hasil Server Action — tidak lewat URL/log;
+  `mustChangePassword=true`, `sessionVersion` naik → semua sesi lama dicabut)
+  dan **Aktifkan/Nonaktifkan** (juga mencabut sesi).
+- Verifikasi: `tests/e2e/pengaturan.spec.ts` (sesi lama sdm tercabut setelah
+  reset, sandi sementara memaksa ke /akun/sandi; matriks diubah lalu
+  dikembalikan, dicek ke DB & audit).
+
+## 2026-09-23 — Modul Presensi (C + C2): input santri, selfie pegawai, tinjau, dashboard
+
+Mengimplementasikan plan `02-presensi-harian-dashboard.md` dan melepas menu
+`presensi` dari `MENU_DISEMBUNYIKAN` — tampil untuk 12 peran, dengan tautan
+cepat "Presensi Saya" di sidebar.
+
+- Skema (migrasi `20260923140000_presensi`): `AttendanceSession` (master
+  sesi, bitmask hari), `WorkSchedule`, `Holiday`, `StaffLeave`; kolom baru
+  `Attendance.source/recordedBy`, `StaffAttendance` (checkInAt/Out waktu
+  server, foto, lat/lng/akurasi/jarak, unit, luar lokasi + alasan, GPS tidak
+  akurat, pulang cepat, menit terlambat, tinjauan), `Unit.radiusPresensiM`,
+  `LeavePermit.expectedReturnAt`, `MedicalRecord.followUpStatus`,
+  `Dormitory.supervisorStaffId`; indeks tanggal.
+- Seed: 8 izin `presensi.*` sesuai 05 §4, 5 sesi bawaan (02 §2.1), jam kerja
+  bawaan 06 P3, templat WA `PRESENSI_ALPA`; `prisma/seed-presensi.ts` (demo:
+  koordinat unit, guru.1–3 ditautkan ke data pegawai, rombel 7A/10A + 16
+  santri, asrama Al-Fatih dipegang musyrif.1).
+- **Perbaikan penting seed izin**: `seedIzinTingkatAksi` memberi `<menu>.view`
+  ke semua peran pemilik menu → pegawai sempat punya `presensi.view`.
+  `seedIzinGranular` kini menyinkronkan (mencabut peran di luar matriks 05).
+- `/presensi`: tab Dashboard, Input Siswa/Santri, Presensi Saya (kamera
+  getUserMedia tanpa unggah galeri + GPS; overlay nama/waktu server/unit via
+  sharp), Perlu Ditinjau, Laporan (CSV bulanan), Pengaturan (sesi, jam kerja,
+  libur, titik & radius). Penguncian H+1 (`presensi.lock` + alasan, audit
+  sebelum/sesudah); IZIN/POSKESTREN terlindung (`presensi.override`).
+- Privasi: `/berkas/[id]` domain presensi hanya untuk pemilik, atau pemegang
+  `presensi.review` yang unitnya mencakup pegawai tersebut.
+- Cron `sapuPresensi()`: isi otomatis Izin/Sakit, Alpa pegawai setelah jam
+  pulang (kecuali libur/izin/guru tanpa jadwal hari itu), WA alpa ke wali via
+  `NotificationQueue` (sekali/hari, WA_DRY_RUN), retensi foto 90 hari.
+- Portal wali & santri: tab Presensi (kalender bulanan berwarna). Dashboard
+  utama: kartu kehadiran santri hari ini, pegawai check-in, kerusakan terbuka.
+- UI umum: `.btn-sekunder` kini tombol utuh tanpa perlu `.btn`;
+  `FormKeputusan` dipindah ke `components/molecules`; `angka()` tidak lagi
+  membuang titik desimal (koordinat/luas m² sempat terbaca salah).
+- Verifikasi: `tests/presensi.test.ts` (WIB, bitmask sesi, geofence,
+  terlambat/pulang cepat, penguncian — 9 lulus); `tests/e2e/presensi.spec.ts`
+  7 skenario dengan kamera & GPS palsu (dalam radius, luar radius + alasan +
+  tinjau SDM, izin lokasi ditolak, foto pegawai lain → 403, rombel bukan
+  miliknya → ditolak, ubah presensi terkunci → ditolak, izin pegawai →
+  presensi terisi, ekspor dibatasi peran). Seluruh suite Playwright 19/19.
+- Belum: sumber RFID (plan terpisah), input `followUpStatus` di form
+  Poskestren & `expectedReturnAt` di form izin pondok (menu masih disembunyikan).
+
+## 2026-09-23 — Modul Sarpras (C + C2): aset, QR, kerusakan, peminjaman, pengadaan, opname, penghapusan
+
+Mengimplementasikan plan `04-aset-sarpras.md` dan melepas menu `sarpras` dari
+`MENU_DISEMBUNYIKAN` — menu kini tampil di sidebar untuk 11 peran, dengan
+tautan cepat "Lapor Kerusakan" dan "Pinjam Aset / Ruang" di bawahnya.
+
+- Skema (migrasi `20260923090000_sarpras`): `AssetLocation` (pohon lokasi +
+  `qrToken`), `AssetCategory` (golongan KIB A–F), `FundingSource`, `Vendor`,
+  `Asset`, `AssetFile`, `AssetMovement`, `AssetLoan(+Item)`, `DamageReport`,
+  `MaintenanceTask`, `StockOpname(+Line)`, `AssetDisposal(+Item)`,
+  `ApprovalStep` (persetujuan berjenjang polimorfik), `Procurement(+Item)`,
+  `ConsumableItem/Movement` (barang habis pakai), dan `AppSetting`
+  (key-value; ambang pengadaan & kapitalisasi disimpan di sini, bukan konstanta).
+- Seed: 17 izin `sarpras.*` sesuai 05 §6, 25 kategori, 8 sumber dana, ambang
+  bawaan; `prisma/seed-sarpras.ts` (idempoten) menambah akun uji peran baru
+  (`sdm`, `sarpras.yayasan`, `sarpras.smp`, `sarpras.ma`, `teknisi.1`,
+  `musyrif.1`, `pegawai.1` — sandi `Nuha2026!`, wajib ganti di login pertama)
+  + data demo lokasi, 13 aset, tugas pemeliharaan, 1 laporan darurat.
+- `/sarpras` 11 tab (Dashboard, Aset, Lokasi, Pengadaan, Peminjaman,
+  Kerusakan, Pemeliharaan, Stock Opname, Penghapusan, Laporan, Master), tab
+  tampil sesuai izin. Halaman tambahan: `/sarpras/aset/baru`,
+  `/sarpras/aset/[id]` (QR, nilai buku, mutasi, riwayat, berkas),
+  `/sarpras/opname/[id]` (ramah HP, simpan per baris), `/lapor-kerusakan`,
+  publik `/a/[token]` & `/r/[token]` (hasil pindai QR), cetak
+  `/cetak/label-aset` (A4 24 label) & `/cetak/kir/[id]`, ekspor CSV
+  `/sarpras/laporan/[jenis]`.
+- `lib/aset/`: `susut.ts` (garis lurus, dihitung saat dibaca; tanah & KDP
+  tidak disusutkan), `kode.ts` (kode inventaris + retry-on-P2002),
+  `persetujuan.ts` (jenjang pengadaan/penghapusan), `akses.ts` (filter aset
+  per peran: pengelola vs PIC ruang/pemegang), `qr.ts`. `lib/aksi-form.ts`:
+  pola Server Action → redirect `?pesan=`/`?galat=` + `PesanAksi`.
+- Cron `sapuSarpras()`: peminjaman lewat batas → Terlambat, pemeliharaan
+  lewat tempo → Terlewat, pengingat H-N (WA ke petugas, tunduk WA_DRY_RUN).
+- Perbaikan ikutan: `/berkas/[id]` memetakan domain `aset` ke izin
+  `sarpras.view`; `/login?next=` (hanya path internal) untuk alur pindai QR;
+  prefiks middleware `/a/`,`/r/` diperbaiki (sebelumnya tidak pernah cocok);
+  sidebar menyorot menu induk untuk sub-halaman (`/sarpras/aset/1`,
+  `/rekrutmen/pelamar/1`); kelas `.alert-sukses` ditambahkan.
+- Pelajaran: tombol ganda `name="keputusan" value=…` pada satu form Server
+  Action TIDAK andal (klik "Setujui" tercatat Tolak) — pakai dua form dengan
+  hidden input (`FormKeputusan`).
+- Verifikasi: `tests/aset.test.ts` (penyusutan + kode paralel, 7 lulus),
+  `tests/e2e/sarpras.spec.ts` 6 skenario (alur QR→lapor→tangani sampai Baik
+  dari viewport HP; kolom harga tersembunyi bagi guru; form unit
+  dimanipulasi ditolak; bentrok peminjaman ditolak; penghapusan wakaf tanpa BA
+  ditolak; pengadaan berjenjang → aset → opname → penghapusan → ekspor), tiap
+  langkah dicek barisnya di DB & audit. Seluruh suite Playwright 10/10 lulus.
+- Belum: ekspor kolom persis templat Dapodik/EMIS (menunggu templat resmi),
+  penandaan jadwal pelajaran pada pemesanan ruang, tautan `CashTransaction`.
+
+## 2026-09-22 — Rekrutmen bagian 2: panel panitia (`/rekrutmen`) + konversi jadi pegawai
+
+Melengkapi sisi panitia untuk modul yang publiknya selesai di bagian 1.
+Dengan ini alur Rekrutmen sudah lengkap ujung-ke-ujung: pelamar publik →
+verifikasi berkas → penilaian → keputusan → konversi jadi pegawai.
+
+- `app/(staf)/rekrutmen/page.tsx` + `TabLowongan.tsx` + `TabPelamar.tsx`:
+  dashboard ringkas (lowongan dibuka, lamaran dalam proses, dst), tab
+  Lowongan (buat Draf → Ajukan → Setujui & Buka → Tutup, digerbangi izin
+  `rekrutmen.job_manage`/`rekrutmen.approve`), dan tab Pelamar (cari/filter
+  per lowongan & status, tautan ke detail).
+- `app/(staf)/rekrutmen/pelamar/[id]/page.tsx`: detail satu lamaran — data
+  diri (NIK digerbangi `rekrutmen.view_sensitive`), daftar berkas dengan
+  tautan lihat lewat rute bergerbang `/berkas/[id]` + tombol
+  verifikasi/tandai-perlu-perbaikan (`rekrutmen.screen`), form beri nilai per
+  tahap seleksi (`rekrutmen.score`, skor tertimbang dihitung dari rata-rata
+  seluruh evaluator dikali bobot tahap), timeline status dari
+  `ApplicationEvent`, dan form ubah status (`rekrutmen.screen` untuk
+  Screening/Shortlisted/Test/Interview, `rekrutmen.decide` untuk
+  Offered/Hired/Rejected).
+- `konversiJadiPegawai()` — untuk lamaran berstatus Hired: bikin `Person` +
+  `Staff` (nomor pegawai `PEG-<tahun>-NNNN`) + `User` (username dari nama,
+  disambiguasi kalau bentrok, sandi sementara `Nuha2026!` dengan
+  `mustChangePassword=true` — pegawai baru wajib ganti sandi di login
+  pertama, sama seperti akun lain), lalu menautkan `JobApplication.personId`
+  supaya tidak bisa dikonversi dua kali.
+- Semua aksi (buat/ajukan/setujui/tutup lowongan, verifikasi berkas, ubah
+  status, beri nilai, konversi) dicatat `recordAudit()`.
+- `tests/e2e/rekrutmen-panitia.spec.ts` (baru): login superadmin (sementara
+  `mustChangePassword` dimatikan di `beforeAll`/dikembalikan di `afterAll`
+  supaya tidak mengubah perilaku default akun itu di test lain) → buat
+  lowongan → ajukan → setujui & buka → cari lamaran → ubah status ke
+  Screening lalu Hired → konversi jadi pegawai → verifikasi pesan sukses
+  tampil dan tidak ada `pageerror`.
+- Verifikasi: `tsc --noEmit` bersih, `npx playwright test` 4/4 lulus (1 baru
+  + 3 sebelumnya). Data uji (lamaran, lowongan, pegawai hasil konversi)
+  dibersihkan dari DB setelah verifikasi manual.
+- Belum di bagian ini (menyusul): pengiriman WA sungguhan saat status
+  berubah (templat sudah ada, `WA_DRY_RUN`), cron auto-close lowongan lewat
+  `closeAt`, ekspor data rekrutmen (`rekrutmen.export`), dan akun demo
+  ketua/kepala-unit/SDM di seed sandbox ini (baru ada superadmin +
+  guru.1–10) — tidak memblokir modul, tapi berarti uji panitia sejauh ini
+  memakai superadmin.
+
+## 2026-09-22 — Rekrutmen bagian 1: skema + alur publik pelamar (`/karir`)
+
+Modul Rekrutmen (03-rekrutmen-lowongan-kerja.md), diprioritaskan pertama dari
+tiga modul tersisa (Rekrutmen → Sarpras → Presensi) karena paling independen.
+Bagian ini menuntaskan sisi publik; panel panitia & konversi jadi pegawai
+menyusul di commit berikutnya.
+
+- Skema baru (lihat juga commit skema/seed/navigasi sebelumnya): `JobPosting`,
+  `JobRequiredDocument`, `JobStage`, `JobApplication`, `ApplicationDocument`,
+  `ApplicationEducation`, `ApplicationExperience`, `ApplicationScore`,
+  `ApplicationEvent`, `ApplicationEvaluator`.
+- `app/karir/page.tsx` — daftar lowongan berstatus Open & sedang dalam
+  rentang buka/tutup, dibaca langsung dari DB (`force-dynamic`).
+- `app/karir/[code]/page.tsx` — detail lowongan: deskripsi, syarat, fasilitas,
+  daftar berkas yang perlu disiapkan; tombol "Lamar Sekarang" nonaktif kalau
+  lowongan sedang tidak menerima lamaran.
+- `app/karir/[code]/daftar/{page,Wizard}.tsx` — wizard 4 langkah (Data Diri →
+  Pendidikan & Pengalaman → Berkas → Pernyataan & Kirim), pola diadaptasi dari
+  `app/ppdb/Wizard.tsx`. Beda dari PPDB: unggah berkas di sini **nyata**
+  (bukan simulasi checkbox), lewat `<input type=file>` yang dikirim sebagai
+  `FormData` ke Server Action, disimpan lewat `lib/berkas.ts` (domain
+  `rekrutmen`, magic-byte + limit 2 MB). Draf isian (bukan berkas) disimpan ke
+  `localStorage` per lowongan (03 §4.3) supaya tidak hilang kalau tab
+  tertutup tidak sengaja.
+- `app/karir/actions.ts` — `kirimLamaran(FormData)`: validasi server penuh,
+  nomor lamaran berurutan `LMR-<tahun>-NNNN` (pola retry-on-P2002 sama seperti
+  `daftarPpdb`), `statusToken` acak 24 byte, tolak NIK dobel untuk lowongan
+  yang sama (`@@unique([jobId, nik])`), simpan tiap dokumen wajib/opsional
+  yang diunggah, catat `ApplicationEvent` awal (`Submitted`). Anti-spam dasar
+  (03 §4): honeypot field tersembunyi + jebakan waktu (tolak kalau kirim
+  < 2.5 detik sejak formulir dibuka) — belum ada rate-limit per-IP seperti
+  login (bisa menyusul kalau terbukti perlu di produksi).
+- `app/karir/status/page.tsx` — cek status publik by nomor lamaran (+ opsional
+  token di URL untuk tautan WA nanti), menampilkan timeline dari
+  `ApplicationEvent` sungguhan (bukan status tetap seperti cek-status PPDB).
+- Seed: `prisma/seed-dasar.ts` menambah 5 templat WA rekrutmen
+  (`LMR_DITERIMA`, `LMR_PERBAIKAN_BERKAS`, `LMR_UNDANGAN_TES`,
+  `LMR_HASIL_LOLOS`, `LMR_HASIL_TDK_LOLOS`) — selalu lewat `WA_DRY_RUN`, belum
+  dipicu di mana pun (menyusul saat panel panitia mengubah status). Seed demo
+  (`prisma/seed.ts`): satu lowongan contoh `LOW-2026-0001` (Guru Matematika
+  SMP, status Open) + 5 berkas wajib/opsional + 3 tahap seleksi, dipakai
+  Playwright dan untuk demo manual.
+- `tests/e2e/rekrutmen.spec.ts` (baru) — Playwright: (1) pelamar mengisi
+  wizard lengkap dengan berkas PDF asli, kirim, dapat nomor `LMR-YYYY-NNNN`,
+  lalu cek status dan melihat namanya + status "Terkirim"; (2) NIK yang sama
+  ditolak melamar dua kali ke lowongan yang sama, pesan errornya muncul di
+  langkah yang benar (perbaikan: `Wizard.tsx` sekarang memindahkan langkah
+  aktif ke tempat field error server berada, karena validasi klien di langkah
+  sebelumnya bisa lolos padahal server menolak, mis. NIK dobel).
+- Verifikasi: `tsc --noEmit` bersih, `npx playwright test` 3/3 lulus (2 baru +
+  smoke lama), `curl` manual ke keempat halaman publik 200.
+- Belum di bagian ini (menyusul): panel panitia (`app/(staf)/rekrutmen`),
+  konversi pelamar Hired → `Person`+`Staff`+`User`, pengiriman WA sungguhan
+  di titik status berubah, cron auto-close lowongan lewat `closeAt`, menu
+  sidebar `rekrutmen` masih perlu dilepas dari `MENU_DISEMBUNYIKAN`... —
+  catatan: menu itu SUDAH tidak disembunyikan sejak commit skema (tidak ada di
+  `MENU_DISEMBUNYIKAN`), jadi panitia ber-role terkait sudah melihatnya di
+  sidebar walau halamannya belum ada (404 sementara) — akan diisi di commit
+  berikutnya.
+
+## 2026-09-22 — Fase A (fondasi) bagian 3: infrastruktur unggah berkas
+
+Lanjutan Fase A (01-fondasi §5) — belum dipakai modul manapun, disiapkan
+lebih dulu karena presensi selfie (02), lamaran rekrutmen (03), dan dokumen
+aset (04) semua membutuhkannya.
+
+- `lib/berkas.ts` (baru): `simpanBerkas()` — validasi tipe dari MAGIC BYTES
+  (bukan ekstensi/Content-Type klien): JPEG, PNG, WebP, PDF; PDF ber-JavaScript
+  ditolak; batas ukuran per domain (presensi 500 KB, rekrutmen 2 MB, aset 5 MB);
+  simpan ke `storage/<domain>/<yyyy>/<mm>/<sha256>.<ext>` (nama disk dari hash,
+  bukan nama asli) + catat baris `FileObject`. Juga `hapusBerkasLunak()` dan
+  `hapusFisikKedaluwarsa()` (retensi, belum dipanggil cron manapun — menyusul
+  saat domain nyata mulai memakainya).
+- `app/berkas/[id]/route.ts` (baru): route bergerbang tunggal untuk SEMUA
+  berkas, menggantikan pola per-modul lama (`kepegawaian/berkas/[nama]`,
+  `docs/tangkapan`). Cek sesi + izin `<domain>.view` lewat `can()`; header
+  `Content-Disposition: inline`, `X-Content-Type-Options: nosniff`,
+  `Cache-Control: private`. Akses domain `presensi`/`rekrutmen` (data pribadi)
+  diaudit tiap dibuka.
+- `next.config.mjs`: `experimental.serverActions.bodySizeLimit` dinaikkan ke
+  6 MB (default 1 MB tidak cukup untuk foto/dokumen).
+- `docker-compose.yml`: volume `nuha_storage` dipasang ke `nuha-app` di
+  `/app/storage` (`STORAGE_DIR`); `.gitignore`/`.dockerignore` menambah
+  `storage/` — berkas asli tidak pernah masuk git maupun image build context.
+- Diverifikasi manual: simpan PNG uji → tersimpan + baris `FileObject` →
+  diambil lewat `/berkas/<id>` dengan sesi (200) → ditolak tanpa sesi (401).
+  Data uji dibersihkan setelahnya. tsc bersih, vitest tanpa regresi baru.
+- **Fase A sekarang inti-selesai** kecuali: reset sandi oleh admin (dari
+  `pengaturan`) dan tab `pengaturan?tab=izin` (UI matriks peran×izin — DB-nya
+  sudah ada dari bagian 2, tinggal UI-nya). Keduanya cukup penting tapi tidak
+  memblokir B/C/D, jadi ditunda untuk memprioritaskan schema Fase B/C/D
+  (presensi, sarpras, rekrutmen) yang justru jadi urutan berikutnya.
+
+## 2026-09-22 — Fase A (fondasi) bagian 2: CRUD generik pakai izin tingkat aksi + peran/unit baru
+
+Lanjutan bagian 1 (auth). Mengikuti plan §3.3: "seed awal meniru akses lama
+persis, dikurangi secara sadar belakangan" — jadi perubahan ini **tidak
+mengubah akses siapa pun**, diverifikasi manual di bawah.
+
+- `app/api/crud/[entity]/route.ts`: `authorize()` lama (cuma cek `menu_roles`)
+  dipecah jadi `authorizeRead`/`authorizeWrite`, keduanya tetap mengecek grant
+  menu **dan** sekarang juga izin `Permission` lewat `can()` dari `lib/access.ts`.
+  Entitas bisa override lewat `perm: { view, write }` di registry (belum ada
+  yang pakai — defaultnya `${menu}.view`/`${menu}.update`).
+- `prisma/seed-dasar.ts`: `seedIzinTingkatAksi()` baru — untuk setiap
+  `MenuItem` membuat izin `<menu>.view` dan `<menu>.update`, lalu memberi
+  KEDUANYA ke setiap peran yang sudah punya grant menu itu (mirroring 1:1 dari
+  `menu_roles`, bukan pengurangan). Hasil di DB dev: 36 izin, 182 baris
+  `role_permissions`.
+- Peran baru dari `05-matriks-peran.md` §2 ditambahkan ke `seed-dasar.ts`
+  (bukan cuma `proto-data.json`): `pegawai`, `sdm`, `sarpras`, `teknisi`,
+  `musyrif`. Belum punya grant menu (menunya belum ada — menyusul Fase B/C/D).
+- Unit `YAYASAN` ditambahkan (01 §4 / jawaban bawaan U4) untuk aset dan
+  lowongan milik yayasan langsung, bukan salah satu sekolah/pondok.
+- Diverifikasi manual: superadmin tetap bisa CRUD (lolos lewat `isSuperAdmin`);
+  akun peran `ketua` (dites dengan user sementara, dihapus setelah tes) tetap
+  bisa baca `unit` dan `mapel` lewat jalur izin baru — akses sebelum/sesudah
+  identik. tsc bersih, vitest tanpa regresi baru dari baseline.
+- **Belum dikerjakan**: reset sandi oleh admin, tab `pengaturan?tab=izin`
+  (UI matriks peran×izin), `lib/berkas.ts` + route penyajian, lalu schema
+  Fase B/C/D (presensi, sarpras, rekrutmen).
+
+## 2026-09-22 — Fase A (fondasi) bagian 1: auth — batas percobaan, ganti sandi wajib, pencabutan sesi
+
+Bagian pertama dari `plan/2026-09-modul-inti/01-fondasi-auth-rbac-crud.md`
+(prasyarat modul presensi, sarpras, rekrutmen). Mengikuti default jawaban di
+`06-pertanyaan-client.md` karena belum ada respons client — dicatat di sini
+sesuai instruksi plan.
+
+- **Migrasi** `20260922110000_fase_a_rbac_aksi_unitscope_berkas`: tabel baru
+  `permissions`, `role_permissions` (RBAC tingkat aksi, dipakai `requireAction()`
+  di `lib/access.ts`), `login_attempts`, `file_objects` (infrastruktur unggah
+  berkas, belum dipakai modul manapun), `user_units` (cakupan unit banyak-ke-banyak,
+  menggantikan `User.unitScope` yang dipertahankan untuk kompatibilitas); kolom
+  baru di `user`: `must_change_password` (default true), `password_changed_at`,
+  `session_version`. Migrasi juga membawa beberapa reconciliation drift lama
+  (rename index `wa_templates`/`notification_queue`, default kolom) yang sudah
+  ada di schema tapi belum tersinkron ke migration history.
+- **Batas percobaan login**: 5 gagal per identifier atau 20 gagal per IP dalam
+  15 menit → 429. Baris `login_attempts` dibersihkan tiap jam oleh `nuha-cron`
+  yang sudah ada (> 24 jam).
+- **Ganti sandi wajib**: `/akun/sandi` + `POST /api/auth/ganti-sandi`. Middleware
+  baru (`middleware.ts`, dibaca dari `mustChangePassword` di payload JWT — tanpa
+  query DB tambahan) memaksa ke halaman ini selama flag itu true. Validasi:
+  minimal 8 karakter, bukan sandi bawaan `Nuha2026!`, bukan sama dengan username.
+- **Pencabutan sesi dini**: `User.sessionVersion` ikut di payload JWT;
+  `readSession()` di `lib/auth.ts` membandingkannya ke DB (di-cache per request
+  via `React.cache`) dan menolak token yang versinya sudah tidak cocok (akun
+  dinonaktifkan / sandi diganti). Token lama tanpa field ini tetap dianggap
+  valid supaya tidak logout massal saat deploy.
+- **`lib/access.ts`**: tambah `requireAction(permKey)` dan `can(session, permKey)`
+  di atas `requirePage()` yang sudah ada — superadmin lolos semua, izin peran
+  dimuat sekali per request. Belum ada Server Action yang memanggilnya (menyusul
+  saat entitas per modul dikerjakan).
+- **`lib/unit-scope.ts`** (baru): `whereUnit()`, `assertUnit()`,
+  `readAndAssertUnitId()` — belum diterapkan ke query modul manapun, menyusul.
+- Diverifikasi manual (curl, bukan Playwright — publik `202.59.200.26:3226`
+  belum di-deploy dari sesi ini): login → dipaksa `/akun/sandi` → ganti sandi
+  → redirect berhenti; 6× sandi salah → percobaan ke-6 menerima 429.
+- **Belum dikerjakan** (menyusul di komit berikutnya): reset sandi oleh admin,
+  `authorizeRead`/`authorizeWrite` di CRUD generik, seed izin/peran baru, tab
+  `pengaturan?tab=izin`, `lib/berkas.ts` + route penyajian, schema Fase B/C/D
+  (presensi, sarpras, rekrutmen).
+
 ## 2026-09-22 — push ke repository publik arrachman/web-nuha (a89943f)
 
 Repo `https://github.com/arrachman/web-nuha` (publik, default branch `main`) sekarang

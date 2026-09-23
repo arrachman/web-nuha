@@ -19,6 +19,9 @@ const nextConfig = {
   outputFileTracingRoot: workspaceRoot,
   turbopack: { root: workspaceRoot },
   devIndicators: false,
+  // 01-fondasi §5.3: default 1 MB tidak cukup untuk unggah foto presensi/berkas
+  // lamaran/dokumen aset yang dikirim sebagai FormData lewat Server Action.
+  experimental: { serverActions: { bodySizeLimit: '6mb' } },
 };
 
 const PORT = process.env.WEB_NUHA_PORT || '3226';

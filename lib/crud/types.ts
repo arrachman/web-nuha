@@ -124,6 +124,14 @@ export type Entity = {
    * pilihan baru (mis. santri yang ternyata pegawai, atau daftar wali berubah).
    */
   sesudahUbah?: (id: string, input: Record<string, unknown>, aktor: { id: string; nama: string }) => Promise<void>;
+  /**
+   * Izin tingkat aksi (01-fondasi §3.3), di atas grant menu yang sudah ada.
+   * Tidak diisi → default `${menu}.view` / `${menu}.update`. Seed
+   * `seed-dasar.ts` membuat kedua izin ini untuk SETIAP menu dan menirunya
+   * persis dari `menu_roles` yang ada, jadi mengisi field ini TIDAK
+   * mengubah akses sampai izinnya sendiri dikurangi secara sadar di seed.
+   */
+  perm?: { view?: string; write?: string };
 };
 
 /** Serializable field shape handed to the browser (no Prisma types cross over). */

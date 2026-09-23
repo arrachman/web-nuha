@@ -11,6 +11,24 @@ const schema = z.object({
   password: z.string().min(1, 'Kata sandi wajib diisi.'),
 });
 
+const TOO_MANY = Response.json(
+  { success: false, data: null, error: { code: 'TOO_MANY_ATTEMPTS', message: 'Terlalu banyak percobaan, coba lagi 15 menit lagi.' } },
+  { status: 429 },
+);
+
+// 01-fondasi §2.1: tolak sebelum menyentuh bcrypt sama sekali begitu ambang
+// terlampaui, supaya percobaan yang ditolak tidak ikut membebani hashing.
+async function melebihiBatasPercobaan(identifier: string, ip: string | null): Promise<boolean> {
+  const sejak = new Date(Date.now() - 15 * 60 * 1000);
+  const [gagalIdentifier, gagalIp] = await Promise.all([
+    prisma.loginAttempt.count({ where: { identifier, success: false, createdAt: { gte: sejak } } }),
+    ip
+      ? prisma.loginAttempt.count({ where: { ip, success: false, createdAt: { gte: sejak } } })
+      : Promise.resolve(0),
+  ]);
+  return gagalIdentifier >= 5 || gagalIp >= 20;
+}
+
 export async function POST(request: Request) {
   const ip = requestIp(request);
   const body = await request.json().catch(() => null);
@@ -25,9 +43,14 @@ export async function POST(request: Request) {
   }
 
   const identifier = parsed.data.identifier.trim();
+
+  if (await melebihiBatasPercobaan(identifier, ip)) {
+    return TOO_MANY;
+  }
+
   const user = await prisma.user.findFirst({
     where: { OR: [{ email: identifier }, { username: identifier }] },
-    include: { person: true, roles: { include: { role: true } } },
+    include: { person: true, roles: { include: { role: true } }, units: true },
   });
 
   const invalid = Response.json(
@@ -39,22 +62,34 @@ export async function POST(request: Request) {
   const hash = user?.passwordHash ?? '$2a$12$invalidinvalidinvalidinvalidinvalidinvalidinvalidinvaliduu';
   const ok = await bcrypt.compare(parsed.data.password, hash);
   if (!user || !ok || !user.aktif) {
-    await recordAudit({
-      aksi: 'LOGIN_GAGAL',
-      entitas: 'user',
-      ringkasan: `Login gagal untuk "${identifier}"`,
-      aktor: { nama: identifier },
-      ip,
-    });
+    await Promise.all([
+      prisma.loginAttempt.create({ data: { identifier, ip, success: false } }),
+      recordAudit({
+        aksi: 'LOGIN_GAGAL',
+        entitas: 'user',
+        ringkasan: `Login gagal untuk "${identifier}"`,
+        aktor: { nama: identifier },
+        ip,
+      }),
+    ]);
     return invalid;
   }
 
-  await prisma.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } });
+  await Promise.all([
+    prisma.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } }),
+    prisma.loginAttempt.create({ data: { identifier, ip, success: true } }),
+  ]);
+  // unitIds null = tidak ditempatkan di user_units sama sekali → perilaku lama
+  // (seluruh unit), konsisten dengan whereUnit()/assertUnit() di lib/unit-scope.ts.
+  const unitIds = user.units.length > 0 ? user.units.map((u) => u.unitId) : null;
   await createSession({
     userId: String(user.id),
     nama: user.person.fullName,
     email: user.email,
     peran: user.roles.map((row) => row.role.key),
+    unitIds,
+    sessionVersion: user.sessionVersion,
+    mustChangePassword: user.mustChangePassword,
   });
   await recordAudit({
     aksi: 'LOGIN',
@@ -65,5 +100,9 @@ export async function POST(request: Request) {
     ip,
   });
 
-  return Response.json({ success: true, data: { nama: user.person.fullName }, error: null });
+  return Response.json({
+    success: true,
+    data: { nama: user.person.fullName, mustChangePassword: user.mustChangePassword },
+    error: null,
+  });
 }

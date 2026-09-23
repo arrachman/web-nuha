@@ -23,6 +23,8 @@ export default function PublikLayout({ children }: { children: ReactNode }) {
             <Link href="/beranda">Beranda</Link>
             <Link href="/profil-pondok">Pondok Pesantren</Link>
             <a href="/cek-status">Cek Status PPDB</a>
+          <a href="/karir">Karir</a>
+            <a href="/karir">Karir</a>
           </nav>
           <div className="pub-cta">
             <Link href="/login" className="pub-btn">Masuk</Link>
@@ -81,6 +83,8 @@ export default function PublikLayout({ children }: { children: ReactNode }) {
             <div className="pub-footer-col">
               <a href="/ppdb">PPDB Online</a>
               <a href="/cek-status">Cek Status Pendaftaran</a>
+              <a href="/karir">Lowongan Kerja (Karir)</a>
+              <a href="/karir/status">Cek Status Lamaran</a>
               <Link href="/login" style={{ color: 'rgba(243,241,233,.78)', textDecoration: 'none' }}>Portal Wali Santri</Link>
               <Link href="/login" style={{ color: 'rgba(243,241,233,.78)', textDecoration: 'none' }}>SIMTERPADU Staf</Link>
               <a href="https://drive.google.com/drive/folders/18MM-nIa6tlQvsxcJ85kZUmvnvm59n-z4" target="_blank" rel="noopener">Brosur PPSS &amp; SMP</a>

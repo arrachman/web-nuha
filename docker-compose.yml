@@ -89,6 +89,12 @@ services:
       # yang menerima notifikasi — wajib dikosongkan sebelum produksi.
       WA_DEBUG_REDIRECT: ${WA_DEBUG_REDIRECT:-}
       NUHA_PERIODE_GAJI: ${NUHA_PERIODE_GAJI:-}
+      # 01-fondasi §5.1: berkas terunggah (foto presensi, lamaran, dokumen
+      # aset) disimpan di sini, bukan public/. Dipetakan ke volume bernama
+      # supaya bertahan lintas rebuild image, sama seperti nuha_wa_data.
+      STORAGE_DIR: /app/storage
+    volumes:
+      - nuha_storage:/app/storage
     depends_on:
       nuha-migrate:
         condition: service_completed_successfully
@@ -132,3 +138,7 @@ volumes:
   # dipindai ulang, jadi wajib volume, bukan direktori sementara container.
   nuha_wa_data:
     name: nuha_simterpadu_wa_data
+  # Berkas terunggah (foto presensi, dokumen lamaran, dokumen aset) — data
+  # pribadi yang tidak boleh hilang saat image di-rebuild.
+  nuha_storage:
+    name: nuha_simterpadu_storage

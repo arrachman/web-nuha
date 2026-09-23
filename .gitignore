@@ -5,6 +5,10 @@ node_modules
 next-env.d.ts
 tsconfig.tsbuildinfo
 
+# Berkas terunggah (foto presensi, dokumen lamaran, dokumen aset) — data
+# pribadi, disimpan lewat volume Docker `nuha_storage`, tidak pernah di-commit.
+storage/
+
 # Data sumber mentah (PII: data siswa/guru/SK) — jangan pernah di-commit
 docs/*.xlsx
 docs/*.pdf
@@ -13,3 +17,7 @@ docs/*.csv
 docs/*.jpeg
 docs/*.jpg
 docs/*.png
+
+# Artefak hasil jalan Playwright (screenshot, trace, laporan)
+/test-results/
+/playwright-report/

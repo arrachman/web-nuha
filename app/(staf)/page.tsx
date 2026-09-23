@@ -21,6 +21,17 @@ export default async function DashboardPage() {
       prisma.announcement.findMany({ orderBy: { date: 'desc' }, take: 5 }),
     ]);
 
+  // Kartu ringkas modul baru (02 §4, 04 §8): presensi hari ini & sarpras terbuka.
+  const hariIni = new Date(`${new Date(Date.now() + 7 * 3600_000).toISOString().slice(0, 10)}T00:00:00Z`);
+  const [presensiSiswa, checkInPegawai, kerusakanTerbuka] = await Promise.all([
+    prisma.attendance.groupBy({ by: ['status'], where: { date: hariIni }, _count: { _all: true } }),
+    prisma.staffAttendance.count({ where: { date: hariIni, checkInAt: { not: null } } }),
+    prisma.damageReport.count({ where: { status: { in: ['Baru', 'Diverifikasi', 'Dikerjakan', 'MenungguSparepart'] } } }),
+  ]);
+  const totalPresensi = presensiSiswa.reduce((a, r) => a + r._count._all, 0);
+  const hadirPresensi = presensiSiswa.filter((r) => r.status === 'Present' || r.status === 'Late').reduce((a, r) => a + r._count._all, 0);
+  const pctHadir = totalPresensi ? Math.round((hadirPresensi / totalPresensi) * 100) : 0;
+
   const totalInvoice = Number(invoices._sum.amount ?? 0);
   const totalDibayar = Number(invoices._sum.paidAmount ?? 0);
   const tunggakan = totalInvoice - totalDibayar;
@@ -61,6 +72,12 @@ export default async function DashboardPage() {
         <StatCard label="Pegawai & asatidz" nilai={pegawai} sub="Tetap, kontrak, honorer & mitra" warna="#1D4ED8" />
         <StatCard label="PPDB perlu diproses" nilai={pendaftar} sub="Baru · verifikasi · seleksi" warna="#E8973A" />
         <StatCard label="Ketertagihan" nilai={`${pctTertagih}%`} sub={`Tunggakan ${rp(tunggakan)}`} pct={pctTertagih} />
+      </section>
+
+      <section className="grid g3" style={{ marginTop: 16 }} data-testid="ringkas-modul-baru">
+        <StatCard label="Kehadiran santri hari ini" nilai={totalPresensi ? `${pctHadir}%` : '—'} sub={totalPresensi ? `${totalPresensi} catatan presensi` : 'Belum ada presensi masuk'} pct={totalPresensi ? pctHadir : undefined} />
+        <StatCard label="Pegawai sudah check-in" nilai={checkInPegawai} sub={`dari ${pegawai} pegawai`} warna="#1D4ED8" />
+        <StatCard label="Kerusakan sarpras terbuka" nilai={kerusakanTerbuka} sub="Menunggu ditangani" warna="#B91C1C" />
       </section>
 
       <section className="grid g2" style={{ marginTop: 16 }}>

@@ -10,11 +10,40 @@ type MasterGroup = { menuKey: string; label: string; icon: string | null; items:
 
 const HREF_BY_KEY: Record<string, string> = {
   dashboard: '/', induk: '/induk', pesantren: '/kepesantrenan', poskestren: '/poskestren', keuangan: '/keuangan', akademik: '/akademik', kurikulum: '/kurikulum', ujian: '/ujian', lms: '/lms', gaji: '/penggajian', wa: '/notifikasi', kunjungan: '/kunjungan-wali', ppdb: '/ppdb-panitia', laporan: '/laporan', pengaturan: '/pengaturan', kepegawaian: '/kepegawaian', data: '/data',
+  rekrutmen: '/rekrutmen', sarpras: '/sarpras', presensi: '/presensi',
 };
 
 const TITLE_BY_PATH: Record<string, string> = {
   '/': 'Dashboard Yayasan', '/induk': 'Data Induk Santri', '/kepesantrenan': 'Kepesantrenan', '/poskestren': 'Poskestren', '/keuangan': 'Keuangan', '/akademik': 'Akademik', '/kurikulum': 'Kurikulum', '/ujian': 'Ujian', '/lms': 'LMS & Kompetensi', '/penggajian': 'Penggajian', '/notifikasi': 'Notifikasi WhatsApp', '/kunjungan-wali': 'Kunjungan Wali', '/ppdb-panitia': 'PPDB 2026/2027 — Sisi Panitia', '/laporan': 'Laporan Rekap Bulanan', '/pengaturan': 'Pengaturan', '/kepegawaian': 'Kepegawaian', '/data': 'Master Data',
+  '/rekrutmen': 'Rekrutmen', '/sarpras': 'Sarana & Prasarana', '/presensi': 'Presensi',
 };
+
+/**
+ * Tautan ringkas di bawah menu modul baru — supaya fitur yang bukan tab
+ * (halaman lapor kerusakan dari HP, halaman karir publik) terlihat di sidebar.
+ */
+const SUB_TAUTAN: Record<string, Array<{ href: string; label: string }>> = {
+  sarpras: [{ href: '/lapor-kerusakan', label: 'Lapor Kerusakan' }, { href: '/sarpras?tab=peminjaman', label: 'Pinjam Aset / Ruang' }],
+  presensi: [{ href: '/presensi?tab=saya', label: 'Presensi Saya' }],
+  rekrutmen: [{ href: '/karir', label: 'Halaman Karir Publik' }],
+};
+
+/** Halaman di luar prefiks menu yang tetap menyorot menu induknya. */
+const ALIAS_AKTIF: Record<string, string[]> = { sarpras: ['/lapor-kerusakan'] };
+
+function menuAktif(key: string, href: string, pathname: string): boolean {
+  if (href === pathname) return true;
+  if (href !== '/' && pathname.startsWith(`${href}/`)) return true;
+  return (ALIAS_AKTIF[key] ?? []).some((p) => pathname === p || pathname.startsWith(`${p}/`));
+}
+
+function judulHalaman(pathname: string): string {
+  if (pathname.startsWith('/data/')) return 'Master Data';
+  if (TITLE_BY_PATH[pathname]) return TITLE_BY_PATH[pathname];
+  if (pathname.startsWith('/lapor-kerusakan')) return 'Lapor Kerusakan';
+  const induk = Object.keys(TITLE_BY_PATH).find((p) => p !== '/' && pathname.startsWith(`${p}/`));
+  return induk ? TITLE_BY_PATH[induk] : 'SIMTERPADU';
+}
 
 export function StaffNavigation({ menus, masterGroups }: { menus: Menu[]; masterGroups: MasterGroup[] }) {
   const pathname = usePathname();
@@ -23,9 +52,13 @@ export function StaffNavigation({ menus, masterGroups }: { menus: Menu[]; master
   return <nav className="menu">{menus.map((menu) => {
     const href = HREF_BY_KEY[menu.key];
     const isMaster = menu.key === 'data';
-    const isActive = href === pathname || (isMaster && pathname.startsWith('/data/'));
+    const isActive = menuAktif(menu.key, href, pathname) || (isMaster && pathname.startsWith('/data/'));
+    const sub = SUB_TAUTAN[menu.key];
     return <div key={menu.key} className="menuwrap">
       <Link href={href} className={`menuitem ${isActive ? 'active' : ''}`}><IkonMenu menuKey={menu.key} path={menu.icon} /><span className="menulabel">{isMaster ? 'Master Data' : menu.label}</span></Link>
+      {sub && <div className="submenu" data-testid={`submenu-${menu.key}`}>
+        {sub.map((t) => <Link key={t.href} href={t.href} className={`submenuitem ${pathname === t.href.split('?')[0] && !t.href.includes('?') ? 'active' : ''}`}>{t.label}</Link>)}
+      </div>}
       {isMaster && isActive && <div className="submenu">
         {masterGroups.map((group) => {
           const isGroupOpen = !collapsed[group.menuKey];
@@ -49,6 +82,6 @@ export function StaffNavigation({ menus, masterGroups }: { menus: Menu[]; master
 
 export function StaffTitle() {
   const pathname = usePathname();
-  const title = pathname.startsWith('/data/') ? 'Master Data' : (TITLE_BY_PATH[pathname] ?? 'SIMTERPADU');
+  const title = judulHalaman(pathname);
   return <h2 className="judul">{title}</h2>;
 }

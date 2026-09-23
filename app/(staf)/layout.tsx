@@ -21,10 +21,13 @@ export default async function StafLayout({ children }: { children: React.ReactNo
   const MENU_DISEMBUNYIKAN = new Set([
     'kurikulum', 'poskestren', 'keuangan', 'lms', 'gaji', 'ujian',
     'kunjungan', 'ppdb', 'laporan',
+    // Modul baru (rekrutmen, sarpras, presensi) sudah dilepas — semuanya tampil
+    // di sidebar sesuai menu_roles (patch 07-persiapan-development §9).
   ]);
   const HREF_KNOWN = new Set([
     'dashboard', 'induk', 'pesantren', 'poskestren', 'keuangan', 'akademik', 'kurikulum', 'ujian',
     'lms', 'gaji', 'wa', 'kunjungan', 'ppdb', 'laporan', 'pengaturan', 'kepegawaian', 'data',
+    'rekrutmen', 'sarpras', 'presensi',
   ]);
   const visible = menus
     .filter((menu) => HREF_KNOWN.has(menu.key) && !MENU_DISEMBUNYIKAN.has(menu.key))

@@ -261,6 +261,7 @@ td.num { font-weight: 700; color: var(--hijau-gelap); }
 .alert-kritis { background: #fef2f2; border-color: #e9a8a8; border-left-color: #b91c1c; color: #7f1d1d; }
 .alert-peringatan { background: #fffbeb; border-color: #f0cfa4; border-left-color: #e8973a; color: #6b5a18; }
 .alert-info { background: #f5f8ff; border-color: #cbd9f5; border-left-color: #1d4ed8; color: #1e3a8a; }
+.alert-sukses { background: #f0fdf4; border-color: #a7dcbc; border-left-color: #0f6b3d; color: #14532d; }
 .alert b { display: block; margin-bottom: 3px; }
 
 .empty { padding: 32px; text-align: center; color: var(--teks-lembut); font-size: 13.5px; }
@@ -278,7 +279,7 @@ td.num { font-weight: 700; color: var(--hijau-gelap); }
 /* Tombol */
 .btn { display: inline-block; background: var(--hijau); color: var(--krem); border: 0; border-radius: 11px; padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; }
 .btn:hover { background: var(--hijau-gelap); color: var(--krem); }
-.btn-sekunder { background: #fff; color: var(--hijau-gelap); border: 1px solid var(--garis); }
+.btn-sekunder { display: inline-block; border-radius: 11px; padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; background: #fff; color: var(--hijau-gelap); border: 1px solid var(--garis); }
 .btn-sekunder:hover { background: var(--krem); color: var(--hijau-gelap); }
 /* Halaman aktif di pager — dipakai lewat aria-current="page" pada Pagination */
 .btn-sekunder.active,
@@ -543,3 +544,8 @@ label.toggle, .field label.toggle {
   .kartu-kendali, .sidebar, .topbar, .tabbar { display: none !important; }
   .kartu-lembar { grid-template-columns: 1fr 1fr; }
 }
+
+/* Presensi: pilihan status H/S/I/A/T sebagai tombol segmen tanpa JS (radio tersembunyi). */
+.chip-status { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 9px; border: 1.5px solid var(--garis-input); font-weight: 700; font-size: 13px; color: var(--warna); background: #fff; transition: background .12s; }
+.pilih-status:checked + .chip-status { background: var(--warna); border-color: var(--warna); color: #fff; }
+.pilih-status:focus-visible + .chip-status { outline: 2px solid var(--hijau-muda); outline-offset: 1px; }
