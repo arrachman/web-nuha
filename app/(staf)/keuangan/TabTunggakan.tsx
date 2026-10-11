@@ -14,7 +14,7 @@ export async function TabTunggakan({ searchParams }: { searchParams: SearchParam
   const halaman = bacaHalaman(searchParams);
 
   const idRows = await prisma.$queryRaw<{ id: bigint }[]>`
-    SELECT id FROM invoices WHERE paidAmount < amount ORDER BY jatuh_tempo ASC
+    SELECT id FROM invoices WHERE paid_amount < amount ORDER BY due_date ASC
   `;
   const total = idRows.length;
   const idHalaman = idRows.slice((halaman - 1) * UKURAN_HALAMAN, halaman * UKURAN_HALAMAN).map((r) => r.id);
