@@ -12,10 +12,8 @@ import { susunGrupMenu } from '@/lib/menu-grup';
 const HREF_BY_KEY: Record<string, string> = {
   dashboard: '/',
   induk: '/induk',
-  pesantren: '/kepesantrenan',
   poskestren: '/poskestren',
   keuangan: '/keuangan',
-  akademik: '/akademik',
   kurikulum: '/kurikulum',
   ujian: '/ujian',
   lms: '/lms',
@@ -31,7 +29,6 @@ const HREF_BY_KEY: Record<string, string> = {
   data: '/data',
   rekrutmen: '/rekrutmen',
   sarpras: '/sarpras',
-  presensi: '/presensi',
   perpustakaan: '/perpustakaan',
 };
 

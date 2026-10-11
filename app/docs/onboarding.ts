@@ -38,7 +38,6 @@ export const PETA_MODUL: PetaModul[] = [
   {
     kelompok: 'Akademik sekolah',
     modul: [
-      { menu: 'Akademik', path: '/akademik', untuk: 'Operasional harian kelas: daftar siswa, presensi, input nilai, rapor.' },
       { menu: 'Kurikulum', path: '/kurikulum', untuk: 'Struktur kurikulum, capaian pembelajaran, silabus & modul ajar, bank soal, dan "Kelas Saya" milik guru.' },
       { menu: 'Ujian', path: '/ujian', untuk: 'Gelombang UTS/UAS per unit: kepala unit mengatur statusnya, guru mengisi nilai per sesi. Nilai per sesi terpisah dari rekap rapor.' },
       { menu: 'LMS & Kompetensi', path: '/lms', untuk: 'Modul belajar digital, kompetensi, bukti karya, sertifikat, gamifikasi poin santri.' },
@@ -47,7 +46,6 @@ export const PETA_MODUL: PetaModul[] = [
   {
     kelompok: 'Kepesantrenan & kesehatan',
     modul: [
-      { menu: 'Kepesantrenan', path: '/kepesantrenan', untuk: 'Kehidupan pondok: penempatan asrama/kamar, presensi jamaah, setoran hafalan, halaqah, tazir (pelanggaran), izin keluar-pulang.' },
       { menu: 'Poskestren', path: '/poskestren', untuk: 'Pemeriksaan santri sakit, rekam medis, stok obat, jadwal piket kader, laporan berkala.' },
     ],
   },

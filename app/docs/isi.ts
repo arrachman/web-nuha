@@ -90,22 +90,6 @@ export const BAGIAN: Bagian[] = [
     ],
   },
   {
-    id: 'akademik',
-    judul: 'Menjelajah data akademik',
-    ringkas:
-      'Modul Akademik menyatukan 87 santri dua lembaga di balik satu penjelajah bertingkat: Semua pesantren → SMP/MA/Pondok → tingkat → kelas. Penyaring yang dipilih berlaku untuk keempat tab sekaligus dan tersimpan di URL, jadi satu tautan cukup untuk membagikan tampilan yang persis sama.',
-    langkah: [
-      { judul: 'Pilih lembaga', detail: 'Chip Lembaga menampilkan SMP, MA, dan Pondok beserta cacah santrinya. Cacah itu sudah menghormati penyaring lain yang sedang aktif — angka di chip = jumlah yang benar-benar didapat kalau chip itu diklik.' },
-      { judul: 'Turun ke tingkat lalu kelas', detail: 'Baris Tingkat muncul setelah lembaga dipilih, baris Kelas setelah tingkat dipilih. Tiap langkah hanya memperlihatkan pilihan yang relevan, bukan seluruh rombel sekaligus.' },
-      { judul: 'Mundur lewat remah roti', detail: 'Jalur "Semua pesantren › SMP › Tingkat 7 › Kelas 7A" di atas chip bisa diklik untuk naik satu tingkat tanpa kehilangan penyaring lain.' },
-      { judul: 'Penyaring lanjutan', detail: 'Pencarian nama/NIS/NISN, status, jenis kelamin, program, angkatan, asrama, dan urutan. Pilihan program, angkatan, dan asrama diambil dari data yang benar-benar ada, jadi tidak ada pilihan yang hasilnya nol.' },
-      { judul: 'Copot penyaring satu per satu', detail: 'Tiap penyaring aktif tampil sebagai chip bertanda ×; ada pula "Bersihkan semua" beserta jumlah penyaring yang sedang menyala.' },
-      { judul: 'Berlaku lintas tab', detail: 'Penjelajah yang sama dipakai tab Siswa, Presensi, Nilai, dan Rapor. Dropdown rombel di tab Nilai dan Rapor ikut menyempit mengikuti lembaga dan tingkat yang sedang dipilih.' },
-    ],
-    catatan:
-      'Rombel bernama sama di tahun ajaran berbeda — data warisan punya dua "7A" — diberi keterangan tahun ajarannya agar dua chip tidak tampak kembar. Sembilan menu (Kurikulum, Poskestren, Keuangan, LMS, Penggajian, Ujian, Kunjungan Wali, PPDB, Laporan) untuk sementara disembunyikan dari sidebar atas permintaan client; hak aksesnya tidak dicabut, jadi peran yang berhak masih bisa membuka URL-nya langsung.',
-  },
-  {
     id: 'guru',
     judul: 'Alur guru',
     ringkas:
@@ -293,23 +277,6 @@ export const BAGIAN: Bagian[] = [
     ],
     catatan:
       'Izin granular sarpras.* (17 izin) diberikan per peran sesuai 05-matriks-peran §6; cakupan unit ditegakkan di server (sarpras SMP tidak bisa mengubah aset MA walau form dimanipulasi). Ekspor dengan kolom persis templat Dapodik/EMIS menunggu berkas templat resmi — sementara pakai laporan "Data ruang". Harga & nilai buku hanya tampil bagi pemegang sarpras.view_value.',
-  },
-  {
-    id: 'presensi',
-    judul: 'Presensi harian',
-    ringkas:
-      'Presensi santri per sesi (sekolah, madin, jamaah Subuh, ngaji malam, apel kamar) diisi per rombel/asrama dengan default Hadir, presensi selfie guru & pegawai dengan GPS dan waktu server, izin/sakit pegawai, antrean tinjau atasan, dashboard, dan ekspor. Tab tampil sesuai izin: pegawai, bendahara, sarpras, teknisi hanya melihat "Presensi Saya".',
-    langkah: [
-      { judul: 'Input santri', detail: 'Tab "Input Siswa/Santri": pilih tanggal, sesi, rombel (atau asrama untuk sesi pondok). Semua otomatis Hadir; klik H/S/I/A/T hanya untuk pengecualian lalu Simpan — satu transaksi, satu entri audit per rombel. Guru hanya melihat rombel yang ia wali-kelasi, ajar hari itu, atau saat piket; musyrif hanya asrama yang ia pegang.' },
-      { judul: 'Izin & Poskestren otomatis', detail: 'Santri dengan izin pondok disetujui (hingga tanggal kembali) otomatis Izin; rekam medis dengan tindak lanjut Istirahat/Rawat/Rujuk otomatis Sakit. Status ini tidak bisa ditimpa guru — hanya pemegang presensi.override (kepala unit, pengasuh, ketua, poskestren).' },
-      { judul: 'Penguncian', detail: 'Presensi bisa diubah sampai 23.59 WIB hari itu. Setelahnya terkunci; kepala unit/pengasuh/ketua (presensi.lock) bisa mengubah dengan alasan wajib, dicatat sebelum/sesudah di audit.' },
-      { judul: 'Presensi Saya (selfie)', detail: 'Menu Presensi → "Presensi Saya" di sidebar. Kamera depan terbuka langsung (tanpa unggah galeri), lokasi GPS dibaca, foto dikompres di HP lalu server menempel nama + waktu server + unit. Di luar radius (bawaan 150 m) tetap boleh dengan alasan dan masuk antrean tinjau. Terlambat = lewat jam masuk + toleransi (bawaan 07.00, 15 menit; pulang 14.00, Jumat 11.00). Tombol berubah jadi Check-out setelah check-in.' },
-      { judul: 'Izin pegawai & tinjau', detail: 'Pegawai mengajukan Sakit/Izin/Cuti/Dinas luar (lampiran opsional). Tab "Perlu Ditinjau" (kepala unit untuk pegawai unitnya, SDM, ketua): setujui izin → hari-harinya otomatis terisi; tinjau presensi luar lokasi / GPS tidak akurat dengan foto selfie berdampingan foto profil dan tautan peta.' },
-      { judul: 'Dashboard & laporan', detail: 'Tab Dashboard: siswa (% hadir, komposisi, tren 30 hari, rombel terendah, alpa terbanyak, rombel yang belum mengisi) dan pegawai (sudah/belum check-in, terlambat, tren tepat waktu, rata-rata menit terlambat per unit, galeri selfie). Tab Laporan: CSV rekap bulanan santri per rombel dan pegawai (bahan laporan, bukan potongan gaji otomatis).' },
-      { judul: 'Portal', detail: 'Portal wali dan portal santri punya tab Presensi berupa kalender bulanan berwarna. Dashboard utama menampilkan kartu kehadiran santri hari ini, pegawai yang sudah check-in, dan kerusakan sarpras terbuka.' },
-    ],
-    catatan:
-      'Cron (scripts/cron.ts): isi otomatis Izin/Sakit, tandai Alpa pegawai yang tidak check-in sampai jam pulang (kecuali libur, izin, atau guru yang hari itu tidak punya jadwal mengajar), WA ke wali bila santri Alpa di sesi sekolah (sekali per hari, batas terlambat + 60 menit, tunduk WA_DRY_RUN), hapus foto presensi > 90 hari (baris tetap). Foto presensi hanya bisa dibuka pemiliknya, kepala unit pegawai itu, SDM, dan ketua. Kamera & GPS butuh HTTPS di produksi. Pengaturan (sesi, jam kerja per unit, hari libur, titik & radius unit) di tab Pengaturan (presensi.setting: ketua, SDM).',
   },
   {
     id: 'izin-peran',
