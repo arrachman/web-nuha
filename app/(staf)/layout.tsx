@@ -19,7 +19,7 @@ export default async function StafLayout({ children }: { children: React.ReactNo
   const masterGroups = [persona, ...kelompok].filter((group) => group.items.length > 0);
 
   const MENU_DISEMBUNYIKAN = new Set([
-    'kurikulum', 'poskestren', 'keuangan', 'lms', 'gaji', 'ujian',
+    'kurikulum', 'poskestren', 'lms', 'gaji', 'ujian',
     'kunjungan', 'ppdb', 'laporan',
     // Modul baru (rekrutmen, sarpras, presensi) sudah dilepas — semuanya tampil
     // di sidebar sesuai menu_roles (patch 07-persiapan-development §9).
