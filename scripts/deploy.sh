@@ -54,6 +54,11 @@ systemctl --user stop "$SERVICE" || true
 rm -rf "$PREV"
 [ -d "$LIVE" ] && mv "$LIVE" "$PREV"
 mv "$STAGE" "$LIVE"
+# Cache Turbopack di $PREV tidak akan pernah dibaca lagi (penyemaian cache
+# selalu dari $LIVE yang baru) dan runtime tidak memakainya — buang agar disk
+# tidak menampung dua salinan cache (±250 MB). Rollback tetap aman: server
+# berjalan tanpa cache build; hanya deploy sesudah rollback yang dingin.
+rm -rf "$PREV/cache" || true
 systemctl --user start "$SERVICE"
 
 echo "[deploy] health check..."
