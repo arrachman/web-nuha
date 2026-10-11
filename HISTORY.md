@@ -1,5 +1,11 @@
 # Riwayat Perubahan — web-nuha
 
+## 2026-10-12 — Sandi `superadmin` produksi diganti jadi `123123`
+
+- Atas permintaan user: sandi akun `superadmin` (id 1) di DB produksi Althea diganti menjadi `123123` (bcrypt cost 12, sama seperti seed), `session_version` dinaikkan 0 → 1 (sesi lama tercabut), `must_change_password` tetap false, `password_changed_at` diperbarui. Akun lain tidak diubah.
+- Verifikasi login riil via https://nuha.senti.id/apps: POST `/api/auth/login` → 200 `success:true`, kuki `nuha_session` terbit, `/beranda` dan `/keuangan` 200 dengan sesi, logout 200, audit LOGIN/LOGOUT tercatat.
+- Baris "Akun uji" di `CLAUDE.md` diperbarui untuk mencatat pengecualian ini (commit ini hanya mengambil hunk baris tersebut; perubahan CLAUDE.md lain milik sesi paralel tidak ikut).
+
 ## 2026-10-12 — Optimasi build & disk (next.config + deploy.sh)
 
 - Akar build berat: pola path dinamis di `lib/berkas.ts` membuat file tracing Next mencocokkan ±12.700 berkas seisi proyek ("Overly broad patterns... over bundling"), sehingga `.next/standalone` menyalin nyaris seluruh isi repo di setiap build. `next.config.mjs` kini memiliki `outputFileTracingExcludes` (13 pola: dump SQL, tests, test-results, storage, docs mentah, plan, scripts, `*.log`, `*.md`, dll) — standalone bersih dari berkas non-runtime. Runtime `next start` tidak terpengaruh (tracing hanya menentukan isi standalone).

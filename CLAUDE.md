@@ -93,7 +93,7 @@ saat user eksplisit minta deploy.
 - Periode aktif hardcode `2026/2027 Gasal` di `app/kurikulum/kelas-guru.ts` —
   kandidat dipindah ke pengaturan.
 
-## Akun uji (sandi semua: `Nuha2026!`)
+## Akun uji (sandi semua: `Nuha2026!` — kecuali `superadmin` di server produksi Althea: `123123`, diganti atas permintaan user 2026-10-12)
 
 | Peran | Login |
 |---|---|
