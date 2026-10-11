@@ -81,38 +81,6 @@ const UNIT_ROWS = [
     visi: 'Pesantren salaf yang kuat pada sanad kitab dan Al-Qur’an, terbuka pada tata kelola modern.',
     misi: 'Menyelenggarakan pengajian kitab kuning berjenjang; membina hafalan Al-Qur’an; menanamkan adab dan kemandirian santri aktif.',
   },
-  {
-    key: 'Poskestren',
-    nama: 'Poskestren',
-    deskripsi: '1 perawat tetap, 2 dokter kunjung, 12 kader Santri Husada, 6 bed rawat, dan deteksi dini KLB otomatis.',
-    namaResmi: 'Poskestren Nurul Huda Mergosono',
-    jenjang: 'Layanan Kesehatan',
-    tahunBerdiri: 2016,
-    logoPath: '/assets/logo-nuha.webp',
-    alamat: ALAMAT_PONDOK,
-    telepon: '(0341) 361234',
-    email: 'poskestrennuha@gmail.com',
-    kepalaNama: 'Ns. Maimunah, S.Kep.',
-    kepalaJabatan: 'Penanggung Jawab Poskestren',
-    visi: 'Santri sehat, pesantren bersih, layanan kesehatan yang tersistem.',
-    misi: 'Menyediakan layanan kesehatan dasar santri bersama Puskesmas Kedungkandang; mencatat riwayat kesehatan santri; menggerakkan perilaku hidup bersih dan sehat.',
-  },
-  {
-    // 01-fondasi §4 (jawaban bawaan U4 di 06-pertanyaan-client.md): aset dan
-    // lowongan milik yayasan (tanah, kendaraan, gedung bersama) butuh unit
-    // sendiri, bukan menempel ke salah satu sekolah/pondok.
-    key: 'YAYASAN',
-    nama: 'Yayasan',
-    namaResmi: 'Yayasan Pendidikan Islam Nurul Huda Mergosono',
-    deskripsi: 'Unit administratif untuk aset dan lowongan milik yayasan langsung (tanah, gedung bersama, kendaraan), bukan salah satu unit sekolah/pondok.',
-    jenjang: 'Yayasan',
-    alamat: ALAMAT_PONDOK,
-    telepon: '(0341) 361234',
-    email: 'smpnuhamergosono@gmail.com',
-    website: 'https://nuha.pesantren.web.id',
-    kepalaNama: 'KH. Ahmad Zainuri, M.Ag.',
-    kepalaJabatan: 'Ketua Yayasan',
-  },
 ];
 
 /**
