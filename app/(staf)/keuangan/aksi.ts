@@ -8,7 +8,7 @@ import { StatusSantri } from "@prisma/client";
 import type { SessionPayload } from "@/lib/auth";
 
 /** Jenis invoice untuk iuran bulanan santri pondok (syariah + komponen). */
-export const JENIS_IURAN = "IURAN_BULANAN";
+const JENIS_IURAN = "IURAN_BULANAN";
 
 const PERIODE_RE = /^\d{4}-(0[1-9]|1[0-2])$/;
 

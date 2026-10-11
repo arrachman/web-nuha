@@ -10,12 +10,12 @@ type MasterGroup = { menuKey: string; label: string; icon: string | null; items:
 
 const HREF_BY_KEY: Record<string, string> = {
   dashboard: '/', induk: '/induk', pesantren: '/kepesantrenan', poskestren: '/poskestren', keuangan: '/keuangan', akademik: '/akademik', kurikulum: '/kurikulum', ujian: '/ujian', lms: '/lms', gaji: '/penggajian', wa: '/notifikasi', kunjungan: '/kunjungan-wali', ppdb: '/ppdb-panitia', laporan: '/laporan', pengaturan: '/pengaturan', kepegawaian: '/kepegawaian', data: '/data',
-  rekrutmen: '/rekrutmen', sarpras: '/sarpras', presensi: '/presensi',
+  rekrutmen: '/rekrutmen', sarpras: '/sarpras', presensi: '/presensi', perpustakaan: '/perpustakaan',
 };
 
 const TITLE_BY_PATH: Record<string, string> = {
   '/': 'Dashboard Yayasan', '/induk': 'Data Induk Santri', '/kepesantrenan': 'Kepesantrenan', '/poskestren': 'Poskestren', '/keuangan': 'Keuangan', '/akademik': 'Akademik', '/kurikulum': 'Kurikulum', '/ujian': 'Ujian', '/lms': 'LMS & Kompetensi', '/penggajian': 'Penggajian', '/notifikasi': 'Notifikasi WhatsApp', '/kunjungan-wali': 'Kunjungan Wali', '/ppdb-panitia': 'PPDB 2026/2027 — Sisi Panitia', '/laporan': 'Laporan Rekap Bulanan', '/pengaturan': 'Pengaturan', '/kepegawaian': 'Kepegawaian', '/data': 'Master Data',
-  '/rekrutmen': 'Rekrutmen', '/sarpras': 'Sarana & Prasarana', '/presensi': 'Presensi',
+  '/rekrutmen': 'Rekrutmen', '/sarpras': 'Sarana & Prasarana', '/presensi': 'Presensi', '/perpustakaan': 'Perpustakaan',
 };
 
 /**
