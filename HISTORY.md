@@ -1,5 +1,14 @@
 # Riwayat Perubahan — web-nuha
 
+## 2026-10-11 — Fitur keuangan pondok fase 1 (branch `feat/keuangan-pondok`)
+
+- Skema: `TarifIuran` (5 komponen iuran: syariah 50rb via BRI, infaq pembangunan 15rb, wifi 20rb, poskes 10rb, PLN/PDAM 25rb), `TarifSantriOverride` (tarif khusus per santri), `UtilitasUnit` + `UtilitasTagihan` (master 14 PLN + 10 PDAM), kolom `rincian` (JSON) di `Invoice`; migrasi `20261011234000_keuangan_pondok_fase1` (dibuat via `migrate diff` karena `migrate dev` menolak jalan — satu migrasi lama pernah diubah setelah di-apply, jadi reset dilarang).
+- Seed: `prisma/seed-keuangan.ts` (idempoten) + dipanggil dari `seed-dasar.ts`.
+- Server actions `app/(staf)/keuangan/aksi.ts`: generate tagihan bulanan (idempoten), catat pembayaran (atomik: Payment buku santri + CashTransaction buku bendahara), catat kas, simpan utilitas bulanan, simpan/hapus override — semua beraudit.
+- 5 tab baru di modul Keuangan: Syariah Bulanan, Kas & Pengeluaran, Piutang, Utilitas (input + PDF + teks WA), Triwulan.
+- PDF via pdfkit: kwitansi A5 (`/api/keuangan/kwitansi/[id]`) dengan terbilang; laporan utilitas 2 halaman navy (`/api/keuangan/utilitas/[periode]`) + teks rekap WhatsApp siap copas.
+- Dependensi baru: `pdfkit` + `@types/pdfkit`.
+
 ## 2026-09-23 — Penerapan pembaruan test-aja (f2adf98) ke repo lokal
 
 - Pembaruan dari sesi pengembangan lain diterapkan ke `main` sebagai satu

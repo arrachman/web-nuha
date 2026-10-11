@@ -189,6 +189,10 @@ export const BAGIAN: Bagian[] = [
     langkah: [
       { judul: 'Tagihan dan SPP', detail: 'Status Lunas, Cicil, dan Menunggak dibedakan warna badge.' },
       { judul: 'Rekap dan tunggakan', detail: 'Agregat dihitung dari transaksi, bukan angka tetap.' },
+      { judul: 'Syariah Bulanan', detail: 'Generate tagihan iuran Rp120rb/bln per santri (syariah 50rb via BRI + infaq 15rb + wifi 20rb + poskes 10rb + PLN/PDAM 25rb); tarif khusus per santri bisa dioverride.' },
+      { judul: 'Bayar 2 pencatatan', detail: 'Satu klik mencatat Payment di buku santri sekaligus CashTransaction di buku bendahara, plus kwitansi PDF.' },
+      { judul: 'Kas, Piutang, Triwulan', detail: 'Saldo kas dan form pengeluaran; total piutang per santri; rekap pemasukan-pengeluaran per triwulan.' },
+      { judul: 'Utilitas', detail: 'Master 14 PLN + 10 PDAM, input tagihan bulanan, unduh PDF laporan 2 halaman, salin rekap WhatsApp.' },
       { judul: 'Penggajian', detail: 'Slip diterbitkan, dibayar, lalu bila perlu direvisi — tiap tahap tercatat.' },
     ],
     gambar: [{ file: 'keuangan-tagihan.png', caption: 'Modul keuangan dilihat oleh bendahara.' }],

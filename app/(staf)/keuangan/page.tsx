@@ -6,8 +6,18 @@ import { TabSpp } from './TabSpp';
 import { TabRekap } from './TabRekap';
 import { TabTunggakan } from './TabTunggakan';
 import { TabTransaksi } from './TabTransaksi';
+import { TabSyariah } from './TabSyariah';
+import { TabKas } from './TabKas';
+import { TabPiutang } from './TabPiutang';
+import { TabUtilitas } from './TabUtilitas';
+import { TabTriwulan } from './TabTriwulan';
 
 const TABS: TabDef[] = [
+  { key: 'syariah', label: 'Syariah Bulanan' },
+  { key: 'kas', label: 'Kas & Pengeluaran' },
+  { key: 'piutang', label: 'Piutang' },
+  { key: 'utilitas', label: 'Utilitas' },
+  { key: 'triwulan', label: 'Triwulan' },
   { key: 'invoices', label: 'Invoice' },
   { key: 'spp', label: 'Riwayat SPP per Anak' },
   { key: 'rekap', label: 'Rekap Nama Santri' },
@@ -34,6 +44,13 @@ export default async function KeuanganPage({ searchParams }: { searchParams: Sea
   const session = await requirePage('keuangan');
   const sp = await searchParams;
   const aktif = tabAktif(TABS, sp.tab);
+  const now = new Date();
+  const periode = typeof sp.periode === 'string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(sp.periode)
+    ? sp.periode
+    : `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const tw = typeof sp.tw === 'string' && /^\d{4}-Q[1-4]$/.test(sp.tw)
+    ? sp.tw
+    : `${now.getFullYear()}-Q${Math.floor(now.getMonth() / 3) + 1}`;
   const kartu = await ambilKartu();
 
   return (
@@ -52,6 +69,11 @@ export default async function KeuanganPage({ searchParams }: { searchParams: Sea
 
       <Tabs tabs={TABS} aktif={aktif} basePath="/keuangan" />
 
+      {aktif === 'syariah' && <TabSyariah periode={periode} />}
+      {aktif === 'kas' && <TabKas />}
+      {aktif === 'piutang' && <TabPiutang />}
+      {aktif === 'utilitas' && <TabUtilitas periode={periode} />}
+      {aktif === 'triwulan' && <TabTriwulan tw={tw} />}
       {aktif === 'invoices' && <TabInvoice q={typeof sp.q === 'string' ? sp.q : ''} />}
       {aktif === 'spp' && <TabSpp anakId={typeof sp.anak === 'string' ? sp.anak : undefined} />}
       {aktif === 'rekap' && <TabRekap q={typeof sp.q === 'string' ? sp.q : ''} />}

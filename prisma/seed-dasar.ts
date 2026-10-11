@@ -11,6 +11,7 @@ import { PrismaClient, JenisKelamin } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import data from './proto-data.json';
 import { daftarAcademicYear } from './tahun-ajaran';
+import { seedKeuanganPondok } from './seed-keuangan';
 
 const prisma = new PrismaClient();
 type PrototypeData = Record<string, Array<Record<string, unknown>>>;
@@ -527,6 +528,7 @@ async function main() {
   await seedMasterSarpras();
   await seedIzinGranular(IZIN_PRESENSI);
   await seedMasterPresensi();
+  await seedKeuanganPondok(prisma);
   console.log('Seed dasar selesai: peran, menu, unit, tahun ajaran, template WA, superadmin, izin tingkat aksi.');
 }
 
