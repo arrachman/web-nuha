@@ -27,7 +27,7 @@ export default async function StafLayout({ children }: { children: React.ReactNo
   const HREF_KNOWN = new Set([
     'dashboard', 'induk', 'pesantren', 'poskestren', 'keuangan', 'akademik', 'kurikulum', 'ujian',
     'lms', 'gaji', 'wa', 'kunjungan', 'ppdb', 'laporan', 'pengaturan', 'kepegawaian', 'data',
-    'rekrutmen', 'sarpras', 'presensi',
+    'rekrutmen', 'sarpras', 'presensi', 'perpustakaan',
   ]);
   const visible = menus
     .filter((menu) => HREF_KNOWN.has(menu.key) && !MENU_DISEMBUNYIKAN.has(menu.key))

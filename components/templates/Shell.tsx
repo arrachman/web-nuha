@@ -30,6 +30,7 @@ const HREF_BY_KEY: Record<string, string> = {
   rekrutmen: '/rekrutmen',
   sarpras: '/sarpras',
   presensi: '/presensi',
+  perpustakaan: '/perpustakaan',
 };
 
 /**

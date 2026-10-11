@@ -429,6 +429,8 @@ model Unit {
   assetLocations    AssetLocation[]     @relation("LokasiUnit")
   assets            Asset[]             @relation("AsetPemilik")
   procurements      Procurement[]       @relation("PengadaanUnit")
+  books             Book[]
+  bookLoans         BookLoan[]
 
   @@index([desaId])
   @@map("unit")
@@ -574,6 +576,7 @@ model Santri {
   leavePermits   LeavePermit[]
   attendance     Attendance[]
   invoices       Invoice[]
+  tarifOverride  TarifSantriOverride?
   medicalRecords MedicalRecord[]
   nilai          Nilai[]
   kunjungan      Kunjungan[]
@@ -581,6 +584,7 @@ model Santri {
   pesertaCbt     PesertaCbt[]
   healthProfile  HealthProfile?
   kelasLain      SantriKelas[]
+  bookLoans      BookLoan[]
 
   @@index([status])
   @@map("santri")
@@ -683,6 +687,7 @@ model Staff {
   jurnalMengajar      JurnalMengajar[]
   attendances         StaffAttendance[]
   heldAssets          Asset[]              @relation("AsetPemegang")
+  bookLoans           BookLoan[]
   teachingLoads       TeachingLoad[]
   decreeArchives      DecreeArchive[]
   structuralPositions StructuralPosition[]
@@ -1314,6 +1319,7 @@ model Invoice {
   amount     Decimal  @map("amount") @db.Decimal(14, 2)
   paidAmount Decimal  @default(0) @map("paid_amount") @db.Decimal(14, 2)
   dueDate    DateTime @map("due_date") @db.Date
+  rincian    Json?    @map("rincian")
   createdAt  DateTime @default(now()) @map("created_at")
 
   santri   Santri    @relation(fields: [santriId], references: [id], onDelete: Cascade)
@@ -2495,4 +2501,136 @@ model StaffLeave {
 
   @@index([staffId, dari])
   @@map("staff_leaves")
+}
+
+/// Koleksi buku perpustakaan per unit (SMP / MA / Pondok Pesantren).
+model Book {
+  id          BigInt   @id @default(autoincrement())
+  unitId      Int      @map("unit_id")
+  kode        String   @db.VarChar(32)
+  judul       String   @db.VarChar(255)
+  penulis     String?  @db.VarChar(160)
+  penerbit    String?  @db.VarChar(160)
+  tahunTerbit Int?     @map("tahun_terbit")
+  isbn        String?  @db.VarChar(32)
+  kategori    String?  @db.VarChar(64)
+  /// Lokasi rak/lemari, mis. "Rak A-3".
+  rak         String?  @db.VarChar(64)
+  /// Total eksemplar yang dimiliki unit.
+  jumlah      Int      @default(1)
+  keterangan  String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  unit  Unit       @relation(fields: [unitId], references: [id])
+  loans BookLoan[]
+
+  @@unique([unitId, kode])
+  @@index([unitId])
+  @@map("books")
+}
+
+/// Peminjaman buku: santri / pegawai / umum.
+model BookLoan {
+  id               BigInt    @id @default(autoincrement())
+  bookId           BigInt    @map("book_id")
+  unitId           Int       @map("unit_id")
+  /// "santri" | "pegawai" | "umum"
+  tipePeminjam     String    @map("tipe_peminjam") @db.VarChar(16)
+  santriId         BigInt?   @map("santri_id")
+  staffId          BigInt?   @map("staff_id")
+  /// Nama peminjam (wajib diisi; untuk santri/pegawai terisi otomatis).
+  namaPeminjam     String    @map("nama_peminjam") @db.VarChar(160)
+  tanggalPinjam    DateTime  @map("tanggal_pinjam") @db.Date
+  tanggalJatuhTempo DateTime @map("tanggal_jatuh_tempo") @db.Date
+  tanggalKembali   DateTime? @map("tanggal_kembali") @db.Date
+  /// "Dipinjam" | "Dikembalikan"
+  status           String    @default("Dipinjam") @db.VarChar(16)
+  catatan          String?   @db.Text
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  book   Book    @relation(fields: [bookId], references: [id])
+  unit   Unit    @relation(fields: [unitId], references: [id])
+  santri Santri? @relation(fields: [santriId], references: [id])
+  staff  Staff?  @relation(fields: [staffId], references: [id])
+
+  @@index([unitId, status])
+  @@index([bookId])
+  @@map("book_loans")
+}
+
+// Keuangan pondok - fase 1 (2026-10-11): komponen iuran syariah bulanan,
+// override tarif per santri, master + tagihan utilitas PLN/PDAM.
+
+/// Komponen iuran bulanan santri. Standar 120rb =
+/// syariah 50 + infaq pembangunan 15 + wifi 20 + poskes 10 + pln/pdam 25.
+model TarifIuran {
+  id       BigInt  @id @default(autoincrement())
+  kode     String  @unique @map("kode") @db.VarChar(32)
+  label    String  @db.VarChar(120)
+  nominal  Decimal @db.Decimal(14, 2)
+  rekening String? @db.VarChar(64)
+  aktif    Boolean @default(true)
+
+  @@map("tarif_iuran")
+}
+
+/// Override total iuran bulanan untuk santri bertarif khusus
+/// (mis. 900rb/bln) - menggantikan total komponen standar.
+model TarifSantriOverride {
+  santriId     BigInt  @map("santri_id")
+  totalBulanan Decimal @map("total_bulanan") @db.Decimal(14, 2)
+  keterangan   String? @db.VarChar(255)
+
+  santri Santri @relation(fields: [santriId], references: [id], onDelete: Cascade)
+
+  @@id([santriId])
+  @@map("tarif_santri_override")
+}
+
+enum UtilitasSektor {
+  PLN
+  PDAM
+}
+
+enum UtilitasStatus {
+  Belum
+  Lunas
+}
+
+/// Master unit utilitas: 14 PLN (2 token prabayar) + 10 PDAM.
+model UtilitasUnit {
+  id           BigInt         @id @default(autoincrement())
+  sektor       UtilitasSektor
+  nama         String         @db.VarChar(120)
+  idpel        String         @db.VarChar(32)
+  tarifDaya    String?        @map("tarif_daya") @db.VarChar(32)
+  koefisien    Decimal?       @db.Decimal(12, 2)
+  golongan     String?        @db.VarChar(64)
+  abodemen     Decimal?       @db.Decimal(14, 2)
+  isToken      Boolean        @default(false) @map("is_token")
+  tagihKePutri Boolean        @default(false) @map("tagih_ke_putri")
+  aktif        Boolean        @default(true)
+
+  tagihan UtilitasTagihan[]
+
+  @@unique([sektor, idpel])
+  @@map("utilitas_unit")
+}
+
+/// Tagihan utilitas per unit per periode (YYYY-MM).
+model UtilitasTagihan {
+  id      BigInt         @id @default(autoincrement())
+  unitId  BigInt         @map("unit_id")
+  periode String         @map("periode") @db.VarChar(7)
+  volume  Decimal?       @db.Decimal(12, 2)
+  total   Decimal        @db.Decimal(14, 2)
+  status  UtilitasStatus @default(Belum)
+
+  unit UtilitasUnit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+
+  @@unique([unitId, periode])
+  @@index([periode])
+  @@map("utilitas_tagihan")
 }
