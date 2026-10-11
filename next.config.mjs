@@ -24,11 +24,45 @@ const nextConfig = {
   // tidak terhapus di tengah jalan (penyebab error 500 saat agen bekerja).
   distDir: process.env.NEXT_DIST_DIR || '.next',
   outputFileTracingRoot: workspaceRoot,
+  // Ringankan build & output standalone: pola path dinamis di lib/berkas.ts
+  // (path.join STORAGE_DIR) membuat file tracing mencocokkan ~12.700 berkas
+  // seisi proyek ("Overly broad patterns can lead to build performance issues
+  // and over bundling") sehingga dump SQL 22 MB, tests, docs mentah, log, dan
+  // skrip ops ikut tersalin ke .next/standalone di SETIAP build. Semua berkas
+  // di bawah tidak dipakai runtime standalone (dump = arsip operator; tests/
+  // scripts dijalankan dari checkout, bukan dari standalone), jadi aman
+  // dikeluarkan dari tracing. Runtime `next start` di Althea tidak terpengaruh
+  // (tracing hanya menentukan isi folder standalone).
+  outputFileTracingExcludes: {
+    '*': [
+      './mysql-full.sql',
+      './*.sql.gz',
+      './*.log',
+      './*.md',
+      './tsconfig.tsbuildinfo',
+      './tests/**/*',
+      './test-results/**/*',
+      './storage/**/*',
+      './docs/**/*',
+      './plan/**/*',
+      './scripts/**/*',
+      './playwright.config.ts',
+      './vitest.config.mts',
+    ],
+  },
   turbopack: { root: workspaceRoot },
   devIndicators: false,
   // 01-fondasi §5.3: default 1 MB tidak cukup untuk unggah foto presensi/berkas
   // lamaran/dokumen aset yang dikirim sebagai FormData lewat Server Action.
-  experimental: { serverActions: { bodySizeLimit: '6mb' } },
+  experimental: {
+    serverActions: { bodySizeLimit: '6mb' },
+    // Cache kompilasi Turbopack persisten di <distDir>/cache/turbopack.
+    // Di Next 16.1 fitur ini belum bawaan untuk build (baru bawaan di 16.3),
+    // dan deploy.sh menukar distDir setiap rilis — deploy.sh menyalin cache
+    // dari .next live ke .next-staging sebelum build agar build berikutnya
+    // hangat (hanya modul berubah yang dikompilasi ulang).
+    turbopackFileSystemCacheForBuild: true,
+  },
 };
 
 const PORT = process.env.WEB_NUHA_PORT || '3226';

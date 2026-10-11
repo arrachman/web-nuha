@@ -21,3 +21,15 @@ docs/*.png
 # Artefak hasil jalan Playwright (screenshot, trace, laporan)
 /test-results/
 /playwright-report/
+
+# Artefak deploy (scripts/deploy.sh) & log runtime — jangan sampai ikut
+# ter-commit oleh `git add -A` (folder .next-prev berisi build lama ~200 MB+)
+/.next-staging/
+/.next-prev/
+*.log
+
+# Dump database mentah di root repo (PII santri) — arsipkan di luar repo,
+# mis. /opt/nuha/sql-backups/ di server. Hanya root; migrasi Prisma di
+# subfolder tidak terpengaruh pola ini.
+/*.sql
+/*.sql.gz
