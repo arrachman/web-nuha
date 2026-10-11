@@ -3,6 +3,12 @@
 Panduan Claude Code khusus app ini. Aturan repo di `/opt/sentient-factory/CLAUDE.md`
 tetap berlaku; yang di sini menambah, bukan menggantikan.
 
+## Aturan Agen: Commit & Push ke `main` (WAJIB)
+
+Setiap agen yang selesai bekerja WAJIB commit semua perubahannya lalu
+`git push origin main`. **DILARANG membuat branch baru.** Aturan lengkap
+ada di `AGENTS.md` di root repo ini — patuhi sebelum menutup pekerjaan.
+
 ## Apa ini
 
 Sistem informasi pesantren terpadu (SIMTERPADU): 18 menu staf, 2 portal
