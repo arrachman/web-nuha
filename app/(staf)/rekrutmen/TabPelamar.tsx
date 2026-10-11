@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Avatar, Kosong, Tabel, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
 
 const LABEL_STATUS: Record<string, string> = {
@@ -23,11 +25,14 @@ export async function TabPelamar({ searchParams }: { searchParams: SearchParams 
   const jobId = satu(searchParams.jobId);
   const status = satu(searchParams.status);
   const halaman = bacaHalaman(searchParams);
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
 
   const where = {
     ...(q ? { OR: [{ fullName: { contains: q } }, { number: { contains: q } }] } : {}),
     ...(jobId ? { jobId: BigInt(jobId) } : {}),
     ...(status ? { status: status as never } : {}),
+    ...(unitAktif != null ? { job: { unitId: unitAktif } } : {}),
   };
 
   const [total, pelamar, lowongan] = await Promise.all([
@@ -38,7 +43,7 @@ export async function TabPelamar({ searchParams }: { searchParams: SearchParams 
       skip: (halaman - 1) * UKURAN_HALAMAN,
       take: UKURAN_HALAMAN,
     }),
-    prisma.jobPosting.findMany({ where: { deletedAt: null }, orderBy: { createdAt: 'desc' }, select: { id: true, code: true, title: true } }),
+    prisma.jobPosting.findMany({ where: { deletedAt: null, ...(unitAktif != null ? { unitId: unitAktif } : {}) }, orderBy: { createdAt: 'desc' }, select: { id: true, code: true, title: true } }),
   ]);
   const totalHalaman = Math.max(1, Math.ceil(total / UKURAN_HALAMAN));
 

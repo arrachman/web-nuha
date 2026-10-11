@@ -1,5 +1,6 @@
 import { requirePage } from '@/lib/access';
 import { prisma } from '@/lib/prisma';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { JudulHalaman, StatCard, rp, Tabs, tabAktif, type TabDef } from '@/components';
 import { TabInvoice } from './TabTagihan';
 import { TabSpp } from './TabSpp';
@@ -28,9 +29,9 @@ const TABS: TabDef[] = [
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
 /** KPI ringkas di puncak modul — ditarik dari Invoice + CashTransaction, bukan angka tetap. */
-async function ambilKartu() {
+async function ambilKartu(unitAktif: number | null) {
   const [totals, kas] = await Promise.all([
-    prisma.invoice.aggregate({ _sum: { amount: true, paidAmount: true } }),
+    prisma.invoice.aggregate({ where: unitAktif != null ? { santri: { unitId: unitAktif } } : undefined, _sum: { amount: true, paidAmount: true } }),
     prisma.cashTransaction.groupBy({ by: ['direction'], _sum: { amount: true } }),
   ]);
   const totalInvoice = Number(totals._sum.amount ?? 0);
@@ -51,7 +52,8 @@ export default async function KeuanganPage({ searchParams }: { searchParams: Sea
   const tw = typeof sp.tw === 'string' && /^\d{4}-Q[1-4]$/.test(sp.tw)
     ? sp.tw
     : `${now.getFullYear()}-Q${Math.floor(now.getMonth() / 3) + 1}`;
-  const kartu = await ambilKartu();
+  const unitAktif = await getUnitAktif(session);
+  const kartu = await ambilKartu(unitAktif);
 
   return (
     <>

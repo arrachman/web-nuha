@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { requirePage } from '@/lib/access';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { prisma } from '@/lib/prisma';
 import { JudulHalaman, PesanAksi, satu, type SearchParams } from '@/components';
 import { laporKerusakan } from '../sarpras/actions';
@@ -17,14 +18,15 @@ const TINGKAT = [
  * Dibuka langsung, atau dari hasil pindai QR aset (?aset=) / ruang (?ruang=).
  */
 export default async function LaporKerusakanPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
-  await requirePage('sarpras');
+  const session = await requirePage('sarpras');
+  const unitAktif = await getUnitAktif(session);
   const sp = await searchParams;
   const tokenAset = satu(sp.aset);
   const tokenRuang = satu(sp.ruang);
   const [aset, ruang, semuaRuang] = await Promise.all([
     tokenAset ? prisma.asset.findUnique({ where: { qrToken: tokenAset }, include: { location: true } }) : null,
     tokenRuang ? prisma.assetLocation.findUnique({ where: { qrToken: tokenRuang } }) : null,
-    !tokenAset && !tokenRuang ? prisma.assetLocation.findMany({ where: { isActive: true, type: { in: ['Ruang', 'Area'] } }, orderBy: { name: 'asc' } }) : [],
+    !tokenAset && !tokenRuang ? prisma.assetLocation.findMany({ where: { isActive: true, type: { in: ['Ruang', 'Area'] }, ...(unitAktif != null ? { OR: [{ unitId: unitAktif }, { unitId: null }] } : {}) }, orderBy: { name: 'asc' } }) : [],
   ]);
   const kembali = `/lapor-kerusakan${tokenAset ? `?aset=${tokenAset}` : tokenRuang ? `?ruang=${tokenRuang}` : ''}`;
 

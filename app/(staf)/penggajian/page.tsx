@@ -1,4 +1,5 @@
 import { requirePage } from '@/lib/access';
+import { getUnitAktif, filterStaffAktif } from '@/lib/unit-scope';
 import { prisma } from '@/lib/prisma';
 import { JudulHalaman, Tabs, tabAktif } from '@/components';
 import { hitungGaji, rupiah } from '@/lib/gaji';
@@ -20,13 +21,14 @@ export default async function PenggajianPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const session = await requirePage('gaji');
+  const unitAktif = await getUnitAktif(session);
   const sp = await searchParams;
   const aktif = tabAktif(TABS, sp.tab);
   const periode = PERIODE_GAJI();
 
   const [pegawaiN, komponenSemua] = await Promise.all([
-    prisma.staff.count(),
-    prisma.staff.findMany({ include: { salaryComponent: true } }),
+    prisma.staff.count({ where: { ...filterStaffAktif(unitAktif) } }),
+    prisma.staff.findMany({ where: { ...filterStaffAktif(unitAktif) }, include: { salaryComponent: true } }),
   ]);
   const total = komponenSemua.reduce(
     (acc, p) => {

@@ -1,12 +1,18 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif, filterSantriAktif } from '@/lib/unit-scope';
 import { Card, Kosong, avaBg, inisial, BarHorizontal } from '@/components';
 
 const WARNA_PENYAKIT = ['#B91C1C', '#D97706', '#0F6B3D', '#1D4ED8', '#86B79C'];
 const AMBANG_KLB = 3; // ambang KLB prototype: 3 kasus/asrama untuk diagnosis yang sama
 
 export async function TabDashboard() {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const fStudent = unitAktif != null ? { student: { unitId: unitAktif } } : {};
   const [semuaKunjungan, obat] = await Promise.all([
     prisma.medicalRecord.findMany({
+      where: { ...fStudent },
       include: { student: { include: { person: true, room: { include: { dormitory: true } } } } },
       orderBy: { date: 'desc' },
     }),

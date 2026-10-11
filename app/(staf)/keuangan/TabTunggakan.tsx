@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Card, Avatar, Badge, Kosong, rp, Pagination, UKURAN_HALAMAN, bacaHalaman, type SearchParams } from '@/components';
 
 function hrefTunggakan(params: Record<string, string>) {
@@ -12,10 +14,17 @@ function hrefTunggakan(params: Record<string, string>) {
  * lalu potong per halaman sebelum findMany+include supaya tidak menarik semua baris. */
 export async function TabTunggakan({ searchParams }: { searchParams: SearchParams }) {
   const halaman = bacaHalaman(searchParams);
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
 
-  const idRows = await prisma.$queryRaw<{ id: bigint }[]>`
-    SELECT id FROM invoices WHERE paid_amount < amount ORDER BY due_date ASC
-  `;
+  const idRows = unitAktif != null
+    ? await prisma.$queryRaw<{ id: bigint }[]>`
+        SELECT i.id FROM invoices i JOIN santri s ON s.id = i.santri_id
+        WHERE i.paid_amount < i.amount AND s.unit_id = ${unitAktif} ORDER BY i.due_date ASC
+      `
+    : await prisma.$queryRaw<{ id: bigint }[]>`
+        SELECT id FROM invoices WHERE paid_amount < amount ORDER BY due_date ASC
+      `;
   const total = idRows.length;
   const idHalaman = idRows.slice((halaman - 1) * UKURAN_HALAMAN, halaman * UKURAN_HALAMAN).map((r) => r.id);
   const totalHalaman = Math.max(1, Math.ceil(total / UKURAN_HALAMAN));

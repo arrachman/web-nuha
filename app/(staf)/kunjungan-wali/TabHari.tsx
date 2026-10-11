@@ -1,16 +1,20 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif, filterSantriAktif } from '@/lib/unit-scope';
 import { Avatar, Badge, Kosong } from '@/components';
 import { setujuiKunjungan, tolakKunjungan, checkoutKunjungan } from './actions';
 
 /** Kartu kunjungan hari ini: verifikasi pengajuan atau check-out yang sedang berkunjung. */
 export async function TabHari() {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const awalHari = new Date();
   awalHari.setHours(0, 0, 0, 0);
   const akhirHari = new Date(awalHari);
   akhirHari.setDate(akhirHari.getDate() + 1);
 
   const kunjungan = await prisma.kunjungan.findMany({
-    where: { tgl: { gte: awalHari, lt: akhirHari } },
+    where: { tgl: { gte: awalHari, lt: akhirHari }, ...filterSantriAktif(unitAktif) },
     include: { santri: { include: { person: true } } },
     orderBy: { id: 'desc' },
   });

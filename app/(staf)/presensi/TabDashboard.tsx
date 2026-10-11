@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { isSuperAdmin, type SessionPayload } from '@/lib/auth';
 import { asramaBolehInput, rombelBolehInput, type IzinPresensi } from '@/lib/presensi/akses';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { LABEL_STATUS, hariDariTanggal, hariWib, sesiAktifPadaHari, tanggalDb, tanggalWib } from '@/lib/presensi/inti';
 import { BarHorizontal, ChartBatang, ChartDonut, ChartTren, Kosong, StatCard, Tabel, satu, type SearchParams } from '@/components';
 
@@ -21,7 +22,7 @@ export async function TabDashboard({ session, izin, sp }: { session: SessionPayl
   const lihat = satu(sp.lihat) === 'pegawai' && (pengelola || izin.review) ? 'pegawai' : 'siswa';
   const periode = PERIODE.some((p) => p.k === satu(sp.periode)) ? satu(sp.periode) : 'hari';
   const unitScope = !isSuperAdmin(session) && session.unitIds ? session.unitIds : null;
-  const unitDipilih = Number(satu(sp.unit)) || null;
+  const unitDipilih = Number(satu(sp.unit)) || (await getUnitAktif(session));
   const units = await prisma.unit.findMany({ where: unitScope ? { id: { in: unitScope } } : {}, orderBy: { id: 'asc' } });
   const href = (extra: Record<string, string>) => `/presensi?${new URLSearchParams({ tab: 'dashboard', lihat, periode, ...(unitDipilih ? { unit: String(unitDipilih) } : {}), ...extra }).toString()}`;
 

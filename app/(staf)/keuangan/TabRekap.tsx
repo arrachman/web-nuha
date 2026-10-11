@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Card, Avatar, Tabel, Badge, ProgressBar, Kosong, rp } from '@/components';
 
 /** Ketaatan payments per santri diringkas dari seluruh tagihannya. */
@@ -12,10 +14,13 @@ function statusKetaatan(amount: number, paidAmount: number): string {
 const WARNA_STATUS: Record<string, string> = { Lancar: '#0F6B3D', Cicil: '#E8973A', Menunggak: '#B91C1C' };
 
 export async function TabRekap({ q }: { q: string }) {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const santri = await prisma.santri.findMany({
-    where: q
-      ? { OR: [{ person: { fullName: { contains: q } } }, { nis: { contains: q } }] }
-      : undefined,
+    where: {
+      ...(q ? { OR: [{ person: { fullName: { contains: q } } }, { nis: { contains: q } }] } : {}),
+      ...(unitAktif != null ? { unitId: unitAktif } : {}),
+    },
     include: { person: true, unit: true, kelas: true, invoices: true },
     orderBy: { person: { fullName: 'asc' } },
     take: 30,

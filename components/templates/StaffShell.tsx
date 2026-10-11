@@ -3,6 +3,7 @@ import Image from 'next/image';
 import type { SessionPayload } from '@/lib/auth';
 import { LogoutButton } from '@/components/LogoutButton';
 import { PemilihPeran } from '@/components/PemilihPeran';
+import { PemilihUnit } from '@/components/PemilihUnit';
 import { inisial } from '@/components/utils/format';
 import { StaffNavigation, StaffTitle } from '@/components/templates/StaffNavigation';
 
@@ -19,6 +20,6 @@ export function StaffShell({ session, menus, masterGroups, ticker, showRolePicke
       <StaffNavigation menus={menus} masterGroups={masterGroups} />
       <div className="sidefoot"><div className="userchip"><span className="ava">{inisial(session.nama)}</span><span style={{ minWidth: 0 }}><span className="nm" style={{ display: 'block' }}>{session.nama}</span><span className="rl" style={{ display: 'block' }}>{peranUtama}</span></span></div><Link href="/docs" className="btn-ghost-terang" style={{ display: 'block', textAlign: 'center', color: '#f3f1e9' }}>Panduan</Link><LogoutButton /></div>
     </aside>
-    <main className="main"><header className="topbar"><div style={{ flex: 1, minWidth: 180 }}><StaffTitle />{ticker.length > 0 && <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}><span className="pill-agenda">Agenda</span><div className="mq"><div className="mqtrack">{[...ticker, ...ticker].map((teks, i) => <span key={i} style={{ fontSize: 12, color: 'var(--teks-lembut)' }}>{teks}</span>)}</div></div></div>}</div>{showRolePicker && <PemilihPeran session={session} />}<p className="muted" style={{ margin: 0 }}>Tahun Ajaran 2026/2027 · Semester Gasal</p></header><div className="pad">{menyamar && <div className="alert alert-peringatan" style={{ marginBottom: 14 }}>Mode debug: Anda melihat aplikasi sebagai <b>{peranUtama}</b>. Data dan menu mengikuti peran itu — pilih &ldquo;Super admin&rdquo; di kanan atas untuk kembali.</div>}{children}</div></main>
+    <main className="main"><header className="topbar"><div style={{ flex: 1, minWidth: 180 }}><StaffTitle />{ticker.length > 0 && <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}><span className="pill-agenda">Agenda</span><div className="mq"><div className="mqtrack">{[...ticker, ...ticker].map((teks, i) => <span key={i} style={{ fontSize: 12, color: 'var(--teks-lembut)' }}>{teks}</span>)}</div></div></div>}</div><PemilihUnit session={session} />{showRolePicker && <PemilihPeran session={session} />}<p className="muted" style={{ margin: 0 }}>Tahun Ajaran 2026/2027 · Semester Gasal</p></header><div className="pad">{menyamar && <div className="alert alert-peringatan" style={{ marginBottom: 14 }}>Mode debug: Anda melihat aplikasi sebagai <b>{peranUtama}</b>. Data dan menu mengikuti peran itu — pilih &ldquo;Super admin&rdquo; di kanan atas untuk kembali.</div>}{children}</div></main>
   </div>;
 }

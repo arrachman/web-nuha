@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { apiPath } from '@/lib/api-path';
 
 export type OpsiOrang = { id: string; nama: string; keterangan: string };
 /** Satu baris pilihan: siapa orangnya + hubungannya dengan pihak seberang. */
@@ -61,7 +62,7 @@ export function PemilihBanyakOrang({ name, label, id, hint, hubungan, placeholde
     let batal = false;
     (async () => {
       try {
-        const response = await fetch(`/api/orang/cari?ids=${awal.map((item) => item.id).join(',')}`);
+        const response = await fetch(apiPath(`/api/orang/cari?ids=${awal.map((item) => item.id).join(',')}`));
         const json = await response.json();
         if (batal || !json.success) return;
         const peta = new Map<string, OpsiOrang>((json.data as OpsiOrang[]).map((item) => [item.id, item]));
@@ -85,7 +86,7 @@ export function PemilihBanyakOrang({ name, label, id, hint, hubungan, placeholde
     const timer = setTimeout(async () => {
       setMemuat(true);
       try {
-        const url = `/api/orang/cari?q=${encodeURIComponent(ketik.trim())}${hanyaSantri ? '&santri=1' : ''}`;
+        const url = apiPath(`/api/orang/cari?q=${encodeURIComponent(ketik.trim())}${hanyaSantri ? '&santri=1' : ''}`);
         const response = await fetch(url, { signal: batal.signal });
         const json = await response.json();
         setHasil(json.success ? json.data : []);

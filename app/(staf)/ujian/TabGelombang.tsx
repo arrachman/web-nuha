@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Kosong, ProgressBar, Tabel } from '@/components';
 import { ubahStatusUjian } from './actions';
 
@@ -8,7 +10,10 @@ const tanggal = (tgl: Date) => tgl.toLocaleDateString('id-ID', { day: '2-digit',
 
 /** Gelombang ujian per unit, beserta kemajuan penilaiannya. */
 export async function TabGelombang({ bolehKelola }: { bolehKelola: boolean }) {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const ujian = await prisma.ujian.findMany({
+    where: unitAktif != null ? { unitId: unitAktif } : undefined,
     include: {
       unit: true,
       jadwal: { include: { kelas: { include: { santri: { select: { id: true } } } }, _count: { select: { nilai: true } } } },

@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import type { SessionPayload } from '@/lib/auth';
 import type { IzinSarpras } from '@/lib/aset/akses';
 import { JENIS_RUANG, LABEL_KONDISI } from '@/lib/aset/konstanta';
-import { whereUnit } from '@/lib/unit-scope';
+import { getUnitAktif, whereUnitAktif } from '@/lib/unit-scope';
 import { Kosong, Tabel } from '@/components';
 import { bangkitkanLokasiDariData, simpanLokasi } from './actions';
 import { BadgeKondisi, Kembali } from './Kembali';
@@ -11,7 +11,8 @@ import { stafPilihan, unitDalamCakupan } from './data';
 
 /** Pohon lokasi (kampus → gedung → lantai → ruang). Unit null = ruang bersama (masjid, aula). */
 export async function TabLokasi({ session, izin }: { session: SessionPayload; izin: IzinSarpras }) {
-  const scope = whereUnit(session);
+  const unitAktif = await getUnitAktif(session);
+  const scope = whereUnitAktif(session, unitAktif);
   const [lokasi, jumlahAset, units, staf] = await Promise.all([
     prisma.assetLocation.findMany({
       where: Object.keys(scope).length ? { OR: [scope, { unitId: null }] } : {},

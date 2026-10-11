@@ -1,12 +1,17 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Avatar, Kosong, ProgressBar } from '@/components';
 
 /** Progres hafalan diukur relatif dari jumlah setoran tercatat per santri — tidak ada
  *  field target/juz di skema, jadi persentase dihitung terhadap santri tersibuk. */
 export async function TabHafalan() {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const fStudent = unitAktif != null ? { student: { unitId: unitAktif } } : {};
   const [santriTahfidz, setoranTerbaru] = await Promise.all([
     prisma.santri.findMany({
-      where: { program: 'Tahfidz' },
+      where: { program: 'Tahfidz', ...(unitAktif != null ? { unitId: unitAktif } : {}) },
       include: {
         person: true,
         kelas: true,
@@ -15,6 +20,7 @@ export async function TabHafalan() {
       },
     }),
     prisma.memorization.findMany({
+      where: { ...fStudent },
       include: { student: { include: { person: true } } },
       orderBy: { date: 'desc' },
       take: 12,

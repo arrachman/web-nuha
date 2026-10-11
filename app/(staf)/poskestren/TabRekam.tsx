@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif, filterSantriAktif } from '@/lib/unit-scope';
 import { Avatar, Kosong, Tabel } from '@/components';
 
 const WARNA_LANJUT: Record<string, string> = {
@@ -7,7 +9,11 @@ const WARNA_LANJUT: Record<string, string> = {
 };
 
 export async function TabRekam() {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const fStudent = unitAktif != null ? { student: { unitId: unitAktif } } : {};
   const rekam = await prisma.medicalRecord.findMany({
+    where: { ...fStudent },
     include: { student: { include: { person: true, room: { include: { dormitory: true } } } } },
     orderBy: { date: 'desc' },
   });

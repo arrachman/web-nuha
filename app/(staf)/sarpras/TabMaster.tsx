@@ -3,7 +3,7 @@ import type { SessionPayload } from '@/lib/auth';
 import type { IzinSarpras } from '@/lib/aset/akses';
 import { bacaAngkaSetting } from '@/lib/aset/persetujuan';
 import { AMBANG_KAPITALISASI_BAWAAN, AMBANG_PENGADAAN_BAWAAN, SETTING_AMBANG_KAPITALISASI, SETTING_AMBANG_PENGADAAN, rupiah } from '@/lib/aset/konstanta';
-import { whereUnit } from '@/lib/unit-scope';
+import { getUnitAktif, whereUnitAktif } from '@/lib/unit-scope';
 import { Tabel } from '@/components';
 import { mutasiPersediaan, simpanAmbang, simpanKategori, simpanSumberDana, simpanVendor, tambahPersediaan } from './actions';
 import { Kembali } from './Kembali';
@@ -14,13 +14,14 @@ const gaya = { padding: '8px 10px', borderRadius: 8, border: '1px solid var(--ga
 
 /** Master: kategori (golongan KIB), sumber dana, vendor, ambang persetujuan, barang habis pakai (C2). */
 export async function TabMaster({ session, izin }: { session: SessionPayload; izin: IzinSarpras }) {
+  const unitAktif = await getUnitAktif(session);
   const [kategori, dana, vendor, ambangPengadaan, ambangKapitalisasi, persediaan, units] = await Promise.all([
     prisma.assetCategory.findMany({ orderBy: { code: 'asc' }, include: { _count: { select: { assets: true } } } }),
     prisma.fundingSource.findMany({ orderBy: { id: 'asc' } }),
     prisma.vendor.findMany({ orderBy: { name: 'asc' } }),
     bacaAngkaSetting(SETTING_AMBANG_PENGADAAN, AMBANG_PENGADAAN_BAWAAN),
     bacaAngkaSetting(SETTING_AMBANG_KAPITALISASI, AMBANG_KAPITALISASI_BAWAAN),
-    prisma.consumableItem.findMany({ where: whereUnit(session), orderBy: { name: 'asc' } }),
+    prisma.consumableItem.findMany({ where: whereUnitAktif(session, unitAktif), orderBy: { name: 'asc' } }),
     unitDalamCakupan(session),
   ]);
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
+import { apiPath } from '@/lib/api-path';
 
 export function DaftarPpdb() {
   const [message, setMessage] = useState('');
@@ -8,7 +9,7 @@ export function DaftarPpdb() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setMessage(''); setIsSaving(true);
     const form = new FormData(event.currentTarget);
-    const response = await fetch('/api/ppdb', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(Object.fromEntries(form)) });
+    const response = await fetch(apiPath('/api/ppdb'), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(Object.fromEntries(form)) });
     const result = await response.json(); setIsSaving(false);
     if (!response.ok) return setMessage(result.error?.message ?? 'Pendaftaran gagal.');
     event.currentTarget.reset(); setMessage(`Pendaftaran diterima. Nomor registrasi: ${result.data.noReg}`);

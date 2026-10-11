@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import type { SessionPayload } from '@/lib/auth';
 import type { IzinSarpras } from '@/lib/aset/akses';
-import { whereUnit } from '@/lib/unit-scope';
+import { getUnitAktif, whereUnitAktif } from '@/lib/unit-scope';
 import { Kosong, Tabel } from '@/components';
 import { bukaOpname } from './actions';
 import { BadgeStatus, Kembali } from './Kembali';
@@ -10,7 +10,8 @@ import { lokasiPilihan, unitDalamCakupan } from './data';
 
 /** Stock opname / sensus aset (04 §6.5) — dibuka per unit atau per ruang. */
 export async function TabOpname({ session, izin }: { session: SessionPayload; izin: IzinSarpras }) {
-  const scope = whereUnit(session);
+  const unitAktif = await getUnitAktif(session);
+  const scope = whereUnitAktif(session, unitAktif);
   const [units, lokasi, daftar] = await Promise.all([
     unitDalamCakupan(session),
     lokasiPilihan(session, true),

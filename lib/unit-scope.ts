@@ -52,3 +52,61 @@ export function readAndAssertUnitId(
 }
 
 export type UnitWhereInput = Prisma.UnitWhereInput;
+
+/** Cookie berisi unit yang sedang difokuskan lewat PemilihUnit di topbar. */
+export const UNIT_AKTIF_COOKIE = 'nuha-unit-aktif';
+
+/**
+ * Unit fokus dari PemilihUnit (cookie), divalidasi terhadap cakupan sesi:
+ * nilai di luar `unitIds` sesi dianggap tidak ada. null = "Semua Unit".
+ * Ini filter tampilan di atas `whereUnit` — bukan pengganti batas akses.
+ */
+export async function getUnitAktif(session: SessionPayload): Promise<number | null> {
+  const { cookies } = await import('next/headers');
+  const raw = (await cookies()).get(UNIT_AKTIF_COOKIE)?.value;
+  if (!raw) return null;
+  const id = Number(raw);
+  if (!Number.isFinite(id)) return null;
+  if (isSuperAdmin(session) || session.unitIds == null) return id;
+  return session.unitIds.includes(id) ? id : null;
+}
+
+/** Seperti `whereUnit`, tetapi dihormati lebih dulu unit fokus bila ada. */
+export function whereUnitAktif(
+  session: SessionPayload,
+  unitAktif: number | null,
+  field = 'unitId',
+): Record<string, unknown> {
+  if (unitAktif != null) {
+    if (!isSuperAdmin(session) && session.unitIds != null && !session.unitIds.includes(unitAktif)) {
+      return { [field]: { in: [-1] } };
+    }
+    return { [field]: unitAktif };
+  }
+  return whereUnit(session, field);
+}
+
+/** Filter relasi santri untuk model turunan (Invoice, Payment, dsb). */
+export function filterSantriAktif(unitAktif: number | null): Record<string, unknown> {
+  return unitAktif != null ? { santri: { unitId: unitAktif } } : {};
+}
+
+/**
+ * Filter pegawai untuk unit fokus: unit utama ATAU penugasan tambahan
+ * (`otherUnits`) — pola yang sama dengan `whereUnit` di kepegawaian.
+ * Dibungkus AND supaya tidak bertabrakan dengan OR milik pemanggil.
+ */
+export function filterStaffAktif(unitAktif: number | null): Record<string, unknown> {
+  return unitAktif != null
+    ? { AND: [{ OR: [{ unitId: unitAktif }, { otherUnits: { some: { unitId: unitAktif } } }] }] }
+    : {};
+}
+
+/** Key unit fokus (mis. "SMP") untuk model yang menyimpan key, bukan id (Applicant.choice). */
+export async function getUnitAktifKey(session: SessionPayload): Promise<string | null> {
+  const id = await getUnitAktif(session);
+  if (id == null) return null;
+  const { prisma } = await import('@/lib/prisma');
+  const u = await prisma.unit.findUnique({ where: { id }, select: { key: true } });
+  return u?.key ?? null;
+}

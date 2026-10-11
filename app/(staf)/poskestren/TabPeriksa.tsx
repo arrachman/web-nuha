@@ -1,12 +1,16 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif, filterSantriAktif } from '@/lib/unit-scope';
 import { Card } from '@/components';
 import { simpanPeriksa } from './actions';
 
 const LANJUT_OPSI = ['Istirahat di kamar', 'Rawat Poskestren', 'Rujuk Puskesmas'];
 
 export async function TabPeriksa() {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const santri = await prisma.santri.findMany({
-    where: { status: 'Aktif' },
+    where: { status: 'Aktif', ...(unitAktif != null ? { unitId: unitAktif } : {}) },
     include: { person: true },
     orderBy: { person: { fullName: 'asc' } },
   });

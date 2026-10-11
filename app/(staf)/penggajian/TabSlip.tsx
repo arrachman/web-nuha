@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif, filterStaffAktif } from '@/lib/unit-scope';
 import { Card, Avatar, Kosong } from '@/components';
 import { hitungGaji, rupiah } from '@/lib/gaji';
 
@@ -10,7 +12,9 @@ export async function TabSlip({
   searchParams: Record<string, string | string[] | undefined>;
   periode: string;
 }) {
-  const pegawai = await prisma.staff.findMany({ include: { person: true, unit: true, salaryComponent: true }, orderBy: { employeeNumber: 'asc' } });
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const pegawai = await prisma.staff.findMany({ where: { ...filterStaffAktif(unitAktif) }, include: { person: true, unit: true, salaryComponent: true }, orderBy: { employeeNumber: 'asc' } });
   if (pegawai.length === 0) return <Kosong pesan="Belum ada data pegawai." />;
 
   const raw = searchParams.peg;

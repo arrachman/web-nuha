@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Card, Avatar, Tabel, Badge, Kosong, rp } from '@/components';
 
 /** Status invoices diturunkan dari rasio paidAmount/amount — bukan kolom terpisah. */
@@ -9,21 +11,27 @@ function statusInvoice(amount: number, paidAmount: number): string {
 }
 
 export async function TabInvoice({ q }: { q: string }) {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const santriFilter = {
+    ...(q ? { person: { fullName: { contains: q } } } : {}),
+    ...(unitAktif != null ? { unitId: unitAktif } : {}),
+  };
   const [rows, tarifPerJenis] = await Promise.all([
     prisma.invoice.findMany({
-      where: q ? { santri: { person: { fullName: { contains: q } } } } : undefined,
+      where: Object.keys(santriFilter).length ? { santri: santriFilter } : undefined,
       include: { santri: { include: { person: true, unit: true } } },
       orderBy: { dueDate: 'desc' },
       take: 30,
     }),
     // Nominal berlaku per jenis diambil dari tagihan dengan periode terbaru untuk jenis tersebut.
-    prisma.invoice.groupBy({ by: ['type'], _max: { period: true, dueDate: true }, orderBy: { type: 'asc' } }),
+    prisma.invoice.groupBy({ where: unitAktif != null ? { santri: { unitId: unitAktif } } : undefined, by: ['type'], _max: { period: true, dueDate: true }, orderBy: { type: 'asc' } }),
   ]);
 
   const tarif = await Promise.all(
     tarifPerJenis.map(async (t) => {
       const contoh = await prisma.invoice.findFirst({
-        where: { type: t.type, period: t._max.period ?? undefined },
+        where: { type: t.type, period: t._max.period ?? undefined, ...(unitAktif != null ? { santri: { unitId: unitAktif } } : {}) },
         orderBy: { dueDate: 'desc' },
       });
       return { item: t.type, ket: `periode ${t._max.period ?? '-'}`, n: rp(Number(contoh?.amount ?? 0)) };

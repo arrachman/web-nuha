@@ -1,9 +1,15 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Kosong, Tabel } from '@/components';
 
 /** Akumulasi poin dihitung berjalan per santri, urut tanggal — bukan angka hardcode. */
 export async function TabTazir() {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const fStudent = unitAktif != null ? { student: { unitId: unitAktif } } : {};
   const tazir = await prisma.discipline.findMany({
+    where: { ...fStudent },
     include: { student: { include: { person: true, room: true } } },
     orderBy: { date: 'asc' },
   });

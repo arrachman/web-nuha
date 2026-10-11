@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktifKey } from '@/lib/unit-scope';
 import { Avatar, Badge, Kosong, Tabel, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
 import { DaftarPpdb } from './DaftarPpdb';
 
@@ -10,11 +12,14 @@ function hrefPendaftar(params: Record<string, string>) {
 
 /** Seluruh pendaftar, difilter lewat query param `q` (bukan state klien). */
 export async function TabPendaftar({ searchParams }: { searchParams: SearchParams }) {
+  const session = await readSession();
+  const unitKey = session ? await getUnitAktifKey(session) : null;
   const q = satu(searchParams.q);
   const halaman = bacaHalaman(searchParams);
-  const where = q
-    ? { OR: [{ fullName: { contains: q } }, { registrationNumber: { contains: q } }] }
-    : undefined;
+  const where = {
+    ...(q ? { OR: [{ fullName: { contains: q } }, { registrationNumber: { contains: q } }] } : {}),
+    ...(unitKey ? { choice: unitKey } : {}),
+  };
 
   const [total, pendaftar] = await Promise.all([
     prisma.applicant.count({ where }),

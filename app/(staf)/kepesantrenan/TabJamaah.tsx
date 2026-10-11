@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import Link from 'next/link';
 import { Avatar, Kosong } from '@/components';
 import { simpanAbsenJamaah } from './actions';
@@ -13,6 +15,9 @@ const OPSI_STATUS: Array<{ kode: string; label: string; status: 'Present' | 'Sic
 
 /** Absensi jamaah per sesi — sesi dipilih lewat query param, bukan state klien. */
 export async function TabJamaah({ searchParams }: { searchParams: Record<string, string | string[] | undefined> }) {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const fStudent = unitAktif != null ? { student: { unitId: unitAktif } } : {};
   const rawWaktu = Array.isArray(searchParams.waktu) ? searchParams.waktu[0] : searchParams.waktu;
   const waktu = WAKTU_LIST.includes(rawWaktu ?? '') ? (rawWaktu as string) : 'Subuh';
 
@@ -22,14 +27,14 @@ export async function TabJamaah({ searchParams }: { searchParams: Record<string,
 
   const [santri, presensiHariIni, rekapPekan] = await Promise.all([
     prisma.santri.findMany({
-      where: { status: 'Aktif' },
+      where: { status: 'Aktif', ...(unitAktif != null ? { unitId: unitAktif } : {}) },
       include: { person: true, room: { include: { dormitory: true } } },
       orderBy: { person: { fullName: 'asc' } },
     }),
-    prisma.attendance.findMany({ where: { date: hariIni, session: waktu } }),
+    prisma.attendance.findMany({ where: { date: hariIni, session: waktu, ...fStudent } }),
     prisma.attendance.groupBy({
       by: ['session', 'status'],
-      where: { date: { gte: new Date(hariIni.getTime() - 6 * 86400000) } },
+      where: { date: { gte: new Date(hariIni.getTime() - 6 * 86400000) }, ...fStudent },
       _count: { _all: true },
     }),
   ]);

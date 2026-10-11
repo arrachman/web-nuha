@@ -1,15 +1,20 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif, filterSantriAktif } from '@/lib/unit-scope';
 import { Card, Tabel, Kosong, Badge } from '@/components';
 
 /** Riwayat seluruh kunjungan; pencarian nama wali/santri lewat query ?q=. */
 export async function TabRiwayat({ searchParams }: { searchParams: Record<string, string | string[] | undefined> }) {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const raw = searchParams.q;
   const q = (Array.isArray(raw) ? raw[0] : raw)?.trim() ?? '';
 
   const kunjungan = await prisma.kunjungan.findMany({
-    where: q
-      ? { OR: [{ namaWali: { contains: q } }, { santri: { person: { fullName: { contains: q } } } }] }
-      : undefined,
+    where: {
+      ...(q ? { OR: [{ namaWali: { contains: q } }, { santri: { person: { fullName: { contains: q } } } }] } : {}),
+      ...filterSantriAktif(unitAktif),
+    },
     include: { santri: { include: { person: true } } },
     orderBy: { tgl: 'desc' },
     take: 50,

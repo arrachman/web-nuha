@@ -1,10 +1,11 @@
 import { prisma } from '@/lib/prisma';
-import { whereUnit } from '@/lib/unit-scope';
+import { getUnitAktif, whereUnitAktif } from '@/lib/unit-scope';
 import type { SessionPayload } from '@/lib/auth';
 
 /** Pengumpul data bersama tab-tab Sarpras (konvensi: data panjang dipisah dari file tab). */
-export function unitDalamCakupan(session: SessionPayload) {
-  return prisma.unit.findMany({ where: whereUnit(session, 'id'), orderBy: { id: 'asc' } });
+export async function unitDalamCakupan(session: SessionPayload) {
+  const unitAktif = await getUnitAktif(session);
+  return prisma.unit.findMany({ where: whereUnitAktif(session, unitAktif, 'id'), orderBy: { id: 'asc' } });
 }
 
 export function semuaUnit() {
@@ -12,8 +13,9 @@ export function semuaUnit() {
 }
 
 /** Ruang/area yang bisa dipilih (lokasi bersama unitId null ikut tampil). */
-export function lokasiPilihan(session: SessionPayload, hanyaRuang = false) {
-  const scope = whereUnit(session);
+export async function lokasiPilihan(session: SessionPayload, hanyaRuang = false) {
+  const unitAktif = await getUnitAktif(session);
+  const scope = whereUnitAktif(session, unitAktif);
   return prisma.assetLocation.findMany({
     where: {
       isActive: true,

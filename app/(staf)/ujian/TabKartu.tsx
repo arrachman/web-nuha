@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Kosong } from '@/components';
 
 const jam = (d: Date) => d.toLocaleString('id-ID', {
@@ -15,9 +17,12 @@ export async function TabKartu({
 }: {
   searchParams: Record<string, string | string[] | undefined>;
 }) {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const sesiTerpilih = Number(searchParams.sesi ?? 0);
 
   const daftarSesi = await prisma.sesiCbt.findMany({
+    where: unitAktif != null ? { kelas: { unitId: unitAktif } } : undefined,
     include: { paket: { select: { nama: true } }, kelas: { select: { nama: true } } },
     orderBy: { mulai: 'desc' },
   });

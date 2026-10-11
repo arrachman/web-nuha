@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Card, Avatar, Tabel, Badge, Kosong, rp } from '@/components';
 
 /** Status invoices diturunkan dari rasio paidAmount/amount — sama seperti TabInvoice. */
@@ -9,7 +11,10 @@ function statusInvoice(amount: number, paidAmount: number): string {
 }
 
 export async function TabSpp({ anakId }: { anakId?: string }) {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const opsiAnak = await prisma.santri.findMany({
+    where: unitAktif != null ? { unitId: unitAktif } : undefined,
     include: { person: true },
     orderBy: { person: { fullName: 'asc' } },
   });

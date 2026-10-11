@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { apiPath } from '@/lib/api-path';
 
 export default function GantiSandiPage() {
   const router = useRouter();
@@ -21,7 +22,7 @@ export default function GantiSandiPage() {
       setError('Konfirmasi kata sandi tidak cocok.');
       return;
     }
-    const response = await fetch('/api/auth/ganti-sandi', {
+    const response = await fetch(apiPath('/api/auth/ganti-sandi'), {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ sandiSaatIni: form.get('sandiSaatIni'), sandiBaru }),

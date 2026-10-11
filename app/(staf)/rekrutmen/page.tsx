@@ -1,4 +1,5 @@
 import { requirePage } from '@/lib/access';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { prisma } from '@/lib/prisma';
 import { JudulHalaman, Tabs, tabAktif } from '@/components';
 import { TabLowongan } from './TabLowongan';
@@ -10,14 +11,15 @@ const TABS = [
 ];
 
 export default async function RekrutmenPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
-  await requirePage('rekrutmen');
+  const session = await requirePage('rekrutmen');
+  const unitAktif = await getUnitAktif(session);
   const sp = await searchParams;
   const aktif = tabAktif(TABS, sp.tab);
 
   const [totalLowonganOpen, totalPelamarAktif, perStatus] = await Promise.all([
-    prisma.jobPosting.count({ where: { status: 'Open', deletedAt: null } }),
-    prisma.jobApplication.count({ where: { status: { notIn: ['Rejected', 'Withdrawn', 'Hired'] } } }),
-    prisma.jobApplication.groupBy({ by: ['status'], _count: { _all: true } }),
+    prisma.jobPosting.count({ where: { status: 'Open', deletedAt: null, ...(unitAktif != null ? { unitId: unitAktif } : {}) } }),
+    prisma.jobApplication.count({ where: { status: { notIn: ['Rejected', 'Withdrawn', 'Hired'] }, ...(unitAktif != null ? { job: { unitId: unitAktif } } : {}) } }),
+    prisma.jobApplication.groupBy({ by: ['status'], where: unitAktif != null ? { job: { unitId: unitAktif } } : undefined, _count: { _all: true } }),
   ]);
   const jumlah = (s: string) => perStatus.find((r) => r.status === s)?._count._all ?? 0;
 

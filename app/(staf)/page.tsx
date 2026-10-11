@@ -1,20 +1,24 @@
 import { requirePage } from '@/lib/access';
 import { prisma } from '@/lib/prisma';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Card, JudulHalaman, StatCard, Kosong, rp, ChartTren, ChartDonut, ChartBatang } from '@/components';
 
 const WARNA_UNIT = ['#0F6B3D', '#E8973A', '#1D4ED8', '#7C3AED', '#0891B2', '#BE185D'];
 
 export default async function DashboardPage() {
   const session = await requirePage('dashboard');
+  const unitAktif = await getUnitAktif(session);
+  const fUnit = unitAktif != null ? { unitId: unitAktif } : {};
+  const fSantri = unitAktif != null ? { santri: { unitId: unitAktif } } : {};
 
   const [santri, santriAktif, santriTidakAktif, pegawai, pendaftar, invoices, unit, kas, agenda, pengumuman] =
     await Promise.all([
-      prisma.santri.count({ where: { status: 'Aktif' } }),
-      prisma.santri.count({ where: { status: 'Aktif' } }),
-      prisma.santri.count({ where: { status: 'TidakAktif' } }),
-      prisma.staff.count({ where: { status: { notIn: ['Nonaktif', 'Keluar', 'Pensiun'] } } }),
+      prisma.santri.count({ where: { status: 'Aktif', ...fUnit } }),
+      prisma.santri.count({ where: { status: 'Aktif', ...fUnit } }),
+      prisma.santri.count({ where: { status: 'TidakAktif', ...fUnit } }),
+      prisma.staff.count({ where: { status: { notIn: ['Nonaktif', 'Keluar', 'Pensiun'] }, ...fUnit } }),
       prisma.applicant.count({ where: { status: { in: ['New', 'Verification', 'Selection'] } } }),
-      prisma.invoice.aggregate({ _sum: { amount: true, paidAmount: true } }),
+      prisma.invoice.aggregate({ where: { ...fSantri }, _sum: { amount: true, paidAmount: true } }),
       prisma.unit.findMany({ where: { aktif: true }, orderBy: { id: 'asc' }, include: { _count: { select: { santri: true } } } }),
       prisma.cashTransaction.groupBy({ by: ['direction'], _sum: { amount: true } }),
       prisma.agenda.findMany({ orderBy: { date: 'asc' }, take: 5 }),

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { TabLink } from '@/components/molecules/TabLink';
 import type { TabDef } from '@/components/utils/tabs';
 
 type Props = {
@@ -16,13 +16,12 @@ export function Tabs({ tabs, aktif, basePath, hrefTab }: Props) {
   return (
     <nav className="tabbar">
       {tabs.map((t) => (
-        <Link
+        <TabLink
           key={t.key}
           href={hrefTab ? hrefTab(t.key) : t.key === tabs[0].key ? basePath : `${basePath}?tab=${t.key}`}
-          className={`tab ${t.key === aktif ? 'active' : ''}`}
-        >
-          {t.label}
-        </Link>
+          aktif={t.key === aktif}
+          label={t.label}
+        />
       ))}
     </nav>
   );

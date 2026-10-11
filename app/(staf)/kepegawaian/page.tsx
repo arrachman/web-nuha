@@ -1,4 +1,6 @@
 import { requirePage } from '@/lib/access';
+import { getUnitAktif } from '@/lib/unit-scope';
+import { prisma } from '@/lib/prisma';
 import { JudulHalaman, Tabs, tabAktif, bacaHalaman } from '@/components';
 import { bacaFilterPegawai, hrefKepegawaian } from './filter';
 import { bacaPohonPegawai } from './pohon';
@@ -31,6 +33,13 @@ export default async function KepegawaianPage({
   const sp = await searchParams;
   const aktif = tabAktif(TABS, sp.tab);
   const f = bacaFilterPegawai(sp);
+  if (!f.unit) {
+    const unitAktif = await getUnitAktif(session);
+    if (unitAktif != null) {
+      const u = await prisma.unit.findUnique({ where: { id: unitAktif }, select: { key: true } });
+      if (u) f.unit = u.key;
+    }
+  }
   const halaman = bacaHalaman(sp);
   const pohon = await bacaPohonPegawai(f);
 

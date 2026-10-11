@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { isSuperAdmin, type SessionPayload } from '@/lib/auth';
 import { LogoutButton } from '@/components/LogoutButton';
 import { PemilihPeran } from '@/components/PemilihPeran';
+import { PemilihUnit } from '@/components/PemilihUnit';
 import { inisial } from '@/components/utils/format';
 import { IkonMenu } from '@/components/atoms/IkonMenu';
 
@@ -117,6 +118,7 @@ export async function Shell({ session, active, title, children }: { session: Ses
               </div>
             )}
           </div>
+          <PemilihUnit session={session} />
           {isSuperAdmin(session) && <PemilihPeran session={session} />}
           <p className="muted" style={{ margin: 0 }}>Tahun Ajaran 2026/2027 · Semester Gasal</p>
         </header>

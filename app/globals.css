@@ -126,6 +126,25 @@ a:hover { color: var(--emas); }
 .topbar .judul { font-family: var(--font-lora), serif; font-size: 17px; color: var(--hijau-gelap); }
 .pad { padding: 24px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
 
+/* Pergantian halaman: konten masuk halus, bukan potongan keras. Elemen anak
+   .pad ter-mount ulang tiap navigasi sehingga animasi ini berjalan sendiri;
+   aturan prefers-reduced-motion global di bawah mematikannya bila diminta. */
+@keyframes halamanMasuk { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.pad > * { animation: halamanMasuk 0.18s ease both; }
+
+/* Pemintal umpan-balik klik pada menu/tab yang sedang dimuat. */
+@keyframes navPutar { to { transform: rotate(360deg); } }
+.navpending {
+  margin-left: auto; flex: 0 0 auto; width: 13px; height: 13px; border-radius: 50%;
+  border: 2px solid rgba(243, 241, 233, 0.30); border-top-color: var(--emas);
+  animation: navPutar 0.55s linear infinite;
+}
+.submenuitem .navpending { float: right; margin: 2px 0 0 8px; width: 11px; height: 11px; }
+.tabpending {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--emas);
+  animation: skeleton-denyut 0.8s ease-in-out infinite;
+}
+
 /* Pemilih peran super admin (debug) */
 .samaran { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .samaran .label { white-space: nowrap; }

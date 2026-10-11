@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Kosong, Tabel } from '@/components';
 
 const tanggal = (tgl: Date) => tgl.toLocaleDateString('id-ID', { weekday: 'short', day: '2-digit', month: 'short' });
@@ -15,7 +17,9 @@ export async function TabJadwal({
   searchParams: Record<string, string | string[] | undefined>;
   namaGuru: string | null;
 }) {
-  const ujianSemua = await prisma.ujian.findMany({ include: { unit: true }, orderBy: { mulai: 'desc' } });
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const ujianSemua = await prisma.ujian.findMany({ where: unitAktif != null ? { unitId: unitAktif } : undefined, include: { unit: true }, orderBy: { mulai: 'desc' } });
   if (ujianSemua.length === 0) return <Kosong pesan="Belum ada gelombang ujian." />;
 
   const dipilih = Number(searchParams.ujian) || ujianSemua[0].id;

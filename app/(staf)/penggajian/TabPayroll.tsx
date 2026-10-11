@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif, filterStaffAktif } from '@/lib/unit-scope';
 import { Card, Tabel, Kosong, Avatar } from '@/components';
 import { hitungGaji, rupiah } from '@/lib/gaji';
 import { SlipActions } from '@/components/SlipActions';
@@ -11,13 +13,16 @@ export async function TabPayroll({
   searchParams: Record<string, string | string[] | undefined>;
   periode: string;
 }) {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const raw = searchParams.q;
   const q = (Array.isArray(raw) ? raw[0] : raw)?.trim() ?? '';
 
   const pegawai = await prisma.staff.findMany({
-    where: q
-      ? { OR: [{ person: { fullName: { contains: q } } }, { position: { contains: q } }] }
-      : undefined,
+    where: {
+      ...(q ? { OR: [{ person: { fullName: { contains: q } } }, { position: { contains: q } }] } : {}),
+      ...filterStaffAktif(unitAktif),
+    },
     include: { person: true, unit: true, salaryComponent: true },
     orderBy: { employeeNumber: 'asc' },
   });

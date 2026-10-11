@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link, { useLinkStatus } from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { IkonMenu } from '@/components/atoms/IkonMenu';
@@ -45,6 +45,13 @@ function judulHalaman(pathname: string): string {
   return induk ? TITLE_BY_PATH[induk] : 'SIMTERPADU';
 }
 
+/** Pemintal kecil di item yang diklik selagi halamannya dimuat (useLinkStatus
+ * hanya hidup di dalam Link). Muncul seketika, hilang saat navigasi commit. */
+function PenandaMenu() {
+  const { pending } = useLinkStatus();
+  return pending ? <span className="navpending" aria-hidden /> : null;
+}
+
 export function StaffNavigation({ menus, masterGroups }: { menus: Menu[]; masterGroups: MasterGroup[] }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
@@ -55,9 +62,9 @@ export function StaffNavigation({ menus, masterGroups }: { menus: Menu[]; master
     const isActive = menuAktif(menu.key, href, pathname) || (isMaster && pathname.startsWith('/data/'));
     const sub = SUB_TAUTAN[menu.key];
     return <div key={menu.key} className="menuwrap">
-      <Link href={href} className={`menuitem ${isActive ? 'active' : ''}`}><IkonMenu menuKey={menu.key} path={menu.icon} /><span className="menulabel">{isMaster ? 'Master Data' : menu.label}</span></Link>
+      <Link href={href} className={`menuitem ${isActive ? 'active' : ''}`}><IkonMenu menuKey={menu.key} path={menu.icon} /><span className="menulabel">{isMaster ? 'Master Data' : menu.label}</span><PenandaMenu /></Link>
       {sub && <div className="submenu" data-testid={`submenu-${menu.key}`}>
-        {sub.map((t) => <Link key={t.href} href={t.href} className={`submenuitem ${pathname === t.href.split('?')[0] && !t.href.includes('?') ? 'active' : ''}`}>{t.label}</Link>)}
+        {sub.map((t) => <Link key={t.href} href={t.href} className={`submenuitem ${pathname === t.href.split('?')[0] && !t.href.includes('?') ? 'active' : ''}`}>{t.label}<PenandaMenu /></Link>)}
       </div>}
       {isMaster && isActive && <div className="submenu">
         {masterGroups.map((group) => {
@@ -70,7 +77,7 @@ export function StaffNavigation({ menus, masterGroups }: { menus: Menu[]; master
             </button>
             <div className={`submenu-items ${isGroupOpen ? 'open' : ''}`}>
               <div className="submenu-items-inner">
-                {group.items.map((item) => <Link key={item.key} href={`/data/${item.key}`} className={`submenuitem ${pathname === `/data/${item.key}` ? 'active' : ''}`}>{item.label}</Link>)}
+                {group.items.map((item) => <Link key={item.key} href={`/data/${item.key}`} className={`submenuitem ${pathname === `/data/${item.key}` ? 'active' : ''}`}>{item.label}<PenandaMenu /></Link>)}
               </div>
             </div>
           </div>;

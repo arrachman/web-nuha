@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { apiPath } from '@/lib/api-path';
 
 type OpsiWilayah = { id: string; nama: string; keterangan: string };
 
@@ -26,7 +27,7 @@ export function PemilihWilayah({ name, label, id, hint, placeholder, nilaiAwal, 
 
   useEffect(() => {
     if (!nilaiAwal) return;
-    fetch(`/api/wilayah/cari?ids=${encodeURIComponent(nilaiAwal)}`)
+    fetch(apiPath(`/api/wilayah/cari?ids=${encodeURIComponent(nilaiAwal)}`))
       .then((response) => response.json())
       .then((json) => { if (json.success && json.data[0]) setDipilih(json.data[0]); })
       .catch(() => undefined);
@@ -38,7 +39,7 @@ export function PemilihWilayah({ name, label, id, hint, placeholder, nilaiAwal, 
     const timer = setTimeout(async () => {
       setMemuat(true);
       try {
-        const response = await fetch(`/api/wilayah/cari?q=${encodeURIComponent(ketik.trim())}`, { signal: controller.signal });
+        const response = await fetch(apiPath(`/api/wilayah/cari?q=${encodeURIComponent(ketik.trim())}`), { signal: controller.signal });
         const json = await response.json();
         setHasil(json.success ? json.data : []);
       } catch {

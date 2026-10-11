@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { apiPath } from '@/lib/api-path';
 
 /**
  * Pengawasan sisi klien. Ini lapisan pencegah, bukan pengaman: server tetap
@@ -32,7 +33,7 @@ export function Pengawas({
       fd.set('pesertaId', pesertaId);
       fd.set('jenis', jenis);
       fd.set('detail', detail);
-      await fetch('/api/cbt/pelanggaran', { method: 'POST', body: fd }).catch(() => {});
+      await fetch(apiPath('/api/cbt/pelanggaran'), { method: 'POST', body: fd }).catch(() => {});
     };
 
     const onBlur = () => lapor('PINDAH_TAB', 'Anda berpindah ke aplikasi atau tab lain');

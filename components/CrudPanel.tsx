@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import type { ClientEntity, ClientField, Column, Keterkaitan, Row } from '@/lib/crud/types';
 import { InputField } from '@/components/molecules/InputField';
+import { apiPath } from '@/lib/api-path';
 
 const IkonTambah = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 5v14M5 12h14" /></svg>;
 const IkonUbah = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M4 20h4L19.5 8.5a2.12 2.12 0 0 0-3-3L5 17v3Z" /><path d="M14.5 6.5l3 3" /></svg>;
@@ -94,11 +95,11 @@ export function CrudPanel({ entity, rows: initialRows }: { entity: ClientEntity;
   async function send(method: 'POST' | 'PATCH' | 'DELETE', payload: Record<string, unknown>) {
     setBusy(true);
     try {
-      const response = await fetch(`/api/crud/${entity.key}`, { method, headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+      const response = await fetch(apiPath(`/api/crud/${entity.key}`), { method, headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
       const result = await response.json();
       if (!result.success) return setMessage(result.error?.message ?? 'Operasi gagal.');
 
-      const daftar = await fetch(`/api/crud/${entity.key}`);
+      const daftar = await fetch(apiPath(`/api/crud/${entity.key}`));
       const hasilDaftar = await daftar.json();
       if (!hasilDaftar.success) return setMessage(hasilDaftar.error?.message ?? 'Gagal memuat daftar terbaru.');
 

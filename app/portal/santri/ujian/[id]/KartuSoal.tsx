@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { apiPath } from '@/lib/api-path';
 
 type Opsi = { label: string; teks: string };
 type Soal = {
@@ -49,7 +50,7 @@ export function KartuSoal({
       fd.set('soalId', soal.id);
       fd.set('jawaban', jawaban);
       if (ragu) fd.set('ragu', '1');
-      await fetch('/api/cbt/jawab', { method: 'POST', body: fd }).catch(() => {});
+      await fetch(apiPath('/api/cbt/jawab'), { method: 'POST', body: fd }).catch(() => {});
       setStatus('tersimpan');
     }, JEDA_AUTOSAVE);
     return () => clearTimeout(t);

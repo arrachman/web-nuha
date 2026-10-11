@@ -1,5 +1,7 @@
 import type { ApplicantStatus } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktifKey } from '@/lib/unit-scope';
 import { Avatar, Badge, Kosong, Pagination, UKURAN_HALAMAN, bacaHalaman, type SearchParams } from '@/components';
 
 function hrefKelulusan(params: Record<string, string>) {
@@ -10,8 +12,10 @@ function hrefKelulusan(params: Record<string, string>) {
 
 /** Pengumuman kelulusan: pendaftar yang sudah lulus, tidak lulus, atau daftar ulang. */
 export async function TabKelulusan({ searchParams }: { searchParams: SearchParams }) {
+  const session = await readSession();
+  const unitKey = session ? await getUnitAktifKey(session) : null;
   const halaman = bacaHalaman(searchParams);
-  const where = { status: { in: ['Passed', 'Failed', 'Reenrollment'] as ApplicantStatus[] } };
+  const where = { status: { in: ['Passed', 'Failed', 'Reenrollment'] as ApplicantStatus[] }, ...(unitKey ? { choice: unitKey } : {}) };
 
   const [total, pendaftar] = await Promise.all([
     prisma.applicant.count({ where }),

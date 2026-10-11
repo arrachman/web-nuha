@@ -1,4 +1,5 @@
 import { requirePage } from '@/lib/access';
+import { getUnitAktif, filterSantriAktif } from '@/lib/unit-scope';
 import { prisma } from '@/lib/prisma';
 import { JudulHalaman, Tabs, tabAktif } from '@/components';
 import { TabHari } from './TabHari';
@@ -19,6 +20,7 @@ export default async function KunjunganWaliPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const session = await requirePage('kunjungan');
+  const unitAktif = await getUnitAktif(session);
   const sp = await searchParams;
   const aktif = tabAktif(TABS, sp.tab);
 
@@ -27,7 +29,7 @@ export default async function KunjunganWaliPage({
   const akhirHari = new Date(awalHari);
   akhirHari.setDate(akhirHari.getDate() + 1);
 
-  const hariIni = await prisma.kunjungan.findMany({ where: { tgl: { gte: awalHari, lt: akhirHari } } });
+  const hariIni = await prisma.kunjungan.findMany({ where: { tgl: { gte: awalHari, lt: akhirHari }, ...filterSantriAktif(unitAktif) } });
   const kjHariN = hariIni.length;
   const kjAreaN = hariIni.filter((k) => k.status === 'Sedang berkunjung').length;
   const kjTungguN = hariIni.filter((k) => k.status === 'Menunggu verifikasi').length;

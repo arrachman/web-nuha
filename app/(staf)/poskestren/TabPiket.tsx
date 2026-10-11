@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif, filterSantriAktif } from '@/lib/unit-scope';
 import { Kosong } from '@/components';
 
 const HARI = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Ahad'];
@@ -10,8 +12,10 @@ const SHIFT = '16.00–21.00';
  * secara deterministik — bukan angka statis dari prototype.
  */
 export async function TabPiket() {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const santri = await prisma.santri.findMany({
-    where: { status: 'Aktif', room: { isNot: null } },
+    where: { status: 'Aktif', room: { isNot: null }, ...(unitAktif != null ? { unitId: unitAktif } : {}) },
     include: { person: true, room: { include: { dormitory: true } } },
     orderBy: { person: { fullName: 'asc' } },
   });

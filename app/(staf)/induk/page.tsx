@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { requirePage } from '@/lib/access';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { prisma } from '@/lib/prisma';
 import { JudulHalaman, Kosong, type TabDef, bacaHalaman, UKURAN_HALAMAN, Pagination } from '@/components';
 import { BarisFilter } from './BarisFilter';
@@ -35,6 +36,10 @@ export default async function IndukPage({ searchParams }: { searchParams: Promis
   const ambil = (k: string) => { const v = sp[k]; return Array.isArray(v) ? v[0] : v; };
 
   const f = bacaFilter(sp);
+  if (f.unitId === undefined && f.alumniUnitId === undefined) {
+    const unitAktif = await getUnitAktif(session);
+    if (unitAktif != null) f.unitId = unitAktif;
+  }
   const tabRaw = ambil('tab');
   const tabAktif = TABS.some((t) => t.key === tabRaw) ? (tabRaw as string) : TABS[0].key;
 

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import type { SessionPayload } from '@/lib/auth';
 import { whereAsetTerlihat, type IzinSarpras } from '@/lib/aset/akses';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { LABEL_KONDISI, LABEL_STATUS_ASET, rupiah } from '@/lib/aset/konstanta';
 import { Kosong, Pagination, Tabel, UKURAN_HALAMAN, bacaHalaman, satu, type SearchParams } from '@/components';
 import { imporAsetCsv } from './actions';
@@ -12,7 +13,8 @@ const gayaInput = { padding: '9px 11px', borderRadius: 10, border: '1px solid va
 
 export async function TabAset({ session, izin, sp }: { session: SessionPayload; izin: IzinSarpras; sp: SearchParams }) {
   const q = satu(sp.q);
-  const unitId = satu(sp.unit);
+  const unitAktif = await getUnitAktif(session);
+  const unitId = satu(sp.unit) ?? (unitAktif != null ? String(unitAktif) : undefined);
   const kategoriId = satu(sp.kategori);
   const lokasiId = satu(sp.lokasi);
   const kondisi = satu(sp.kondisi);

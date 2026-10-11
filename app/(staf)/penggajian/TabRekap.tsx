@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif, filterStaffAktif } from '@/lib/unit-scope';
 import { hitungGaji, rupiah } from '@/lib/gaji';
 import { Card, ProgressBar, Kosong } from '@/components';
 
@@ -6,10 +8,10 @@ const WARNA_UNIT = ['#0F6B3D', '#1D4ED8', '#E8973A', '#7C2D12', '#5B21B6', '#9A3
 
 /** Rekap beban gaji per unit + ringkasan status slip period berjalan. */
 export async function TabRekap({ periode }: { periode: string }) {
-  const [pegawai, slips] = await Promise.all([
-    prisma.staff.findMany({ include: { unit: true, salaryComponent: true } }),
-    prisma.paySlip.findMany({ where: { period: periode } }),
-  ]);
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const pegawai = await prisma.staff.findMany({ where: { ...filterStaffAktif(unitAktif) }, include: { unit: true, salaryComponent: true } });
+  const slips = await prisma.paySlip.findMany({ where: { period: periode, staffId: { in: pegawai.map((p) => p.id) } } });
 
   const perUnit = new Map<string, { n: number; total: number }>();
   for (const p of pegawai) {

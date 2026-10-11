@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { CrudPanel } from '@/components/CrudPanel';
 import { FilterBar, LimitPicker, Pagination } from '@/components';
 import type { ClientEntity, Row } from '@/lib/crud/types';
+import { apiPath } from '@/lib/api-path';
 
 type Props = {
   entity: ClientEntity;
@@ -40,7 +41,7 @@ export function CrudList({ entity, initialRows, initialHalaman, initialLimit, in
     setMessage('');
     const query = queryFor(nextHalaman, nextLimit, nextFilters);
     try {
-      const response = await fetch(`/api/crud/${entity.key}?${query}`);
+      const response = await fetch(apiPath(`/api/crud/${entity.key}?${query}`));
       const result = await response.json() as ListResponse;
       if (!result.success || !result.data) throw new Error(result.error?.message ?? 'Gagal memuat daftar.');
       setRows(result.data.rows);

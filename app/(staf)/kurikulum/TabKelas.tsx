@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import type { SessionPayload } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Kosong, ProgressBar } from '@/components';
 import { ambilKelasGuru, type KartuKelas } from './kelas-guru';
 
@@ -17,7 +18,7 @@ export async function TabKelas({ session }: { session: SessionPayload }) {
   const namaGuru = session.nama?.trim();
   if (!namaGuru) return <Kosong pesan="Nama pengguna tidak tersedia." />;
 
-  const grup = await ambilKelasGuru(namaGuru);
+  let grup = await ambilKelasGuru(namaGuru);
   if (grup.length === 0) {
     // Bedakan "belum diampukan" dari "namanya tidak cocok": keduanya tampak
     // sama di layar tetapi penyelesaiannya berbeda.
@@ -29,6 +30,12 @@ export async function TabKelas({ session }: { session: SessionPayload }) {
           : 'Jadwal pelajaran masih kosong. Isi lewat Master Data terlebih dahulu.'}
       />
     );
+  }
+
+  const unitAktif = await getUnitAktif(session);
+  if (unitAktif != null) {
+    const u = await prisma.unit.findUnique({ where: { id: unitAktif }, select: { nama: true } });
+    if (u) grup = grup.filter((g) => g.unit === u.nama);
   }
 
   const totalKelas = grup.reduce((total, g) => total + g.kartu.length, 0);

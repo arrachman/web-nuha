@@ -1,9 +1,14 @@
 import { prisma } from "@/lib/prisma";
+import { readSession } from "@/lib/auth";
+import { getUnitAktif } from "@/lib/unit-scope";
 import { Card, StatCard, Tabel, Kosong, rp } from "@/components";
 
 /** Piutang: total + per santri (agregat tagihan belum lunas). */
 export async function TabPiutang() {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const rows = await prisma.invoice.findMany({
+    where: unitAktif != null ? { santri: { unitId: unitAktif } } : undefined,
     include: { santri: { include: { person: true, unit: true } } },
     orderBy: { dueDate: "asc" },
   });

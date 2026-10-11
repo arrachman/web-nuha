@@ -3,7 +3,7 @@ import { isSuperAdmin, type SessionPayload } from '@/lib/auth';
 import type { IzinSarpras } from '@/lib/aset/akses';
 import { jejakPersetujuan } from '@/lib/aset/persetujuan';
 import { rupiah } from '@/lib/aset/konstanta';
-import { whereUnit } from '@/lib/unit-scope';
+import { getUnitAktif, whereUnitAktif } from '@/lib/unit-scope';
 import { Kosong } from '@/components';
 import { ajukanPengadaan, putuskanPengadaan, tandaiDibeli, terimaPengadaan } from './actions';
 import { BadgeStatus, FormKeputusan, Kembali } from './Kembali';
@@ -13,12 +13,13 @@ const K = '/sarpras?tab=pengadaan';
 
 /** Usulan → persetujuan berjenjang (ApprovalStep) → pembelian → penerimaan jadi aset (04 §5, §6.1). */
 export async function TabPengadaan({ session, izin }: { session: SessionPayload; izin: IzinSarpras }) {
+  const unitAktif = await getUnitAktif(session);
   const [units, dana, kategori, lokasi, daftar] = await Promise.all([
     unitDalamCakupan(session),
     prisma.fundingSource.findMany({ orderBy: { id: 'asc' } }),
     prisma.assetCategory.findMany({ orderBy: { code: 'asc' } }),
     lokasiPilihan(session, true),
-    prisma.procurement.findMany({ where: whereUnit(session), include: { unit: true, fundingSource: true, items: true, requester: { include: { person: true } } }, orderBy: { createdAt: 'desc' }, take: 40 }),
+    prisma.procurement.findMany({ where: whereUnitAktif(session, unitAktif), include: { unit: true, fundingSource: true, items: true, requester: { include: { person: true } } }, orderBy: { createdAt: 'desc' }, take: 40 }),
   ]);
   const jejak = await jejakPersetujuan('procurement', daftar.map((p) => p.id));
 

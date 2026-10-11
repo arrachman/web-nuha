@@ -1,9 +1,15 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif, filterSantriAktif } from '@/lib/unit-scope';
 
 const AMBANG_KLB = 3;
 
 export async function TabLapor() {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const fStudent = unitAktif != null ? { student: { unitId: unitAktif } } : {};
   const rekam = await prisma.medicalRecord.findMany({
+    where: { ...fStudent },
     include: { student: { include: { room: { include: { dormitory: true } } } } },
   });
 

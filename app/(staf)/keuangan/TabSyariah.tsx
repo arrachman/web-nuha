@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/prisma";
+import { readSession } from "@/lib/auth";
+import { getUnitAktif } from "@/lib/unit-scope";
 import { Card, Tabel, Kosong, rp } from "@/components";
 import { StatusSantri } from "@prisma/client";
 import { FormAksi } from "./FormAksi";
@@ -7,7 +9,6 @@ import {
   catatPembayaran,
   simpanOverride,
   hapusOverride,
-  JENIS_IURAN,
 } from "./aksi";
 
 const LABEL_KOMPONEN: Record<string, string> = {
@@ -34,11 +35,13 @@ function statusTagihan(amount: number, paid: number): { label: string; warna: st
 }
 
 export async function TabSyariah({ periode }: { periode: string }) {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const hariIni = new Date().toISOString().slice(0, 10);
   const [komponen, invoices, overrides, opsiSantri] = await Promise.all([
     prisma.tarifIuran.findMany({ where: { aktif: true }, orderBy: { id: "asc" } }),
     prisma.invoice.findMany({
-      where: { type: JENIS_IURAN, period: periode },
+      where: { type: "IURAN_BULANAN", period: periode, ...(unitAktif != null ? { santri: { unitId: unitAktif } } : {}) },
       include: {
         santri: { include: { person: true, unit: true } },
         payments: { orderBy: { date: "desc" } },
@@ -47,7 +50,7 @@ export async function TabSyariah({ periode }: { periode: string }) {
     }),
     prisma.tarifSantriOverride.findMany({ include: { santri: { include: { person: true } } } }),
     prisma.santri.findMany({
-      where: { status: StatusSantri.Aktif },
+      where: { status: StatusSantri.Aktif, ...(unitAktif != null ? { unitId: unitAktif } : {}) },
       include: { person: true },
       orderBy: { person: { fullName: "asc" } },
     }),

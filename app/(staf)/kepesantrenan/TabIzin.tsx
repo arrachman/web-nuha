@@ -1,10 +1,16 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Avatar, Kosong, kelasStatus } from '@/components';
 import { ubahStatusIzin } from './actions';
 
 /** Overdue = izin Disetujui, sudah lewat jadwal kembali, tapi belum ditandai Selesai. */
 export async function TabIzin() {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const fStudent = unitAktif != null ? { student: { unitId: unitAktif } } : {};
   const izin = await prisma.leavePermit.findMany({
+    where: { ...fStudent },
     include: { student: { include: { person: true, room: true } } },
     orderBy: { departedAt: 'desc' },
   });

@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { readSession } from '@/lib/auth';
 import { can } from '@/lib/access';
 import { Kosong } from '@/components';
@@ -9,11 +10,12 @@ const KELAS_BADGE: Record<string, string> = { Open: 'badge-hijau', PendingApprov
 
 export async function TabLowongan() {
   const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const [bisaKelola, bisaSetujui, units, lowongan] = await Promise.all([
     session ? can(session, 'rekrutmen.job_manage') : false,
     session ? can(session, 'rekrutmen.approve') : false,
     prisma.unit.findMany({ orderBy: { key: 'asc' } }),
-    prisma.jobPosting.findMany({ where: { deletedAt: null }, include: { unit: true, _count: { select: { applications: true } } }, orderBy: { createdAt: 'desc' } }),
+    prisma.jobPosting.findMany({ where: { deletedAt: null, ...(unitAktif != null ? { unitId: unitAktif } : {}) }, include: { unit: true, _count: { select: { applications: true } } }, orderBy: { createdAt: 'desc' } }),
   ]);
 
   return (

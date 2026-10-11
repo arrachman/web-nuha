@@ -1,4 +1,5 @@
 import { requirePage } from '@/lib/access';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { prisma } from '@/lib/prisma';
 import { JudulHalaman, Tabs, tabAktif } from '@/components';
 import { TabAsrama } from './TabAsrama';
@@ -23,11 +24,12 @@ export default async function KepesantrenanPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const session = await requirePage('pesantren');
+  const unitAktif = await getUnitAktif(session);
   const sp = await searchParams;
   const aktif = tabAktif(TABS, sp.tab);
 
   const [santriMukim, asramaCount, kamarCount, halaqahUstadz] = await Promise.all([
-    prisma.santri.count({ where: { status: 'Aktif' } }),
+    prisma.santri.count({ where: { status: 'Aktif', ...(unitAktif != null ? { unitId: unitAktif } : {}) } }),
     prisma.dormitory.count(),
     prisma.room.count(),
     prisma.studyCircle.findMany({ select: { teacher: true }, distinct: ['teacher'] }),

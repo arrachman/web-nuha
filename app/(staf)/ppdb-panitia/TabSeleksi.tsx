@@ -1,5 +1,7 @@
 import type { ApplicantStatus } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktifKey } from '@/lib/unit-scope';
 import { Avatar, Badge, Kosong, Pagination, UKURAN_HALAMAN, bacaHalaman, type SearchParams } from '@/components';
 import { ubahStatusSeleksi } from './actions';
 
@@ -11,8 +13,10 @@ function hrefSeleksi(params: Record<string, string>) {
 
 /** Pendaftar yang masih perlu diverifikasi/diseleksi, dengan aksi keputusan. */
 export async function TabSeleksi({ searchParams }: { searchParams: SearchParams }) {
+  const session = await readSession();
+  const unitKey = session ? await getUnitAktifKey(session) : null;
   const halaman = bacaHalaman(searchParams);
-  const where = { status: { in: ['New', 'Verification', 'Selection'] as ApplicantStatus[] } };
+  const where = { status: { in: ['New', 'Verification', 'Selection'] as ApplicantStatus[] }, ...(unitKey ? { choice: unitKey } : {}) };
 
   const [total, pendaftar] = await Promise.all([
     prisma.applicant.count({ where }),

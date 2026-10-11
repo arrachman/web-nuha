@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif, filterSantriAktif } from '@/lib/unit-scope';
 import { Card } from '@/components';
 import { daftarkanKunjungan } from './actions';
 
@@ -18,8 +20,10 @@ function ahadTerdekat(n: number) {
 
 /** Form pendaftaran kunjungan — menulis baris Kunjungan berstatus menunggu verifikasi. */
 export async function TabDaftar() {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
   const santri = await prisma.santri.findMany({
-    where: { status: 'Aktif' },
+    where: { status: 'Aktif', ...(unitAktif != null ? { unitId: unitAktif } : {}) },
     include: { person: true },
     orderBy: { nis: 'asc' },
     take: 200,

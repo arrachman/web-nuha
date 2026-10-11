@@ -1,4 +1,5 @@
 import { requirePage } from '@/lib/access';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { JudulHalaman, PesanAksi, Tabs, tabAktif, satu, type SearchParams } from '@/components';
 import { unitPerpustakaan } from './data';
 import { TabDashboard } from './TabDashboard';
@@ -17,7 +18,8 @@ export default async function PerpustakaanPage({ searchParams }: { searchParams:
   const session = await requirePage('perpustakaan');
   const sp = await searchParams;
   const units = await unitPerpustakaan();
-  const unitId = Number(satu(sp.unit)) || units[0]?.id;
+  const unitAktif = await getUnitAktif(session);
+  const unitId = Number(satu(sp.unit)) || (unitAktif && units.some((u) => u.id === unitAktif) ? unitAktif : undefined) || units[0]?.id;
   const unit = units.find((u) => u.id === unitId) ?? units[0];
   const tab = tabAktif(TABS, sp.tab);
 

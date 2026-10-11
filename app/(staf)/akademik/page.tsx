@@ -1,4 +1,6 @@
 import { requirePage } from '@/lib/access';
+import { getUnitAktif } from '@/lib/unit-scope';
+import { prisma } from '@/lib/prisma';
 import { JudulHalaman, Tabs, tabAktif, type TabDef } from '@/components';
 import { bacaFilter, hrefAkademik } from './filter';
 import { bacaPohon } from './pohon';
@@ -24,6 +26,13 @@ export default async function AkademikPage({ searchParams }: { searchParams: Sea
   const sp = await searchParams;
   const aktif = tabAktif(TABS, sp.tab);
   const f = bacaFilter(sp);
+  if (!f.unit) {
+    const unitAktif = await getUnitAktif(session);
+    if (unitAktif != null) {
+      const u = await prisma.unit.findUnique({ where: { id: unitAktif }, select: { key: true } });
+      if (u) f.unit = u.key;
+    }
+  }
 
   // Penjelajah & penyaring dulu diulang di dalam tiap tab, sehingga berpindah
   // tab terasa seperti mereset konteks. Dinaikkan ke atas tabbar: ia menyaring

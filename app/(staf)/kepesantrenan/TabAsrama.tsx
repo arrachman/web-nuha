@@ -1,12 +1,17 @@
 import { prisma } from '@/lib/prisma';
+import { readSession } from '@/lib/auth';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { Avatar, ProgressBar, Kosong } from '@/components';
 
 /** Kartu asrama: hunian per kamar + avatar musyrif/santri contoh, semua dari Prisma. */
 export async function TabAsrama() {
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const fStudent = unitAktif != null ? { student: { unitId: unitAktif } } : {};
   const asrama = await prisma.dormitory.findMany({
     include: {
       rooms: {
-        include: { santri: { include: { person: true } } },
+        include: { santri: { ...(unitAktif != null ? { where: { unitId: unitAktif } } : {}), include: { person: true } } },
         orderBy: { code: 'asc' },
       },
     },
