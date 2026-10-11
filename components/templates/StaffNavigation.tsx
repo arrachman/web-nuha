@@ -4,6 +4,7 @@ import Link, { useLinkStatus } from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { IkonMenu } from '@/components/atoms/IkonMenu';
+import { susunGrupMenu } from '@/lib/menu-grup';
 
 type Menu = { key: string; label: string; icon: string | null };
 type MasterGroup = { menuKey: string; label: string; icon: string | null; items: { key: string; label: string }[] };
@@ -21,6 +22,7 @@ const TITLE_BY_PATH: Record<string, string> = {
 /**
  * Tautan ringkas di bawah menu modul baru — supaya fitur yang bukan tab
  * (halaman lapor kerusakan dari HP, halaman karir publik) terlihat di sidebar.
+ * Hanya dirender saat menu induknya aktif, supaya sidebar tetap ringkas.
  */
 const SUB_TAUTAN: Record<string, Array<{ href: string; label: string }>> = {
   sarpras: [{ href: '/lapor-kerusakan', label: 'Lapor Kerusakan' }, { href: '/sarpras?tab=peminjaman', label: 'Pinjam Aset / Ruang' }],
@@ -29,7 +31,7 @@ const SUB_TAUTAN: Record<string, Array<{ href: string; label: string }>> = {
 };
 
 /** Halaman di luar prefiks menu yang tetap menyorot menu induknya. */
-const ALIAS_AKTIF: Record<string, string[]> = { sarpras: ['/lapor-kerusakan'] };
+const ALIAS_AKTIF: Record<string, string[]> = { sarpras: ['/lapor-kerusakan'], rekrutmen: ['/karir'] };
 
 function menuAktif(key: string, href: string, pathname: string): boolean {
   if (href === pathname) return true;
@@ -56,14 +58,16 @@ export function StaffNavigation({ menus, masterGroups }: { menus: Menu[]; master
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const toggleGroup = (key: string) => setCollapsed((prev) => ({ ...prev, [key]: !prev[key] }));
-  return <nav className="menu">{menus.map((menu) => {
+  return <nav className="menu">{susunGrupMenu(menus).map((grup) => <div key={grup.label ?? 'utama'} className="menugrup">
+    {grup.label && <div className="menugrup-label">{grup.label}</div>}
+    {grup.items.map((menu) => {
     const href = HREF_BY_KEY[menu.key];
     const isMaster = menu.key === 'data';
     const isActive = menuAktif(menu.key, href, pathname) || (isMaster && pathname.startsWith('/data/'));
     const sub = SUB_TAUTAN[menu.key];
     return <div key={menu.key} className="menuwrap">
       <Link href={href} className={`menuitem ${isActive ? 'active' : ''}`}><IkonMenu menuKey={menu.key} path={menu.icon} /><span className="menulabel">{isMaster ? 'Master Data' : menu.label}</span><PenandaMenu /></Link>
-      {sub && <div className="submenu" data-testid={`submenu-${menu.key}`}>
+      {sub && isActive && <div className="submenu" data-testid={`submenu-${menu.key}`}>
         {sub.map((t) => <Link key={t.href} href={t.href} className={`submenuitem ${pathname === t.href.split('?')[0] && !t.href.includes('?') ? 'active' : ''}`}>{t.label}<PenandaMenu /></Link>)}
       </div>}
       {isMaster && isActive && <div className="submenu">
@@ -84,7 +88,8 @@ export function StaffNavigation({ menus, masterGroups }: { menus: Menu[]; master
         })}
       </div>}
     </div>;
-  })}</nav>;
+    })}
+  </div>)}</nav>;
 }
 
 export function StaffTitle() {

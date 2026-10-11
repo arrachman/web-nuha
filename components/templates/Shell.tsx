@@ -7,6 +7,7 @@ import { PemilihPeran } from '@/components/PemilihPeran';
 import { PemilihUnit } from '@/components/PemilihUnit';
 import { inisial } from '@/components/utils/format';
 import { IkonMenu } from '@/components/atoms/IkonMenu';
+import { susunGrupMenu } from '@/lib/menu-grup';
 
 const HREF_BY_KEY: Record<string, string> = {
   dashboard: '/',
@@ -78,11 +79,16 @@ export async function Shell({ session, active, title, children }: { session: Ses
         </div>
 
         <nav className="menu">
-          {visible.map((menu) => (
-            <Link key={menu.key} href={HREF_BY_KEY[menu.key]} className={`menuitem ${menu.key === active ? 'active' : ''}`}>
-              <IkonMenu menuKey={menu.key} path={menu.icon} />
-              <span className="menulabel">{menu.label}</span>
-            </Link>
+          {susunGrupMenu(visible).map((grup) => (
+            <div key={grup.label ?? 'utama'} className="menugrup">
+              {grup.label && <div className="menugrup-label">{grup.label}</div>}
+              {grup.items.map((menu) => (
+                <Link key={menu.key} href={HREF_BY_KEY[menu.key]} className={`menuitem ${menu.key === active ? 'active' : ''}`}>
+                  <IkonMenu menuKey={menu.key} path={menu.icon} />
+                  <span className="menulabel">{menu.label}</span>
+                </Link>
+              ))}
+            </div>
           ))}
         </nav>
 
@@ -94,9 +100,6 @@ export async function Shell({ session, active, title, children }: { session: Ses
               <span className="rl" style={{ display: 'block' }}>{peranUtama}</span>
             </span>
           </div>
-          <Link href="/docs" className="btn-ghost-terang" style={{ display: 'block', textAlign: 'center', color: '#f3f1e9' }}>
-            Panduan
-          </Link>
           <LogoutButton />
         </div>
       </aside>

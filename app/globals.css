@@ -61,8 +61,8 @@ a:hover { color: var(--emas); }
 }
 .sidehead { padding: 20px 18px; border-bottom: 1px solid rgba(243, 241, 233, 0.12); display: flex; align-items: center; gap: 11px; }
 .sidehead .tile { width: 40px; height: 40px; border-radius: 11px; background: var(--krem); display: grid; place-items: center; flex: 0 0 auto; }
-.sidehead .nama { font-family: var(--font-lora), serif; font-size: 14.5px; font-weight: 600; color: #faf8f3; }
-.sidehead .sub { font-size: 10.5px; color: rgba(243, 241, 233, 0.6); letter-spacing: 0.4px; }
+.sidehead .nama { font-family: var(--font-lora), serif; font-size: 14.5px; font-weight: 600; color: #faf8f3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sidehead .sub { font-size: 10px; color: rgba(243, 241, 233, 0.6); letter-spacing: 0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .menu { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding: 12px 10px; }
 .menuitem {
@@ -78,9 +78,14 @@ a:hover { color: var(--emas); }
 .menuitem.active::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 999px; background: var(--emas); }
 .menulabel { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .menuwrap { min-width: 0; }
+.menugrup { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.menugrup + .menugrup { margin-top: 14px; }
+.menugrup-label { padding: 0 12px 5px; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: rgba(243, 241, 233, 0.42); }
+.menuitem svg { flex: 0 0 auto; opacity: 0.85; }
+.menuitem.active svg { opacity: 1; }
 @keyframes submenuIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 .submenu {
-  margin: 4px 0 10px 20px; padding: 6px 0 6px 14px;
+  margin: 3px 0 8px 24px; padding: 4px 0 4px 12px;
   border-left: 1px solid rgba(243, 241, 233, 0.14);
   display: flex; flex-direction: column; gap: 2px;
   animation: submenuIn 0.16s ease;
@@ -477,6 +482,9 @@ label.toggle, .field label.toggle {
   }
   .sidehead, .sidefoot { display: none; }
   .menu { flex-direction: row; padding: 6px; }
+  .menugrup { flex-direction: row; gap: 2px; }
+  .menugrup + .menugrup { margin-top: 0; }
+  .menugrup-label { display: none; }
   .menuwrap { flex: 0 0 auto; }
   .menuitem { flex-direction: column; gap: 4px; min-width: 74px; text-align: center; }
   .submenu { display: none; }
