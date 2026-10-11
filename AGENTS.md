@@ -24,3 +24,16 @@ yang mengerjakan repo ini, di server mana pun.
 6. Jangan meninggalkan pekerjaan dalam keadaan belum ter-commit — working
    tree kotor yang ditinggalkan akan tertimpa/tercampur pekerjaan agen
    berikutnya.
+
+## Deploy di Server Produksi Althea (WAJIB)
+
+App live dilayani dari direktori ini oleh service systemd user
+`nuha-apps.service` (port 3411). Build langsung di sini menghapus `.next`
+yang sedang dipakai server -> pengunjung/tester kena error 500 selama
+build berjalan.
+
+- Deploy WAJIB lewat `bash scripts/deploy.sh` (build ke folder staging,
+  tukar direktori, restart sekali, health check + rollback otomatis).
+- DILARANG `npm run build` langsung di direktori live.
+- DILARANG menjalankan instance kedua (`nohup next start`, dsb.) — port
+  3411 hanya untuk service `nuha-apps.service`.

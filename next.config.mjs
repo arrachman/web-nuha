@@ -20,6 +20,9 @@ const nextConfig = {
   images: { unoptimized: true },
   env: { NEXT_PUBLIC_BASE_PATH: '/apps' },
   output: 'standalone',
+  // Deploy aman: scripts/deploy.sh build ke distDir staging agar .next live
+  // tidak terhapus di tengah jalan (penyebab error 500 saat agen bekerja).
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   outputFileTracingRoot: workspaceRoot,
   turbopack: { root: workspaceRoot },
   devIndicators: false,
