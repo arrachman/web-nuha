@@ -30,7 +30,7 @@ export function BukuForm({ unit, buku }: { unit: Unit; buku: Buku }) {
     >
       {edit && <input type="hidden" name="id" value={String(buku!.id)} />}
       <input type="hidden" name="unitId" value={unit.id} />
-      <input type="hidden" name="_kembali" value={`/perpustakaan?unit=${unit.id}&tab=katalog`} />
+      <input type="hidden" name="_kembali" value={`/perpustakaan?tab=katalog`} />
 
       <label style={gayaLabel}>Kode buku *
         <input name="kode" required defaultValue={buku?.kode ?? ''} placeholder="mis. SMP-001" style={gayaInput} />
@@ -68,7 +68,7 @@ export function BukuForm({ unit, buku }: { unit: Unit; buku: Buku }) {
 
       <div style={{ gridColumn: '1 / -1', display: 'flex', gap: 10 }}>
         <button type="submit" className="btn">{edit ? 'Simpan perubahan' : 'Tambah buku'}</button>
-        <Link href={`/perpustakaan?unit=${unit.id}&tab=katalog`} className="btn-sekunder">Batal</Link>
+        <Link href={`/perpustakaan?tab=katalog`} className="btn-sekunder">Batal</Link>
       </div>
     </form>
   );

@@ -37,7 +37,7 @@ export async function TabKatalog({ unit, sp }: { unit: Unit; sp: SearchParams })
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div className="card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
         <span className="muted" style={{ fontSize: 13 }}>{total} judul di {unit.nama}</span>
-        <Link href={`/perpustakaan/buku/baru?unit=${unit.id}`} className="btn">+ Tambah buku</Link>
+        <Link href={`/perpustakaan/buku/baru`} className="btn">+ Tambah buku</Link>
       </div>
 
       <div className="card">
@@ -68,10 +68,10 @@ export async function TabKatalog({ unit, sp }: { unit: Unit; sp: SearchParams })
                 <td className="num">{b.jumlah}</td>
                 <td className="num">{b._count.loans}</td>
                 <td style={{ whiteSpace: 'nowrap' }}>
-                  <Link href={`/perpustakaan/buku/${b.id}?unit=${unit.id}`} className="btn-sekunder" style={{ fontSize: 12.5, marginRight: 6 }}>Ubah</Link>
+                  <Link href={`/perpustakaan/buku/${b.id}`} className="btn-sekunder" style={{ fontSize: 12.5, marginRight: 6 }}>Ubah</Link>
                   <form action={hapusBuku} style={{ display: 'inline' }}>
                     <input type="hidden" name="id" value={String(b.id)} />
-                    <input type="hidden" name="_kembali" value={`/perpustakaan?unit=${unit.id}&tab=katalog`} />
+                    <input type="hidden" name="_kembali" value={`/perpustakaan?tab=katalog`} />
                     <button type="submit" className="btn-sekunder" style={{ fontSize: 12.5, color: 'var(--merah, #b3261e)' }}>Hapus</button>
                   </form>
                 </td>

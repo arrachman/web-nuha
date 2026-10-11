@@ -43,7 +43,7 @@ export async function TabPeminjaman({ unit, sp }: { unit: Unit; sp: SearchParams
       <div className="card">
         <h3 style={{ margin: '0 0 4px' }}>Catat peminjaman baru</h3>
         <p className="muted" style={{ fontSize: 13, margin: '0 0 12px' }}>
-          Pilih buku dari katalog <Link href={`/perpustakaan?unit=${unit.id}&tab=katalog`}>di sini</Link>, lalu isi form di bawah.
+          Pilih buku dari katalog <Link href={`/perpustakaan?tab=katalog`}>di sini</Link>, lalu isi form di bawah.
         </p>
         <PinjamForm unitId={unit.id} />
       </div>
@@ -90,7 +90,7 @@ export async function TabPeminjaman({ unit, sp }: { unit: Unit; sp: SearchParams
                       <form action={kembalikanBuku} style={{ display: 'inline' }}>
                         <input type="hidden" name="id" value={String(l.id)} />
                         <input type="hidden" name="tanggalKembali" value={new Date().toISOString().slice(0, 10)} />
-                        <input type="hidden" name="_kembali" value={`/perpustakaan?unit=${unit.id}&tab=peminjaman`} />
+                        <input type="hidden" name="_kembali" value={`/perpustakaan?tab=peminjaman`} />
                         <button type="submit" className="btn-sekunder" style={{ fontSize: 12.5 }}>Kembalikan</button>
                       </form>
                     )}
@@ -131,7 +131,7 @@ async function PinjamForm({ unitId }: { unitId: number }) {
 
   return (
     <form action={pinjamBuku} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10 }}>
-      <input type="hidden" name="_kembali" value={`/perpustakaan?unit=${unitId}&tab=peminjaman`} />
+      <input type="hidden" name="_kembali" value={`/perpustakaan?tab=peminjaman`} />
       <label style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 13 }}>
         Buku
         <select name="bookId" required style={gayaInput}>

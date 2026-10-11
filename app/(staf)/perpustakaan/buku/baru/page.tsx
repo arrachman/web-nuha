@@ -1,15 +1,18 @@
 import { redirect } from 'next/navigation';
 import { requirePage } from '@/lib/access';
+import { getUnitAktif } from '@/lib/unit-scope';
 import { JudulHalaman, PesanAksi, satu, type SearchParams } from '@/components';
 import { prisma } from '@/lib/prisma';
 import { unitPerpustakaan } from '../../data';
 import { BukuForm } from '../../BukuForm';
 
 export default async function BukuBaruPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
-  await requirePage('perpustakaan');
+  const session = await requirePage('perpustakaan');
   const sp = await searchParams;
   const units = await unitPerpustakaan();
-  const unit = units.find((u) => u.id === Number(satu(sp.unit))) ?? units[0];
+  // Unit mengikuti pemilih unit global (sama seperti halaman Perpustakaan).
+  const unitAktif = await getUnitAktif(session);
+  const unit = units.find((u) => u.id === unitAktif) ?? units[0];
   if (!unit) redirect('/perpustakaan');
 
   return (
