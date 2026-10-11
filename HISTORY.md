@@ -1,5 +1,14 @@
 # Riwayat Perubahan — web-nuha
 
+## 2026-10-12 — Fase A+B: runtime standalone + deploy lebih ramping
+
+- **Runtime diganti**: service `nuha-apps.service` (systemd user) sekarang menjalankan `node /opt/nuha/apps/.next/standalone/server.js` (PORT=3411, HOSTNAME=127.0.0.1, STORAGE_DIR=/opt/nuha/apps/storage), bukan `next start` dari repo penuh. Start 151–184 ms (sebelumnya 480–584 ms), RAM ±80 MB, peringatan "next start does not work with standalone" hilang. Unit lama dibackup di `~/.config/systemd/user/nuha-apps.service.bak-nextstart-20261012`.
+- `scripts/deploy.sh` merakit standalone sebelum swap: `static` disalin ke `<standalone>/<distDir>/static` (distDir dibaca dari `required-server-files.json` — selama deploy staging nilainya `.next-staging`; server standalone me-resolve aset statis dari sana **saat start**, jadi rakitan harus mendahului restart, kalau tidak semua `/_next/static` 404 — pitfall ini kena & diperbaiki saat migrasi), `public/` disalin, `docs-assets` dipastikan ada, `.env` disalin ke standalone, salinan sampah `.next-prev` di dalam standalone dibuang.
+- Cache Turbopack pindah ke lokasi persisten `/opt/nuha/.turbopack-cache` (±474 MB, satu salinan) dan di-symlink ke staging — tidak lagi disalin ±480 MB bolak-balik tiap deploy; `.next` live stabil ±251 MB (pernah 1,4 GB saat cache masih di dalamnya).
+- `prisma generate` dilewati bila sidik skema + versi Prisma (`/opt/nuha/.deploy-state/prisma.fp`) tidak berubah — build langsung `next build`.
+- Guard no-change: sidik sumber (HEAD + `git status --porcelain` + hash `.env`/`next.config.mjs`/`package.json`/`deploy.sh`) disimpan di `/opt/nuha/.deploy-state/last-src.fp` setiap deploy sehat; deploy berikutnya dengan sidik sama & app sehat langsung SKIP (terukur 0,1 dtk). Paksa dengan `FORCE=1`.
+- Verifikasi: deploy FORCE penuh SEHAT (BUILD_ID `PFBkrGBgRyb6vQcD5XkLE`, kompilasi 30,2 dtk via cache symlink, total 131 dtk — waktu total memang masih didominasi kompilasi + typecheck + tracing standalone), static/font/chunk 200 persis setelah swap, login riil `superadmin` 200, `/beranda` + `/keuangan` + `/docs` 200 dengan sesi, aset publik 200. `.next-prev` generasi transisi juga dirakit standalone-nya agar rollback aman.
+
 ## 2026-10-12 — Unit tinggal 3: SMP, MA, Pondok (Poskestren dihapus, Yayasan dilebur ke Pondok)
 
 - Atas permintaan user: halaman Pengaturan → tab Unit harus berisi 3 unit saja. Baris `unit` Poskestren (id 5, kosong tanpa data terkait) dan YAYASAN (id 9) dihapus dari DB produksi.
