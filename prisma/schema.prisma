@@ -431,6 +431,7 @@ model Unit {
   procurements      Procurement[]       @relation("PengadaanUnit")
   books             Book[]
   bookLoans         BookLoan[]
+  cashTransactions  CashTransaction[]
 
   @@index([desaId])
   @@map("unit")
@@ -1356,8 +1357,14 @@ model CashTransaction {
   method      String        @map("method") @db.VarChar(64)
   direction   CashDirection @map("direction")
   amount      Decimal       @map("amount") @db.Decimal(14, 2)
+  /// Unit pemilik kas (keuangan per unit). Null = kas umum/yayasan, belum
+  /// terpetakan ke unit mana pun. Pembayaran iuran terisi otomatis dari
+  /// unit santri; pencatatan manual memilih unit di form.
+  unitId      Int?          @map("unit_id")
+  unit        Unit?         @relation(fields: [unitId], references: [id], onDelete: SetNull)
 
   @@index([date])
+  @@index([unitId])
   @@map("cash_transactions")
 }
 

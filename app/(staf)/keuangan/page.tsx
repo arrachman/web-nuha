@@ -12,6 +12,7 @@ import { TabKas } from './TabKas';
 import { TabPiutang } from './TabPiutang';
 import { TabUtilitas } from './TabUtilitas';
 import { TabTriwulan } from './TabTriwulan';
+import { PemilihUnitKeuangan } from './PemilihUnitKeuangan';
 
 const TABS: TabDef[] = [
   { key: 'syariah', label: 'Syariah Bulanan' },
@@ -32,7 +33,7 @@ type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 async function ambilKartu(unitAktif: number | null) {
   const [totals, kas] = await Promise.all([
     prisma.invoice.aggregate({ where: unitAktif != null ? { santri: { unitId: unitAktif } } : undefined, _sum: { amount: true, paidAmount: true } }),
-    prisma.cashTransaction.groupBy({ by: ['direction'], _sum: { amount: true } }),
+    prisma.cashTransaction.groupBy({ by: ['direction'], where: unitAktif != null ? { unitId: unitAktif } : undefined, _sum: { amount: true } }),
   ]);
   const totalInvoice = Number(totals._sum.amount ?? 0);
   const totalBayar = Number(totals._sum.paidAmount ?? 0);
@@ -54,6 +55,9 @@ export default async function KeuanganPage({ searchParams }: { searchParams: Sea
     : `${now.getFullYear()}-Q${Math.floor(now.getMonth() / 3) + 1}`;
   const unitAktif = await getUnitAktif(session);
   const kartu = await ambilKartu(unitAktif);
+  const unitAktifRow = unitAktif != null
+    ? await prisma.unit.findUnique({ where: { id: unitAktif }, select: { nama: true } })
+    : null;
 
   return (
     <>
@@ -62,11 +66,13 @@ export default async function KeuanganPage({ searchParams }: { searchParams: Sea
         sub="SPP unit sekolah, syahriyah pondok, uang makan, dan laundry dalam satu tagihan per santri."
       />
 
+      <PemilihUnitKeuangan session={session} />
+
       <section className="grid g4">
         <StatCard label="Total tagihan" nilai={rp(kartu.totalInvoice)} />
         <StatCard label="Sudah dibayar" nilai={rp(kartu.totalBayar)} warna="#0F6B3D" />
         <StatCard label="Tunggakan" nilai={rp(kartu.tunggakan)} warna="#B91C1C" />
-        <StatCard label="Saldo kas yayasan" nilai={rp(kartu.saldoKas)} warna="#1D4ED8" />
+        <StatCard label={unitAktifRow ? `Saldo kas ${unitAktifRow.nama}` : "Saldo kas yayasan (semua unit)"} nilai={rp(kartu.saldoKas)} warna="#1D4ED8" />
       </section>
 
       <Tabs tabs={TABS} aktif={aktif} basePath="/keuangan" />

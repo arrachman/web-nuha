@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/prisma";
+import { readSession } from "@/lib/auth";
+import { getUnitAktif } from "@/lib/unit-scope";
 import { Card, StatCard, Tabel, rp } from "@/components";
 
 const NAMA_BULAN = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
@@ -13,8 +15,14 @@ export async function TabTriwulan({ tw }: { tw: string }) {
   const awal = new Date(year, awalBulan, 1);
   const akhir = new Date(year, awalBulan + 3, 1);
 
+  const session = await readSession();
+  const unitAktif = session ? await getUnitAktif(session) : null;
+  const unit = unitAktif != null
+    ? await prisma.unit.findUnique({ where: { id: unitAktif }, select: { nama: true } })
+    : null;
+
   const rows = await prisma.cashTransaction.findMany({
-    where: { date: { gte: awal, lt: akhir } },
+    where: { date: { gte: awal, lt: akhir }, ...(unitAktif != null ? { unitId: unitAktif } : {}) },
     select: { date: true, direction: true, amount: true },
   });
   const perBulan = [0, 1, 2].map((i) => {
@@ -34,7 +42,7 @@ export async function TabTriwulan({ tw }: { tw: string }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-      <Card judul={`Triwulan ${q} — ${year}`} sub="Pemasukan vs pengeluaran kas per bulan.">
+      <Card judul={`Triwulan ${q} — ${year}`} sub={unit ? `Pemasukan vs pengeluaran kas per bulan — unit ${unit.nama}.` : "Pemasukan vs pengeluaran kas per bulan (semua unit)."}>
         <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
           <a className="btn" href={`/keuangan?tab=triwulan&tw=${twSebelum}`}>← {twSebelum}</a>
           <a className="btn" href={`/keuangan?tab=triwulan&tw=${twSesudah}`}>{twSesudah} →</a>

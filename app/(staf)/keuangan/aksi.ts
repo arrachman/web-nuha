@@ -6,6 +6,7 @@ import { requirePage } from "@/lib/access";
 import { recordAudit } from "@/lib/audit";
 import { StatusSantri } from "@prisma/client";
 import type { SessionPayload } from "@/lib/auth";
+import { assertUnit } from "@/lib/unit-scope";
 
 /** Jenis invoice untuk iuran bulanan santri pondok (syariah + komponen). */
 const JENIS_IURAN = "IURAN_BULANAN";
@@ -122,6 +123,7 @@ export async function catatPembayaran(formData: FormData): Promise<HasilAksi> {
         method: metode,
         direction: "Inbound",
         amount: nominal,
+        unitId: inv.santri.unitId,
       },
     });
     return p;
@@ -150,13 +152,27 @@ export async function catatKas(formData: FormData): Promise<HasilAksi> {
   const nominal = keNominal(formData.get("nominal"));
   if (!uraian) return { ok: false, pesan: "Uraian wajib diisi." };
   if (nominal <= 0) return { ok: false, pesan: "Nominal harus lebih dari 0." };
+  // Unit pemilik kas: kosong = kas umum/yayasan. Divalidasi terhadap
+  // cakupan sesi supaya tidak bisa mencatat atas nama unit lain.
+  const unitMentah = String(formData.get("unit") ?? "").trim();
+  let unitId: number | null = null;
+  if (unitMentah) {
+    const n = Number(unitMentah);
+    if (!Number.isFinite(n)) return { ok: false, pesan: "Unit tidak valid." };
+    try {
+      assertUnit(session, n);
+    } catch {
+      return { ok: false, pesan: "Unit di luar cakupan akses Anda." };
+    }
+    unitId = n;
+  }
 
   const kode = `KAS-${Date.now().toString(36).toUpperCase()}${Math.floor(Math.random() * 1296)
     .toString(36)
     .toUpperCase()
     .padStart(2, "0")}`;
   const row = await prisma.cashTransaction.create({
-    data: { code: kode, date: tanggal, description: uraian, category: kategori, method: metode, direction: arah, amount: nominal },
+    data: { code: kode, date: tanggal, description: uraian, category: kategori, method: metode, direction: arah, amount: nominal, unitId },
   });
   await recordAudit({
     aksi: "catat_kas",

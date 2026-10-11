@@ -28,7 +28,7 @@ export async function TabUtilitas({ periode }: { periode: string }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-      <Card judul="Master unit utilitas" sub="14 meteran PLN (2 token prabayar) + 10 PDAM. Token tanpa SS pembelian otomatis Rp0 di laporan.">
+      <Card judul="Master unit utilitas" sub="14 meteran PLN (2 token prabayar) + 10 PDAM. Token tanpa SS pembelian otomatis Rp0 di laporan. Tab ini selalu gabungan semua unit utilitas (fungsi kliring antar-unit) — tidak mengikuti pemilih unit di atas.">
         <Tabel kolom={["Sektor", "Nama unit", "IDPEL / No. rek", "Tarif / Daya / Golongan", { label: "Koefisien", num: true }, "Ket"]}>
           {units.map((u) => (
             <tr key={String(u.id)}>
