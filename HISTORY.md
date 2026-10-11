@@ -5,7 +5,7 @@
 - Atas permintaan user: halaman Pengaturan → tab Unit harus berisi 3 unit saja. Baris `unit` Poskestren (id 5, kosong tanpa data terkait) dan YAYASAN (id 9) dihapus dari DB produksi.
 - Data YAYASAN dipindah dulu ke Pondok (id 8): 4 pegawai (PEG-DEMO-001/002/005/007), 6 aset (kode inventaris NH/YAYASAN/… tidak diubah), 2 lokasi aset (Aula Yayasan, Gudang Sarpras), 1 consumable, 6 riwayat registrasi aset (`asset_movements.to_unit_id`), 2 penempatan user (`user_units` teknisi.1 & pegawai.1, `unit_scope`-nya ikut jadi `Pondok`). Jadwal kerja YAYASAN tidak dipindah: isinya identik persis dengan jadwal Pondok (hari 1–6, jam sama) sehingga dihapus agar tidak dobel.
 - `prisma/seed-dasar.ts`: `UNIT_ROWS` dipotong dari 5 menjadi 3 unit (SMP, MA, Pondok) agar kedua unit itu tidak muncul lagi saat seed/migrate berikutnya. Kartu "Profil yayasan" di tab Unit bukan baris unit — itu `institution_profiles` dan tetap ada.
-- Backup penuh sebelum perubahan: `/opt/nuha/sql-backups/nuha_simterpadu_before_unit_cleanup_20261012-061827.sql.gz`.
+- Backup penuh sebelum perubahan: `/opt/nuha/sql-backups/nuha_simterpadu_before_unit_cleanup_20261012-061549.sql.gz`.
 - Verifikasi: tabel `unit` = 3 baris, sisa referensi ke id 5/9 = 0, halaman `/pengaturan?tab=unit` (sesi superadmin) merender tepat 3 kartu unit — SMP (8 santri · 3 pegawai · 1 kelas), MA (8 · 2 · 1), Pondok (52 · 5 · 7).
 
 ## 2026-10-12 — Sandi `superadmin` produksi diganti jadi `123123`
