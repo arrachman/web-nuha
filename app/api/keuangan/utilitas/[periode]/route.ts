@@ -72,7 +72,7 @@ function gambarTabel(
 
 function footer(doc: PDFKit.PDFDocument, hal: number) {
   doc.font("Helvetica").fontSize(8).fillColor("#888888")
-    .text(`PPSS NURUL HUDA MERGOSONO MALANG | Halaman ${hal} dari 2`, 36, 806, {
+    .text(`PPSS NURUL HUDA MERGOSONO MALANG | Halaman ${hal} dari 2`, 36, 786, {
       align: "center",
       width: doc.page.width - 72,
     });
