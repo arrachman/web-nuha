@@ -1,0 +1,128 @@
+/* Template login — disamakan dengan https://nuha.senti.id/login.
+   Nilai diambil dari audit CSS template (16 titik, 2026-10-11). */
+
+.section {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px 24px 100px;
+  background: #faf8f3;
+}
+
+.card {
+  width: 100%;
+  max-width: 430px;
+  background: #ffffff;
+  border: 1px solid #e8e3d9;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 8px 32px rgba(10, 74, 43, 0.07);
+}
+
+.header {
+  margin-bottom: 22px;
+  text-align: center;
+}
+
+.logo {
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 12px;
+  display: block;
+  object-fit: contain;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-lora);
+  font-size: 24px;
+  font-weight: 600;
+  color: #0a4a2b;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.input {
+  padding: 11px 13px;
+  font-size: 14px;
+  font-family: inherit;
+  border-radius: 10px;
+  border: 1px solid #ddd8cb;
+  background: #fcfbf7;
+  color: #1f2937;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #0f6b3d;
+  box-shadow: 0 0 0 3px rgba(15, 107, 61, 0.12);
+}
+
+.submit {
+  padding: 13px;
+  margin-top: 4px;
+  background-color: #0f6b3d;
+  color: #faf8f3;
+  border: none;
+  border-radius: 11px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  width: 100%;
+  cursor: pointer;
+}
+
+.submit:hover:not(:disabled) {
+  background-color: #0a4a2b;
+}
+
+.submit:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.footer {
+  margin-top: 14px;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+  color: #6b7280;
+}
+
+.footer p {
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 40px 16px 60px;
+  }
+  .card {
+    padding: 24px 20px;
+  }
+}

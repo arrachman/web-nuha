@@ -2,6 +2,9 @@
 
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import styles from './login.module.css';
+import { apiPath } from '@/lib/api-path';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -13,7 +16,7 @@ export default function LoginPage() {
     setError('');
     setIsLoading(true);
     const form = new FormData(event.currentTarget);
-    const response = await fetch('/api/auth/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ identifier: form.get('identifier'), password: form.get('password') }) });
+    const response = await fetch(apiPath('/api/auth/login'), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ identifier: form.get('identifier'), password: form.get('password') }) });
     const result = await response.json();
     setIsLoading(false);
     if (!response.ok) return setError(result.error?.message ?? 'Tidak dapat masuk.');
@@ -25,17 +28,35 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="login-wrap">
-      <section className="login-card">
-        <p className="muted">SIMTERPADU · Nurul Huda Mergosono</p>
-        <h1 style={{ color: 'var(--hijau-tua)', marginBottom: 8 }}>Masuk ke Sistem</h1>
-        <p className="muted" style={{ marginBottom: 24 }}>Gunakan akun yang sudah terdaftar.</p>
+    <main className={styles.section}>
+      <section className={styles.card}>
+        <div className={styles.header}>
+          <Image
+            src="/assets/logo-nuha.webp"
+            alt="Logo Nurul Huda"
+            width={76}
+            height={76}
+            className={styles.logo}
+            priority
+          />
+          <h1 className={styles.title}>Masuk SIMTERPADU</h1>
+          <p className={styles.subtitle}>Gunakan akun yang sudah terdaftar.</p>
+        </div>
         {error && <div className="error" role="alert">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="field"><label htmlFor="identifier">Email atau nama pengguna</label><input id="identifier" name="identifier" autoComplete="username" required /></div>
-          <div className="field"><label htmlFor="password">Kata sandi</label><input id="password" name="password" type="password" autoComplete="current-password" required /></div>
-          <button className="btn" style={{ width: '100%' }} disabled={isLoading}>{isLoading ? 'Memeriksa…' : 'Masuk'}</button>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.field}>
+            <label htmlFor="identifier" className={styles.label}>Email atau nama pengguna</label>
+            <input id="identifier" name="identifier" autoComplete="username" required className={styles.input} />
+          </div>
+          <div className={styles.field}>
+            <label htmlFor="password" className={styles.label}>Kata sandi</label>
+            <input id="password" name="password" type="password" autoComplete="current-password" required className={styles.input} />
+          </div>
+          <button className={styles.submit} disabled={isLoading}>{isLoading ? 'Memeriksa…' : 'Masuk'}</button>
         </form>
+        <div className={styles.footer}>
+          <p>Yayasan Pendidikan Islam Nurul Huda Mergosono</p>
+        </div>
       </section>
     </main>
   );

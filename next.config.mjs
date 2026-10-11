@@ -15,6 +15,10 @@ const workspaceRoot = isStandaloneCheckout ? __dirname : resolve(__dirname, '../
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: '/apps',
+  // Optimizer gagal fetch aset internal pada standalone+basePath (400 "isn't a valid image ... received null" untuk /assets/logo-nuha.webp) — serve file public langsung.
+  images: { unoptimized: true },
+  env: { NEXT_PUBLIC_BASE_PATH: '/apps' },
   output: 'standalone',
   outputFileTracingRoot: workspaceRoot,
   turbopack: { root: workspaceRoot },
