@@ -77,7 +77,12 @@ a:hover { color: var(--emas); }
 .menuitem.active { background: rgba(232, 151, 58, 0.16); color: var(--emas-lembut); font-weight: 700; }
 .menuitem.active::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 999px; background: var(--emas); }
 .menulabel { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.menuwrap { min-width: 0; }
+.menuwrap { min-width: 0; position: relative; }
+.menuitem.punya-sub { padding-right: 36px; }
+.menuitem.terbuka { background: rgba(243, 241, 233, 0.10); color: #f3f1e9; border-radius: 14px; }
+.menuitem.terbuka::before { display: none; }
+.menutoggle { position: absolute; top: 7px; right: 6px; width: 27px; height: 27px; display: grid; place-items: center; border: 0; border-radius: 8px; background: transparent; color: rgba(243, 241, 233, 0.65); cursor: pointer; transition: background 0.15s ease, color 0.15s ease; }
+.menutoggle:hover { background: rgba(243, 241, 233, 0.12); color: #f3f1e9; }
 .menugrup { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .menugrup + .menugrup { margin-top: 14px; }
 .menugrup-label { padding: 0 12px 5px; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: rgba(243, 241, 233, 0.42); }
@@ -90,6 +95,8 @@ a:hover { color: var(--emas); }
   display: flex; flex-direction: column; gap: 2px;
   animation: submenuIn 0.16s ease;
 }
+.submenu-grup-head { width: 100%; display: flex; align-items: center; gap: 7px; padding: 9px 10px 3px 13px; border: 0; background: transparent; font: inherit; font-size: 9.5px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: rgba(243, 241, 233, 0.42); text-align: left; cursor: pointer; transition: color 0.15s ease; }
+.submenu-grup-head:hover { color: var(--emas-lembut); }
 .submenu-group { display: flex; flex-direction: column; gap: 1px; }
 .submenu-group + .submenu-group { margin-top: 10px; }
 .submenu-heading {
@@ -106,12 +113,15 @@ a:hover { color: var(--emas); }
 .submenu-items.open { grid-template-rows: 1fr; opacity: 1; }
 .submenu-items-inner { min-height: 0; overflow: hidden; }
 .submenuitem {
-  display: block; padding: 7px 10px; margin: 0 -2px; border-radius: 8px;
+  display: block; padding: 7px 10px 7px 25px; margin: 0 -2px; border-radius: 8px;
   color: rgba(243, 241, 233, 0.68); font-size: 12.5px; line-height: 1.3;
-  position: relative; transition: background 0.15s ease, color 0.15s ease, padding-left 0.15s ease;
+  position: relative; transition: background 0.15s ease, color 0.15s ease;
 }
-.submenuitem:hover { background: rgba(243, 241, 233, 0.08); color: #f3f1e9; padding-left: 13px; }
-.submenuitem.active { background: rgba(232, 151, 58, 0.14); color: var(--emas-lembut); font-weight: 700; padding-left: 13px; }
+.submenuitem::before { content: ''; position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; border-radius: 50%; background: rgba(243, 241, 233, 0.35); transition: background 0.15s ease; }
+.submenuitem:hover { background: rgba(243, 241, 233, 0.08); color: #f3f1e9; }
+.submenuitem:hover::before { background: rgba(243, 241, 233, 0.75); }
+.submenuitem.active { background: rgba(232, 151, 58, 0.14); color: var(--emas-lembut); font-weight: 700; }
+.submenuitem.active::before { background: var(--emas); }
 
 .sidefoot { padding: 14px; border-top: 1px solid rgba(243, 241, 233, 0.12); }
 .userchip { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 12px; background: rgba(243, 241, 233, 0.07); }
@@ -244,6 +254,39 @@ td.num { font-weight: 700; color: var(--hijau-gelap); }
 
 .baris-santri { transition: background .12s ease; }
 .baris-santri:hover { background: var(--krem-3); }
+
+/* Tabel daftar santri /induk (mockup): kartu berisi grid 6 kolom + chevron,
+   tiap sel utama dua baris (teks kuat + sub abu). */
+.tabel-santri { min-width: 940px; display: flex; flex-direction: column; }
+.ts-head, .ts-row {
+  display: grid; align-items: center; gap: 12px;
+  grid-template-columns: minmax(240px, 1.7fr) 38px minmax(100px, .8fr) minmax(200px, 1.3fr) 112px minmax(128px, .9fr) 18px;
+}
+.ts-head {
+  padding: 4px 10px 10px; font-size: 11px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--teks-lembut);
+  border-bottom: 1px solid var(--garis);
+}
+.ts-row { padding: 12px 10px; border-bottom: 1px solid var(--garis); border-radius: 0; }
+.ts-row:last-child { border-bottom: none; }
+.ts-sel-santri { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.ts-nama {
+  display: block; font-size: 14px; font-weight: 600; color: var(--teks-kuat);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ts-utama { display: block; font-size: 13.5px; font-weight: 500; color: var(--teks-kuat); }
+.ts-sub { display: block; font-size: 12px; color: var(--teks-lembut); margin-top: 2px; }
+.ts-nis { font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.ts-lp { font-size: 13.5px; color: var(--teks-kuat); }
+.spp { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; }
+.spp .titik { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
+.spp-hijau { color: #0f6b3d; }
+.spp-hijau .titik { background: #16a34a; }
+.spp-merah { color: #b91c1c; }
+.spp-merah .titik { background: #dc2626; }
+.spp-abu { color: #6b7280; }
+.spp-abu .titik { background: #9ca3af; }
+.ts-chev { font-size: 18px; color: var(--teks-lembut); text-align: right; }
 
 /* Penjelajah bertingkat — lembaga › tingkat › kelas */
 .penjelajah { display: flex; flex-direction: column; gap: 10px; }
@@ -500,6 +543,8 @@ label.toggle, .field label.toggle {
   .menuwrap { flex: 0 0 auto; }
   .menuitem { flex-direction: column; gap: 4px; min-width: 74px; text-align: center; }
   .submenu { display: none; }
+  .menutoggle { display: none; }
+  .menuitem.punya-sub { padding-right: 12px; }
   .menuitem.active::before { display: none; }
   .menulabel { font-size: 10px; }
   .main { padding-bottom: 96px; }
