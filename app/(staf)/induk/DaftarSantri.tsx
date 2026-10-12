@@ -47,13 +47,14 @@ const LABEL_STATUS: Record<string, string> = { TidakAktif: 'Tidak Aktif' };
 /**
  * Daftar hasil sebagai tabel kaya (mengikuti mockup): tiap baris memuat
  * avatar + nama + NIS, L/P, kelas + unit, wali + HP, pill status, dan status
- * SPP dari sistem keuangan. Seluruh baris tautan ke profil /induk/[id];
+ * SPP dari sistem keuangan. Seluruh baris tautan ke profil di modul
+ * pemilik daftar (`basisDetail`, bawaan /induk/[id]);
  * konteks daftar (filter + halaman) ikut di query supaya halaman profil
  * bisa mengembalikan operator ke daftar yang sama persis.
  */
 export function DaftarSantri({
-  daftar, f, halaman,
-}: { daftar: BarisDaftar[]; f: FilterInduk; halaman?: number }) {
+  daftar, f, halaman, basisDetail = '/induk',
+}: { daftar: BarisDaftar[]; f: FilterInduk; halaman?: number; basisDetail?: string }) {
   const konteks = [queryFilter(f), halaman && halaman > 1 ? `halaman=${halaman}` : '']
     .filter(Boolean)
     .join('&');
@@ -77,7 +78,7 @@ export function DaftarSantri({
           return (
             <Link
               key={String(baris.id)}
-              href={konteks ? `/induk/${baris.id}?${konteks}` : `/induk/${baris.id}`}
+              href={konteks ? `${basisDetail}/${baris.id}?${konteks}` : `${basisDetail}/${baris.id}`}
               className="ts-row baris-santri"
             >
               <span className="ts-sel-santri">

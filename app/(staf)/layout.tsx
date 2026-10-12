@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { readSession, isSuperAdmin } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { daftarMaster } from '@/lib/crud/daftar';
+import { getUnitAktifKey } from '@/lib/unit-scope';
 import { StaffShell } from '@/components/templates/StaffShell';
 
 export default async function StafLayout({ children }: { children: React.ReactNode }) {
@@ -27,10 +28,19 @@ export default async function StafLayout({ children }: { children: React.ReactNo
   const HREF_KNOWN = new Set([
     'dashboard', 'induk', 'poskestren', 'keuangan', 'kurikulum', 'ujian',
     'lms', 'gaji', 'wa', 'kunjungan', 'ppdb', 'laporan', 'pengaturan', 'kepegawaian', 'data',
-    'rekrutmen', 'sarpras', 'perpustakaan',
+    'rekrutmen', 'sarpras', 'perpustakaan', 'siswa', 'santri',
   ]);
+  // Menu Siswa & Santri bersifat kontekstual (permintaan user): hanya tampil
+  // bila PemilihUnit global sedang mengunci unit yang sesuai — Siswa untuk
+  // SMP/MA, Santri untuk Pondok. Di luar itu (Semua Unit atau unit lain)
+  // keduanya disembunyikan walau peran memilikinya.
+  const unitKey = await getUnitAktifKey(session);
+  const menuSesuaiUnit = (key: string): boolean =>
+    key === 'siswa' ? unitKey === 'SMP' || unitKey === 'MA'
+    : key === 'santri' ? unitKey === 'Pondok'
+    : true;
   const visible = menus
-    .filter((menu) => HREF_KNOWN.has(menu.key) && !MENU_DISEMBUNYIKAN.has(menu.key))
+    .filter((menu) => HREF_KNOWN.has(menu.key) && !MENU_DISEMBUNYIKAN.has(menu.key) && menuSesuaiUnit(menu.key))
     .map((menu) => ({ key: menu.key, label: menu.label, icon: menu.icon }));
 
   const ticker = agenda.map((a) => {

@@ -122,6 +122,18 @@ const MENU_BARU = [
     icon: 'M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11',
     roles: ['ketua', 'kepsmp', 'kepma', 'pengasuh', 'guru', 'musyrif', 'pegawai', 'sdm', 'sarpras', 'teknisi', 'bendahara', 'poskestren'],
   },
+  {
+    key: 'siswa',
+    label: 'Siswa',
+    icon: 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75',
+    roles: ['ketua', 'kepsmp', 'kepma', 'pengasuh', 'guru', 'poskestren', 'bendahara', 'superadmin'],
+  },
+  {
+    key: 'santri',
+    label: 'Santri',
+    icon: 'M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z',
+    roles: ['ketua', 'kepsmp', 'kepma', 'pengasuh', 'guru', 'poskestren', 'bendahara', 'superadmin'],
+  },
 ];
 
 /** Profil yayasan induk — satu baris, dipakai untuk kop surat & halaman publik. */
