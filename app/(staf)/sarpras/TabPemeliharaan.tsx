@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { isSuperAdmin, type SessionPayload } from '@/lib/auth';
 import { whereAsetTerlihat, type IzinSarpras } from '@/lib/aset/akses';
 import { TEMPLAT_PEMELIHARAAN } from '@/lib/aset/konstanta';
-import { Kosong, Tabel } from '@/components';
+import { Button, FormField, Input, Kosong, Select, Tabel } from '@/components';
 import { buatTugasPemeliharaan, selesaikanPemeliharaan } from './actions';
 import { BadgeStatus, Kembali } from './Kembali';
 import { petugasTeknis } from './data';
@@ -31,18 +31,18 @@ export async function TabPemeliharaan({ session, izin }: { session: SessionPaylo
           <h3 className="card-judul">Jadwalkan pemeliharaan</h3>
           <form action={buatTugasPemeliharaan} className="grid g3">
             <Kembali ke={K} />
-            <div className="field"><label>Judul *</label><input name="title" required list="templat-pemeliharaan" placeholder="mis. Servis AC" /></div>
+            <FormField label="Judul *" htmlFor="title"><Input id="title" name="title" required list="templat-pemeliharaan" placeholder="mis. Servis AC" /></FormField>
             <datalist id="templat-pemeliharaan">{TEMPLAT_PEMELIHARAAN.map((t) => <option key={t.title} value={t.title}>{`tiap ${t.intervalDays} hari`}</option>)}</datalist>
-            <div className="field"><label>Aset</label>
-              <select name="assetId"><option value="">— umum / tanpa aset —</option>{aset.map((a) => <option key={String(a.id)} value={String(a.id)}>{a.name} ({a.inventoryCode})</option>)}</select>
-            </div>
-            <div className="field"><label>Jatuh tempo *</label><input name="dueDate" type="date" required /></div>
-            <div className="field"><label>Ulang tiap (hari)</label><input name="intervalDays" type="number" min={1} placeholder="kosong = sekali" /></div>
-            <div className="field"><label>Ingatkan H-</label><input name="remindDaysBefore" type="number" min={0} defaultValue={7} /></div>
-            <div className="field"><label>Petugas</label>
-              <select name="assignedTo"><option value="">—</option>{petugas.map((p) => <option key={String(p.id)} value={String(p.id)}>{p.person.fullName}</option>)}</select>
-            </div>
-            <div className="field"><button type="submit" className="btn">Jadwalkan</button></div>
+            <FormField label="Aset" htmlFor="assetId">
+              <Select id="assetId" name="assetId"><option value="">— umum / tanpa aset —</option>{aset.map((a) => <option key={String(a.id)} value={String(a.id)}>{a.name} ({a.inventoryCode})</option>)}</Select>
+            </FormField>
+            <FormField label="Jatuh tempo *" htmlFor="dueDate"><Input id="dueDate" name="dueDate" type="date" required /></FormField>
+            <FormField label="Ulang tiap (hari)" htmlFor="intervalDays"><Input id="intervalDays" name="intervalDays" type="number" min={1} placeholder="kosong = sekali" /></FormField>
+            <FormField label="Ingatkan H-" htmlFor="remindDaysBefore"><Input id="remindDaysBefore" name="remindDaysBefore" type="number" min={0} defaultValue={7} /></FormField>
+            <FormField label="Petugas" htmlFor="assignedTo">
+              <Select id="assignedTo" name="assignedTo"><option value="">—</option>{petugas.map((p) => <option key={String(p.id)} value={String(p.id)}>{p.person.fullName}</option>)}</Select>
+            </FormField>
+            <div className="field"><Button type="submit">Jadwalkan</Button></div>
           </form>
         </div>
       )}
@@ -64,9 +64,9 @@ export async function TabPemeliharaan({ session, izin }: { session: SessionPaylo
                   <td><BadgeStatus status={lewat ? 'Terlewat' : t.status} /></td>
                   <td>
                     <form action={selesaikanPemeliharaan} style={{ display: 'flex', gap: 6 }}>
-                      <Kembali ke={K} /><input type="hidden" name="id" value={String(t.id)} />
-                      <input name="cost" type="number" min={0} placeholder="Biaya" style={{ width: 90, padding: '6px 8px', borderRadius: 8, border: '1px solid var(--garis)' }} />
-                      <button type="submit" className="btn-sekunder" style={{ fontSize: 12 }}>Tandai selesai</button>
+                      <Kembali ke={K} /><Input type="hidden" name="id" value={String(t.id)} />
+                      <Input name="cost" type="number" min={0} placeholder="Biaya" style={{ width: 90, padding: '6px 8px', borderRadius: 8, border: '1px solid var(--garis)' }} />
+                      <Button type="submit" varian="sekunder" style={{ fontSize: 12 }}>Tandai selesai</Button>
                     </form>
                   </td>
                 </tr>

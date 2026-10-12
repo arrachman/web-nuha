@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { Kosong } from '@/components';
+import { Button, Input, Kosong } from '@/components';
 import { toggleTemplateWa } from './actions';
 
 /** Kartu template per skenario pesan; nonaktifkan untuk menghentikan pengiriman otomatis. */
@@ -19,8 +19,8 @@ export async function TabTemplate({ searchParams }: { searchParams: Record<strin
       <div className="card" style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
         <p className="muted">Nonaktifkan template untuk menghentikan pengiriman otomatisnya. Placeholder <strong>{'{nama}'}</strong> diisi sistem saat pesan dibuat.</p>
         <form method="get" style={{ display: 'flex', gap: 8 }}>
-          <input type="hidden" name="tab" value="template" />
-          <input className="field" name="q" defaultValue={q} placeholder="Cari template / pemicu" style={{ minWidth: 220 }} />
+          <Input type="hidden" name="tab" value="template" />
+          <Input varian="cari" name="q" defaultValue={q} placeholder="Cari template / pemicu" style={{ minWidth: 220 }} />
         </form>
       </div>
       {templates.length === 0 ? (
@@ -34,8 +34,8 @@ export async function TabTemplate({ searchParams }: { searchParams: Record<strin
                 <span className="muted" style={{ fontSize: 11 }}>{t.code}</span>
                 <div style={{ flex: 1 }} />
                 <form action={toggleTemplateWa}>
-                  <input type="hidden" name="id" value={t.id} />
-                  <button className={`btn ${t.isActive ? '' : 'btn-sekunder'}`} type="submit">{t.isActive ? 'Aktif' : 'Nonaktif'}</button>
+                  <Input type="hidden" name="id" value={t.id} />
+                  <Button varian={t.isActive ? 'primer' : 'sekunder'} type="submit">{t.isActive ? 'Aktif' : 'Nonaktif'}</Button>
                 </form>
               </div>
               <div>

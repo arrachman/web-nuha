@@ -3,7 +3,7 @@ import { isSuperAdmin, type SessionPayload } from '@/lib/auth';
 import { whereAsetTerlihat, type IzinSarpras } from '@/lib/aset/akses';
 import { jejakPersetujuan } from '@/lib/aset/persetujuan';
 import { ALASAN_HAPUS, METODE_HAPUS, rupiah } from '@/lib/aset/konstanta';
-import { Kosong } from '@/components';
+import { Button, FormField, Input, Kosong, Select, Textarea } from '@/components';
 import { laksanakanPenghapusan, putuskanPenghapusan, usulkanPenghapusan } from './actions';
 import { BadgeKondisi, BadgeStatus, FormKeputusan, Kembali } from './Kembali';
 
@@ -26,7 +26,7 @@ export async function TabPenghapusan({ session, izin }: { session: SessionPayloa
 
   const baris = (a: (typeof kandidat)[number]) => (
     <label key={String(a.id)} style={{ display: 'flex', gap: 8, fontSize: 13, padding: '3px 0', alignItems: 'center', flexWrap: 'wrap' }}>
-      <input type="checkbox" name="assetIds" value={String(a.id)} /> {a.name} <span className="muted">({a.inventoryCode} · {a.ownerUnit.nama})</span>
+      <Input type="checkbox" name="assetIds" value={String(a.id)} /> {a.name} <span className="muted">({a.inventoryCode} · {a.ownerUnit.nama})</span>
       <BadgeKondisi kondisi={a.condition} />{a.fundingSource.restrictedDisposal && <span className="badge badge-oranye">{a.fundingSource.code}</span>}
     </label>
   );
@@ -43,12 +43,12 @@ export async function TabPenghapusan({ session, izin }: { session: SessionPayloa
               {lain.length > 0 && <details style={{ marginTop: 6 }}><summary style={{ cursor: 'pointer', fontSize: 12.5 }}>Aset lain ({lain.length})</summary>{lain.map(baris)}</details>}
             </div>
             <div className="grid g3">
-              <div className="field"><label>Alasan *</label><select name="reason">{ALASAN_HAPUS.map((a) => <option key={a} value={a}>{a.replace(/([a-z])([A-Z])/g, '$1 $2')}</option>)}</select></div>
-              <div className="field"><label>Metode *</label><select name="method">{METODE_HAPUS.map((m) => <option key={m}>{m}</option>)}</select></div>
-              <div className="field"><label>Berita acara (BA)</label><input type="file" name="ba" accept="application/pdf,image/*" /></div>
-              <div className="field" style={{ gridColumn: 'span 3' }}><label>Catatan (wajib untuk aset wakaf/BOS)</label><textarea name="note" rows={2} /></div>
+              <FormField label="Alasan *" htmlFor="reason"><Select id="reason" name="reason">{ALASAN_HAPUS.map((a) => <option key={a} value={a}>{a.replace(/([a-z])([A-Z])/g, '$1 $2')}</option>)}</Select></FormField>
+              <FormField label="Metode *" htmlFor="method"><Select id="method" name="method">{METODE_HAPUS.map((m) => <option key={m}>{m}</option>)}</Select></FormField>
+              <FormField label="Berita acara (BA)" htmlFor="ba"><Input id="ba" type="file" name="ba" accept="application/pdf,image/*" /></FormField>
+              <div className="field" style={{ gridColumn: 'span 3' }}><label>Catatan (wajib untuk aset wakaf/BOS)</label><Textarea name="note" rows={2} /></div>
             </div>
-            <button type="submit" className="btn">Ajukan usulan</button>
+            <Button type="submit">Ajukan usulan</Button>
           </form>
         </div>
       )}
@@ -75,10 +75,10 @@ export async function TabPenghapusan({ session, izin }: { session: SessionPayloa
             {bolehPutus && <FormKeputusan action={putuskanPenghapusan} id={String(d.id)} kembali={K} labelSetuju={aktif?.roleKey === 'sarpras' ? 'Verifikasi' : 'Setujui'} />}
             {d.status === 'Disetujui' && izin.dispose_request && (
               <form action={laksanakanPenghapusan} style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap', alignItems: 'center' }}>
-                <Kembali ke={K} /><input type="hidden" name="id" value={String(d.id)} />
-                {d.method.startsWith('Dijual') && d.items.map((i) => <input key={String(i.id)} name={`jual_${i.id}`} type="number" min={0} placeholder={`Nilai jual ${i.asset.name}`} style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid var(--garis)' }} />)}
-                <label style={{ fontSize: 12 }}>BA bertanda tangan <input type="file" name="ba" accept="application/pdf,image/*" /></label>
-                <button type="submit" className="btn">Laksanakan penghapusan</button>
+                <Kembali ke={K} /><Input type="hidden" name="id" value={String(d.id)} />
+                {d.method.startsWith('Dijual') && d.items.map((i) => <Input key={String(i.id)} name={`jual_${i.id}`} type="number" min={0} placeholder={`Nilai jual ${i.asset.name}`} style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid var(--garis)' }} />)}
+                <label className="field" style={{ fontSize: 12, marginBottom: 0 }}>BA bertanda tangan <Input type="file" name="ba" accept="application/pdf,image/*" /></label>
+                <Button type="submit">Laksanakan penghapusan</Button>
               </form>
             )}
           </div>

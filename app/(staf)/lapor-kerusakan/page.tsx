@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { requirePage } from '@/lib/access';
 import { getUnitAktif } from '@/lib/unit-scope';
 import { prisma } from '@/lib/prisma';
-import { JudulHalaman, PesanAksi, satu, type SearchParams } from '@/components';
+import { Button, FormField, Input, JudulHalaman, PesanAksi, Select, Textarea, satu, type SearchParams } from '@/components';
 import { laporKerusakan } from '../sarpras/actions';
 import { Kembali } from '../sarpras/Kembali';
 
@@ -38,28 +38,28 @@ export default async function LaporKerusakanPage({ searchParams }: { searchParam
       <form action={laporKerusakan} className="card">
         <Kembali ke={kembali} />
         {aset ? (
-          <div className="field"><label>Aset</label><div data-testid="target-lapor"><b>{aset.name}</b> <span className="muted">· {aset.location?.name ?? '-'}</span></div><input type="hidden" name="asetToken" value={aset.qrToken} /></div>
+          <div className="field"><label>Aset</label><div data-testid="target-lapor"><b>{aset.name}</b> <span className="muted">· {aset.location?.name ?? '-'}</span></div><Input type="hidden" name="asetToken" value={aset.qrToken} /></div>
         ) : ruang ? (
-          <div className="field"><label>Ruang</label><div data-testid="target-lapor"><b>{ruang.name}</b></div><input type="hidden" name="ruangToken" value={ruang.qrToken} /></div>
+          <div className="field"><label>Ruang</label><div data-testid="target-lapor"><b>{ruang.name}</b></div><Input type="hidden" name="ruangToken" value={ruang.qrToken} /></div>
         ) : (
-          <div className="field"><label>Ruang / lokasi *</label>
-            <select name="locationId" required><option value="">— pilih —</option>{semuaRuang.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}</select>
-          </div>
+          <FormField label="Ruang / lokasi *" htmlFor="locationId">
+            <Select id="locationId" name="locationId" required><option value="">— pilih —</option>{semuaRuang.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}</Select>
+          </FormField>
         )}
-        <div className="field"><label>Apa yang rusak? *</label><textarea name="description" rows={3} required minLength={5} placeholder="mis. Lampu proyektor mati, tidak menyala sama sekali." /></div>
+        <FormField label="Apa yang rusak? *" htmlFor="description"><Textarea id="description" name="description" rows={3} required minLength={5} placeholder="mis. Lampu proyektor mati, tidak menyala sama sekali." /></FormField>
         <div className="field">
           <label>Tingkat kerusakan *</label>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
             {TINGKAT.map((t) => (
               <label key={t.v} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', border: '1px solid var(--garis)', borderRadius: 10, padding: '9px 10px', fontWeight: 400, cursor: 'pointer' }}>
-                <input type="radio" name="severity" value={t.v} required style={{ width: 'auto', height: 'auto', marginTop: 3 }} />
+                <Input type="radio" name="severity" value={t.v} required style={{ width: 'auto', height: 'auto', marginTop: 3 }} />
                 <span><b style={{ display: 'block', fontSize: 13 }}>{t.v}</b><span className="muted" style={{ fontSize: 11.5 }}>{t.d}</span></span>
               </label>
             ))}
           </div>
         </div>
-        <div className="field"><label>Foto (opsional)</label><input type="file" name="foto" accept="image/*" capture="environment" /></div>
-        <button type="submit" className="btn" style={{ width: '100%' }}>Kirim laporan</button>
+        <FormField label="Foto (opsional)" htmlFor="foto"><Input id="foto" type="file" name="foto" accept="image/*" capture="environment" /></FormField>
+        <Button type="submit" style={{ width: '100%' }}>Kirim laporan</Button>
       </form>
     </div>
   );

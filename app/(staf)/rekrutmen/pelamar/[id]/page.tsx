@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { requirePage, can } from '@/lib/access';
 import { readSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { JudulHalaman } from '@/components';
+import { Button, Input, JudulHalaman, Select, Textarea } from '@/components';
 import { verifikasiDokumen, ubahStatusLamaran, beriNilai, konversiJadiPegawai } from '../../actions';
 
 const LABEL_STATUS: Record<string, string> = {
@@ -89,9 +89,9 @@ export default async function DetailPelamarPage({ params }: { params: Promise<{ 
                         <span className={`badge ${doc.verified ? 'badge-hijau' : 'badge-kuning'}`}>{doc.verified ? 'Terverifikasi' : 'Belum'}</span>
                         {bisaScreen && (
                           <form action={verifikasiDokumen}>
-                            <input type="hidden" name="id" value={String(doc.id)} />
-                            <input type="hidden" name="verified" value={String(!doc.verified)} />
-                            <button type="submit" className="btn-sekunder" style={{ fontSize: 11.5 }}>{doc.verified ? 'Tandai perlu perbaikan' : 'Verifikasi'}</button>
+                            <Input type="hidden" name="id" value={String(doc.id)} />
+                            <Input type="hidden" name="verified" value={String(!doc.verified)} />
+                            <Button type="submit" varian="sekunder" style={{ fontSize: 11.5 }}>{doc.verified ? 'Tandai perlu perbaikan' : 'Verifikasi'}</Button>
                           </form>
                         )}
                       </div>
@@ -110,11 +110,13 @@ export default async function DetailPelamarPage({ params }: { params: Promise<{ 
                   const nilaiSaya = lamaran.scores.find((s) => s.stageId === stage.id);
                   return (
                     <form action={beriNilai} key={String(stage.id)} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                      <input type="hidden" name="applicationId" value={String(lamaran.id)} />
-                      <input type="hidden" name="stageId" value={String(stage.id)} />
+                      <Input type="hidden" name="applicationId" value={String(lamaran.id)} />
+                      <Input type="hidden" name="stageId" value={String(stage.id)} />
                       <span style={{ flex: 1, fontSize: 13 }}>{stage.name} <span className="muted">(bobot {stage.weight})</span></span>
-                      <input name="score" type="number" min={0} max={100} step="0.5" defaultValue={nilaiSaya ? Number(nilaiSaya.score) : undefined} style={{ width: 80 }} required />
-                      <button type="submit" className="btn-sekunder">Simpan</button>
+                      <div className="field" style={{ marginBottom: 0, width: 90 }}>
+                        <Input name="score" type="number" min={0} max={100} step="0.5" defaultValue={nilaiSaya ? Number(nilaiSaya.score) : undefined} required />
+                      </div>
+                      <Button type="submit" varian="sekunder">Simpan</Button>
                     </form>
                   );
                 })}
@@ -145,21 +147,29 @@ export default async function DetailPelamarPage({ params }: { params: Promise<{ 
 
             {(bisaScreen || bisaDecide) && lamaran.status !== 'Hired' && lamaran.status !== 'Rejected' && (
               <form action={ubahStatusLamaran} style={{ display: 'flex', flexDirection: 'column', gap: 8, borderTop: '1px solid #F0EDE4', paddingTop: 14 }}>
-                <input type="hidden" name="id" value={String(lamaran.id)} />
+                <Input type="hidden" name="id" value={String(lamaran.id)} />
                 <label style={{ fontSize: 12.5, fontWeight: 600 }}>Ubah status</label>
-                <select name="status">
-                  {bisaScreen && <option value="Screening">Diperiksa Berkas</option>}
-                  {bisaScreen && <option value="Shortlisted">Lolos Administrasi</option>}
-                  {bisaScreen && <option value="Test">Tes</option>}
-                  {bisaScreen && <option value="Interview">Wawancara</option>}
-                  {bisaDecide && <option value="Offered">Ditawari</option>}
-                  {bisaDecide && <option value="Hired">Diterima (Hired)</option>}
-                  {bisaDecide && <option value="Rejected">Tidak Lolos</option>}
-                </select>
-                <input name="scheduleAt" type="datetime-local" placeholder="Jadwal (opsional)" />
-                <input name="location" placeholder="Lokasi (opsional)" />
-                <textarea name="note" rows={2} placeholder="Catatan (opsional)" />
-                <button type="submit" className="btn">Simpan Status</button>
+                <div className="field" style={{ marginBottom: 0 }}>
+                  <Select name="status">
+                    {bisaScreen && <option value="Screening">Diperiksa Berkas</option>}
+                    {bisaScreen && <option value="Shortlisted">Lolos Administrasi</option>}
+                    {bisaScreen && <option value="Test">Tes</option>}
+                    {bisaScreen && <option value="Interview">Wawancara</option>}
+                    {bisaDecide && <option value="Offered">Ditawari</option>}
+                    {bisaDecide && <option value="Hired">Diterima (Hired)</option>}
+                    {bisaDecide && <option value="Rejected">Tidak Lolos</option>}
+                  </Select>
+                </div>
+                <div className="field" style={{ marginBottom: 0 }}>
+                  <Input name="scheduleAt" type="datetime-local" placeholder="Jadwal (opsional)" />
+                </div>
+                <div className="field" style={{ marginBottom: 0 }}>
+                  <Input name="location" placeholder="Lokasi (opsional)" />
+                </div>
+                <div className="field" style={{ marginBottom: 0 }}>
+                  <Textarea name="note" rows={2} placeholder="Catatan (opsional)" />
+                </div>
+                <Button type="submit">Simpan Status</Button>
               </form>
             )}
           </div>
@@ -169,8 +179,8 @@ export default async function DetailPelamarPage({ params }: { params: Promise<{ 
               <h3 className="card-judul">Konversi jadi Pegawai</h3>
               <p className="muted" style={{ marginTop: 0, fontSize: 13 }}>Membuat data pegawai + akun login dengan sandi sementara yang wajib diganti saat login pertama.</p>
               <form action={konversiJadiPegawai}>
-                <input type="hidden" name="id" value={String(lamaran.id)} />
-                <button type="submit" className="btn">Konversi jadi Pegawai</button>
+                <Input type="hidden" name="id" value={String(lamaran.id)} />
+                <Button type="submit">Konversi jadi Pegawai</Button>
               </form>
             </div>
           )}

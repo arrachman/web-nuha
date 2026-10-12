@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { Kosong, Tabel } from '@/components';
+import { Button, ButtonLink, Input, Kosong, Tabel } from '@/components';
 import { bukaBekuan } from './cbt-actions';
 import { PanelEsai } from './PanelEsai';
 
@@ -63,14 +63,14 @@ export async function TabPengawasan({
         <h3 className="card-judul">Pilih sesi</h3>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 10 }}>
           {daftarSesi.map((s) => (
-            <a
+            <ButtonLink
               key={s.id}
+              varian={s.id === aktif.id ? 'primer' : 'sekunder'}
               href={`/ujian?tab=pengawasan&sesi=${s.id}`}
-              className={`btn ${s.id === aktif.id ? 'btn' : 'btn-sekunder'}`}
               style={{ fontSize: 12.5 }}
             >
               {s.paket.nama} · {s.kelas.nama}
-            </a>
+            </ButtonLink>
           ))}
         </div>
       </div>
@@ -117,8 +117,8 @@ export async function TabPengawasan({
                     <td>
                       {p.status === 'Dibekukan' && (
                         <form action={bukaBekuan}>
-                          <input type="hidden" name="pesertaId" value={String(p.id)} />
-                          <button className="btn btn-sekunder" style={{ fontSize: 12 }}>Buka kembali</button>
+                          <Input type="hidden" name="pesertaId" value={String(p.id)} />
+                          <Button varian="sekunder" style={{ fontSize: 12 }}>Buka kembali</Button>
                         </form>
                       )}
                     </td>

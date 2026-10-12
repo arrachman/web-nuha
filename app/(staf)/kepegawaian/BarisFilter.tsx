@@ -1,4 +1,4 @@
-import { FilterAktif, PenyaringOtomatis, type ChipFilter } from '@/components';
+import { Button, FilterAktif, Input, PenyaringOtomatis, type ChipFilter } from '@/components';
 import { hrefKepegawaian, filterPegawaiKosong, URUT_PEGAWAI, type FilterPegawai } from './filter';
 
 /**
@@ -23,15 +23,15 @@ export function BarisFilter({ f, tab }: { f: FilterPegawai; tab: string }) {
     <>
     <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'flex-end' }}>
       <form method="get" style={{ display: 'flex', gap: 10, flex: '1 1 220px', minWidth: 220 }}>
-        <input type="hidden" name="tab" value={tab} />
+        <Input type="hidden" name="tab" value={tab} />
         {/* Penjelajah lembaga/status dipertahankan saat form disubmit. */}
-        {f.unit && <input type="hidden" name="unit" value={f.unit} />}
-        {f.status && <input type="hidden" name="status" value={f.status} />}
+        {f.unit && <Input type="hidden" name="unit" value={f.unit} />}
+        {f.status && <Input type="hidden" name="status" value={f.status} />}
         <div className="field" style={{ flex: 1, marginBottom: 0 }}>
           <label>Pencarian</label>
-          <input type="search" name="q" placeholder="Nama, NIP, jabatan, atau mapel" defaultValue={f.q} />
+          <Input type="search" name="q" placeholder="Nama, NIP, jabatan, atau mapel" defaultValue={f.q} />
         </div>
-        <button type="submit" className="btn" style={{ alignSelf: 'end' }}>Cari</button>
+        <Button type="submit" style={{ alignSelf: 'end' }}>Cari</Button>
       </form>
 
       <PenyaringOtomatis

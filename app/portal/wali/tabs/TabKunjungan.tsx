@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { Badge, Kosong } from '@/components';
+import { Badge, Button, Input, Kosong, Select, Textarea } from '@/components';
 import { ajukanKunjunganWali } from '../actions';
 
 const JAM_OPTS = ['09.00', '10.00', '11.00', '13.00', '14.00'];
@@ -14,29 +14,29 @@ export async function TabKunjungan({ santriId, namaWaliDefault, hubungan }: { sa
           <div style={{ fontFamily: 'var(--font-lora), serif', fontSize: 15, color: '#0A4A2B', fontWeight: 600, marginBottom: 4 }}>Ajukan kunjungan</div>
           <div style={{ fontSize: 12, color: '#6B7280' }}>Kunjungan umum tiap Ahad 09.00–15.00 di aula tamu.</div>
         </div>
-        <input type="hidden" name="santriId" value={String(santriId)} />
-        <input type="hidden" name="hubungan" value={hubungan} />
+        <Input type="hidden" name="santriId" value={String(santriId)} />
+        <Input type="hidden" name="hubungan" value={hubungan} />
         <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           <span style={{ fontSize: 12, fontWeight: 600, color: '#374151' }}>Nama wali / tamu</span>
-          <input name="namaWali" required defaultValue={namaWaliDefault} style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13 }} />
+          <Input name="namaWali" required defaultValue={namaWaliDefault} style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13 }} />
         </label>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: '#374151' }}>Tanggal</span>
-            <input type="date" name="tgl" required style={{ padding: '11px 10px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FFF', fontSize: 12.5 }} />
+            <Input type="date" name="tgl" required style={{ padding: '11px 10px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FFF', fontSize: 12.5 }} />
           </label>
           <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: '#374151' }}>Jam</span>
-            <select name="jam" style={{ padding: '11px 10px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FFF', fontSize: 12.5 }}>
+            <Select name="jam" style={{ padding: '11px 10px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FFF', fontSize: 12.5 }}>
               {JAM_OPTS.map((j) => <option key={j} value={j}>{j}</option>)}
-            </select>
+            </Select>
           </label>
         </div>
         <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           <span style={{ fontSize: 12, fontWeight: 600, color: '#374151' }}>Keperluan</span>
-          <textarea name="keperluan" rows={2} required placeholder="Menengok anak, konsultasi hafalan, dll." style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13, resize: 'vertical' }} />
+          <Textarea name="keperluan" rows={2} required placeholder="Menengok anak, konsultasi hafalan, dll." style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13, resize: 'vertical' }} />
         </label>
-        <button className="btn" type="submit">Ajukan kunjungan</button>
+        <Button type="submit">Ajukan kunjungan</Button>
       </form>
 
       <div style={{ background: '#FFFFFF', border: '1px solid #E8E3D9', borderRadius: 14, padding: 16, marginTop: 14 }}>

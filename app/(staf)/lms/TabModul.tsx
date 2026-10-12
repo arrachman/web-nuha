@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { Card, Tabel, Badge, Kosong, ProgressBar } from '@/components';
+import { Card, Input, Tabel, Badge, Kosong, ProgressBar } from '@/components';
 
 export async function TabModul({ q }: { q: string }) {
   const materi = await prisma.materiLms.findMany({
@@ -16,8 +16,8 @@ export async function TabModul({ q }: { q: string }) {
       sub="Ketuntasan diambil dari progres kursus induk modul tersebut."
     >
       <form method="get" style={{ marginBottom: 14 }}>
-        <input type="hidden" name="tab" value="modul" />
-        <input className="field" name="q" defaultValue={q} placeholder="Cari modul / kursus" style={{ minWidth: 220 }} />
+        <Input type="hidden" name="tab" value="modul" />
+        <Input varian="cari" name="q" defaultValue={q} placeholder="Cari modul / kursus" style={{ minWidth: 220 }} />
       </form>
       {materi.length === 0 ? (
         <Kosong pesan="Tidak ada modul yang cocok dengan pencarian." />

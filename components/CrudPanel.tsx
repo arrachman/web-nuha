@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import type { ClientEntity, ClientField, Column, Keterkaitan, Row } from '@/lib/crud/types';
 import { InputField } from '@/components/molecules/InputField';
+import { Button } from '@/components/atoms/Button';
 import { apiPath } from '@/lib/api-path';
 
 const IkonTambah = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 5v14M5 12h14" /></svg>;
@@ -153,7 +154,7 @@ export function CrudPanel({ entity, rows: initialRows }: { entity: ClientEntity;
   return <div className="card">
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
       <h3 className="card-judul" style={{ margin: 0 }}>{entity.label}</h3>
-      <button className="btn" type="button" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 38, padding: 0 }} onClick={() => { setEditing(null); setPilihan({}); setDibuka(new Set()); setOpen(!open); setMessage(''); }} data-testid={`tambah-${entity.key}`} aria-label={open && !editing ? 'Tutup form' : `Tambah ${entity.label.toLowerCase()}`} title={open && !editing ? 'Tutup form' : `Tambah ${entity.label.toLowerCase()}`}><IkonTambah /></button>
+      <Button type="button" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 38, padding: 0 }} onClick={() => { setEditing(null); setPilihan({}); setDibuka(new Set()); setOpen(!open); setMessage(''); }} data-testid={`tambah-${entity.key}`} aria-label={open && !editing ? 'Tutup form' : `Tambah ${entity.label.toLowerCase()}`} title={open && !editing ? 'Tutup form' : `Tambah ${entity.label.toLowerCase()}`}><IkonTambah /></Button>
     </div>
     {message && <p className="muted" role="status" style={{ marginTop: 8 }}>{message}</p>}
 
@@ -164,7 +165,7 @@ export function CrudPanel({ entity, rows: initialRows }: { entity: ClientEntity;
             <h3 style={{ margin: 0 }}>{editing ? `Ubah ${entity.label.toLowerCase()}` : `Tambah ${entity.label.toLowerCase()}`}</h3>
             {editing && <p className="muted" style={{ fontSize: 12.5, margin: '4px 0 0' }}>{String(editing.fullName ?? editing.nama ?? editing.label ?? `ID ${editing.id}`)}</p>}
           </div>
-          <button className="btn btn-sekunder btn-icon" type="button" onClick={() => { setEditing(null); setOpen(false); }} title="Tutup" aria-label="Tutup"><IkonTutup /></button>
+          <Button varian="ikon-sekunder" type="button" onClick={() => { setEditing(null); setOpen(false); }} title="Tutup" aria-label="Tutup"><IkonTutup /></Button>
         </div>
         {entity.deskripsi && <p className="kait-deskripsi">{entity.deskripsi}</p>}
         <form onSubmit={submit} data-testid={`form-${entity.key}`}>
@@ -174,11 +175,11 @@ export function CrudPanel({ entity, rows: initialRows }: { entity: ClientEntity;
           return <fieldset className="grup-form" key={grup.judul}>
           <legend>
             {bisaLipat
-              ? <button className="grup-lipat" type="button" aria-expanded={terbuka} onClick={() => setDibuka((prev) => {
+              ? <Button varian="polos" className="grup-lipat" type="button" aria-expanded={terbuka} onClick={() => setDibuka((prev) => {
                   const next = new Set(prev);
                   if (next.has(grup.judul)) next.delete(grup.judul); else next.add(grup.judul);
                   return next;
-                })}><IkonLipat terbuka={terbuka} />{grup.judul}</button>
+                })}><IkonLipat terbuka={terbuka} />{grup.judul}</Button>
               : grup.judul}
           </legend>
           {/* Dilipat pakai `display: none`, bukan unmount — nilai isian tetap
@@ -219,8 +220,8 @@ export function CrudPanel({ entity, rows: initialRows }: { entity: ClientEntity;
               supaya mata operator langsung jatuh ke form. */}
           {editing?._kait && <PanelKeterkaitan kait={editing._kait} />}
           <div className="modal-aksi">
-            <button className="btn btn-sekunder" type="button" onClick={() => { setEditing(null); setOpen(false); }}>Batal</button>
-            <button className="btn" disabled={busy} type="submit">{busy ? 'Menyimpan…' : editing ? 'Simpan perubahan' : 'Simpan'}</button>
+            <Button varian="sekunder" type="button" onClick={() => { setEditing(null); setOpen(false); }}>Batal</Button>
+            <Button disabled={busy} type="submit">{busy ? 'Menyimpan…' : editing ? 'Simpan perubahan' : 'Simpan'}</Button>
           </div>
         </form>
       </div>
@@ -243,8 +244,8 @@ export function CrudPanel({ entity, rows: initialRows }: { entity: ClientEntity;
                 : row._kait!.map((item, i) => <span key={`${item.label}-${i}`} className={`badge badge-${item.nada ?? 'netral'}`} title={item.detail}>{item.label}</span>)}
             </span></td>}
             <td style={{ width: 1, whiteSpace: 'nowrap' }}><div style={{ display: 'flex', gap: 4, justifyContent: 'center' }}>
-              <button className="btn btn-sekunder btn-icon" type="button" disabled={busy} title="Ubah" aria-label="Ubah" onClick={() => { setEditing(row); setPilihan({}); setDibuka(new Set()); setOpen(true); setMessage(''); }}><IkonUbah /></button>
-              <button className="btn btn-sekunder btn-icon btn-icon-bahaya" type="button" disabled={busy} title="Hapus" aria-label="Hapus" onClick={() => { if (window.confirm(`Hapus ${entity.label.toLowerCase()} ini?`)) void send('DELETE', { id: row.id }); }}><IkonHapus /></button>
+              <Button varian="ikon-sekunder" type="button" disabled={busy} title="Ubah" aria-label="Ubah" onClick={() => { setEditing(row); setPilihan({}); setDibuka(new Set()); setOpen(true); setMessage(''); }}><IkonUbah /></Button>
+              <Button varian="ikon-sekunder-bahaya" type="button" disabled={busy} title="Hapus" aria-label="Hapus" onClick={() => { if (window.confirm(`Hapus ${entity.label.toLowerCase()} ini?`)) void send('DELETE', { id: row.id }); }}><IkonHapus /></Button>
             </div></td>
           </tr>)}
         </tbody>

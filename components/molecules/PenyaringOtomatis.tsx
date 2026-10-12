@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { Select } from '@/components/atoms/Select';
 
 /** `href` sudah dihitung di server (Server Component tidak boleh mengirim
  * fungsi ke Client Component), jadi tiap opsi membawa tujuan navigasinya sendiri. */
@@ -26,7 +27,7 @@ export function PenyaringOtomatis({
   return (
     <div className="field" style={{ minWidth: lebar, marginBottom: 0 }}>
       <label>{label}</label>
-      <select
+      <Select
         value={nilai}
         onChange={(e) => {
           const tujuan = opsi.find((o) => o.nilai === e.target.value)?.href;
@@ -34,7 +35,7 @@ export function PenyaringOtomatis({
         }}
       >
         {opsi.map((o) => <option key={o.nilai} value={o.nilai}>{o.label}</option>)}
-      </select>
+      </Select>
     </div>
   );
 }

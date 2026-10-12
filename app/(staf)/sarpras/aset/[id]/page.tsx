@@ -7,7 +7,7 @@ import { izinSarpras, whereAsetTerlihat } from '@/lib/aset/akses';
 import { hitungSusut } from '@/lib/aset/susut';
 import { qrSvg } from '@/lib/aset/qr';
 import { GOLONGAN_KIB, JENIS_BERKAS_ASET, LABEL_STATUS_KERUSAKAN, rupiah } from '@/lib/aset/konstanta';
-import { JudulHalaman, Kosong, PesanAksi, Tabel, satu, type SearchParams } from '@/components';
+import { Button, FormField, Input, JudulHalaman, Kosong, PesanAksi, Select, Tabel, satu, type SearchParams } from '@/components';
 import { mutasiAset, ubahAset, unggahBerkasAset } from '../../actions';
 import { BadgeKondisi, BadgeStatus, Kembali } from '../../Kembali';
 import { lokasiPilihan, stafPilihan, unitDalamCakupan } from '../../data';
@@ -102,10 +102,14 @@ export default async function DetailAsetPage({ params, searchParams }: { params:
             )}
             {izin.asset_manage && (
               <form action={unggahBerkasAset} style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 12 }}>
-                <Kembali ke={kembali} /><input type="hidden" name="id" value={String(aset.id)} />
-                <select name="kind">{JENIS_BERKAS_ASET.map((k) => <option key={k}>{k}</option>)}</select>
-                <input type="file" name="berkas" required accept="image/*,application/pdf" />
-                <button type="submit" className="btn-sekunder">Unggah</button>
+                <Kembali ke={kembali} /><Input type="hidden" name="id" value={String(aset.id)} />
+                <div className="field" style={{ marginBottom: 0 }}>
+                  <Select name="kind">{JENIS_BERKAS_ASET.map((k) => <option key={k}>{k}</option>)}</Select>
+                </div>
+                <div className="field" style={{ marginBottom: 0 }}>
+                  <Input type="file" name="berkas" required accept="image/*,application/pdf" />
+                </div>
+                <Button type="submit" varian="sekunder">Unggah</Button>
               </form>
             )}
           </div>
@@ -116,22 +120,22 @@ export default async function DetailAsetPage({ params, searchParams }: { params:
             <div className="card">
               <h3 className="card-judul">Mutasi aset</h3>
               <form action={mutasiAset} className="grid g2">
-                <Kembali ke={kembali} /><input type="hidden" name="id" value={String(aset.id)} />
-                <div className="field"><label>Pindah ke lokasi</label>
-                  <select name="toLocationId" defaultValue={aset.locationId ?? ''}><option value="">— tetap —</option>{lokasi.map((l) => <option key={l.id} value={l.id}>{l.code} · {l.name}</option>)}</select>
-                </div>
-                <div className="field"><label>Pindah ke unit</label>
-                  <select name="toUnitId" defaultValue={aset.ownerUnitId}>{units.map((u) => <option key={u.id} value={u.id}>{u.nama}</option>)}</select>
-                </div>
-                <div className="field"><label>Serah terima ke pemegang</label>
-                  <select name="toHolderId" defaultValue={aset.holderStaffId ? String(aset.holderStaffId) : ''}>
+                <Kembali ke={kembali} /><Input type="hidden" name="id" value={String(aset.id)} />
+                <FormField label="Pindah ke lokasi" htmlFor="toLocationId">
+                  <Select id="toLocationId" name="toLocationId" defaultValue={aset.locationId ?? ''}><option value="">— tetap —</option>{lokasi.map((l) => <option key={l.id} value={l.id}>{l.code} · {l.name}</option>)}</Select>
+                </FormField>
+                <FormField label="Pindah ke unit" htmlFor="toUnitId">
+                  <Select id="toUnitId" name="toUnitId" defaultValue={aset.ownerUnitId}>{units.map((u) => <option key={u.id} value={u.id}>{u.nama}</option>)}</Select>
+                </FormField>
+                <FormField label="Serah terima ke pemegang" htmlFor="toHolderId">
+                  <Select id="toHolderId" name="toHolderId" defaultValue={aset.holderStaffId ? String(aset.holderStaffId) : ''}>
                     <option value="">— tetap —</option><option value="kosong">(kosongkan pemegang)</option>
                     {staf.map((s) => <option key={String(s.id)} value={String(s.id)}>{s.person.fullName}</option>)}
-                  </select>
-                </div>
-                <div className="field"><label>BAST (opsional)</label><input type="file" name="bast" accept="image/*,application/pdf" /></div>
-                <div className="field" style={{ gridColumn: 'span 2' }}><label>Alasan</label><input name="reason" /></div>
-                <div style={{ gridColumn: 'span 2' }}><button type="submit" className="btn">Catat mutasi</button></div>
+                  </Select>
+                </FormField>
+                <FormField label="BAST (opsional)" htmlFor="bast"><Input id="bast" type="file" name="bast" accept="image/*,application/pdf" /></FormField>
+                <div className="field" style={{ gridColumn: 'span 2' }}><label>Alasan</label><Input name="reason" /></div>
+                <div style={{ gridColumn: 'span 2' }}><Button type="submit">Catat mutasi</Button></div>
               </form>
             </div>
           )}
@@ -154,11 +158,11 @@ export default async function DetailAsetPage({ params, searchParams }: { params:
             <details className="card">
               <summary style={{ cursor: 'pointer', fontWeight: 700 }}>Ubah data aset</summary>
               <form action={ubahAset} style={{ marginTop: 12 }}>
-                <Kembali ke={kembali} /><input type="hidden" name="id" value={String(aset.id)} />
-                <input type="hidden" name="ownerUnitId" value={aset.ownerUnitId} />
-                <input type="hidden" name="locationId" value={aset.locationId ?? ''} />
+                <Kembali ke={kembali} /><Input type="hidden" name="id" value={String(aset.id)} />
+                <Input type="hidden" name="ownerUnitId" value={aset.ownerUnitId} />
+                <Input type="hidden" name="locationId" value={aset.locationId ?? ''} />
                 <FormAset pilihan={{ units, kategori, lokasi, dana, vendor, staf }} aset={aset} />
-                <button type="submit" className="btn">Simpan perubahan</button>
+                <Button type="submit">Simpan perubahan</Button>
               </form>
             </details>
           )}

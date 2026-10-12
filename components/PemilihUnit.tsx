@@ -1,7 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { isSuperAdmin, type SessionPayload } from '@/lib/auth';
 import { getUnitAktif } from '@/lib/unit-scope';
-import { gantiUnit } from '@/lib/unit-aktif';
 import { PemilihUnitSelect } from '@/components/PemilihUnitSelect';
 
 /** Jenjang unit utama yang bisa difokuskan: SMP, MA, Pondok Pesantren. */
@@ -29,12 +28,12 @@ export async function PemilihUnit({ session }: { session: SessionPayload }) {
   const aktif = await getUnitAktif(session);
 
   return (
-    <form action={gantiUnit} className="samaran">
+    <div className="samaran">
       <label htmlFor="pemilih-unit" className="label" style={{ margin: 0 }}>Unit</label>
       <PemilihUnitSelect
         daftar={boleh.map((u) => ({ id: u.id, nama: u.nama }))}
         sedang={aktif ? String(aktif) : ''}
       />
-    </form>
+    </div>
   );
 }

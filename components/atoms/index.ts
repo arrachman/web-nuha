@@ -5,3 +5,8 @@ export * from './Kosong';
 export * from './Avatar';
 export * from './IkonOpsi';
 export * from './Skeleton';
+export * from './Button';
+export * from './ButtonLink';
+export * from './Input';
+export * from './Select';
+export * from './Textarea';

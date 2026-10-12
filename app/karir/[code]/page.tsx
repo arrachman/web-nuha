@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
+import { Button, ButtonLink } from '@/components';
 
 const LABEL_TIPE: Record<string, string> = { Guru: 'Guru', Staf: 'Staf', Asatidz: 'Asatidz', Musyrif: 'Musyrif/Musyrifah' };
 
@@ -63,9 +64,9 @@ export default async function DetailLowonganPage({ params }: { params: Promise<{
       </div>
 
       {dibuka ? (
-        <Link href={`/karir/${job.code}/daftar`} className="btn" style={{ display: 'inline-block' }}>Lamar Sekarang</Link>
+        <ButtonLink href={`/karir/${job.code}/daftar`} style={{ display: 'inline-block' }}>Lamar Sekarang</ButtonLink>
       ) : (
-        <button className="btn" disabled>Pendaftaran Ditutup</button>
+        <Button disabled>Pendaftaran Ditutup</Button>
       )}
     </div>
   );

@@ -1,9 +1,8 @@
-import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import type { SessionPayload } from '@/lib/auth';
 import type { IzinSarpras } from '@/lib/aset/akses';
 import { getUnitAktif, whereUnitAktif } from '@/lib/unit-scope';
-import { Kosong, Tabel } from '@/components';
+import { Button, ButtonLink, FormField, Kosong, Select, Tabel } from '@/components';
 import { bukaOpname } from './actions';
 import { BadgeStatus, Kembali } from './Kembali';
 import { lokasiPilihan, unitDalamCakupan } from './data';
@@ -27,9 +26,9 @@ export async function TabOpname({ session, izin }: { session: SessionPayload; iz
           <h3 className="card-judul">Buka opname baru</h3>
           <form action={bukaOpname} style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'end' }}>
             <Kembali ke="/sarpras?tab=opname" />
-            <div className="field" style={{ marginBottom: 0 }}><label>Unit</label><select name="unitId"><option value="">—</option>{units.map((u) => <option key={u.id} value={u.id}>{u.nama}</option>)}</select></div>
-            <div className="field" style={{ marginBottom: 0 }}><label>atau ruang</label><select name="locationId"><option value="">—</option>{lokasi.map((l) => <option key={l.id} value={l.id}>{l.name}</option>)}</select></div>
-            <button type="submit" className="btn">Buka opname</button>
+            <FormField label="Unit" htmlFor="unitId" rapat><Select id="unitId" name="unitId"><option value="">—</option>{units.map((u) => <option key={u.id} value={u.id}>{u.nama}</option>)}</Select></FormField>
+            <FormField label="atau ruang" htmlFor="locationId" rapat><Select id="locationId" name="locationId"><option value="">—</option>{lokasi.map((l) => <option key={l.id} value={l.id}>{l.name}</option>)}</Select></FormField>
+            <Button type="submit">Buka opname</Button>
           </form>
         </div>
       )}
@@ -46,7 +45,7 @@ export async function TabOpname({ session, izin }: { session: SessionPayload; iz
                   <td>{o.startedAt.toLocaleDateString('id-ID')}</td>
                   <td>{dicek}/{o.lines.length} aset · {o.lines.filter((l) => l.found === false).length} tidak ditemukan</td>
                   <td><BadgeStatus status={o.status} /></td>
-                  <td><Link className="btn-sekunder" href={`/sarpras/opname/${o.id}`}>{o.status === 'Berjalan' ? 'Lanjutkan' : 'Lihat hasil'}</Link></td>
+                  <td><ButtonLink varian="sekunder" href={`/sarpras/opname/${o.id}`}>{o.status === 'Berjalan' ? 'Lanjutkan' : 'Lihat hasil'}</ButtonLink></td>
                 </tr>
               );
             })}

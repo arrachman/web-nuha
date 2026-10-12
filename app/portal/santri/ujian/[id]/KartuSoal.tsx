@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { apiPath } from '@/lib/api-path';
+import { Button } from '@/components/atoms/Button';
+import { Input } from '@/components/atoms/Input';
+import { Textarea } from '@/components/atoms/Textarea';
 
 type Opsi = { label: string; teks: string };
 type Soal = {
@@ -95,7 +98,8 @@ export function KartuSoal({
           {soal.opsi.map((o) => {
             const aktif = terpilih.includes(o.label);
             return (
-              <button
+              <Button
+                varian="polos"
                 key={o.label}
                 type="button"
                 onClick={() => pilih(o.label)}
@@ -115,12 +119,12 @@ export function KartuSoal({
               >
                 <span style={{ fontWeight: 700, color: aktif ? '#0F6B3D' : '#6B7280', minWidth: 18 }}>{o.label}</span>
                 <span>{o.teks}</span>
-              </button>
+              </Button>
             );
           })}
         </div>
       ) : (
-        <textarea
+        <Textarea
           value={jawaban}
           onChange={(e) => setJawaban(e.target.value)}
           rows={soal.tipe === 'Esai' ? 6 : 2}
@@ -130,7 +134,7 @@ export function KartuSoal({
       )}
 
       <label style={{ marginTop: 12, display: 'inline-flex', gap: 8, alignItems: 'center', fontSize: 12.5, color: '#6B7280', cursor: 'pointer' }}>
-        <input type="checkbox" checked={ragu} onChange={(e) => setRagu(e.target.checked)} />
+        <Input type="checkbox" checked={ragu} onChange={(e) => setRagu(e.target.checked)} />
         Tandai ragu-ragu
       </label>
     </div>

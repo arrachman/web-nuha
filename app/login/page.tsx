@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styles from './login.module.css';
 import { apiPath } from '@/lib/api-path';
+import { Button } from '@/components/atoms/Button';
+import { Input } from '@/components/atoms/Input';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -46,13 +48,13 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.field}>
             <label htmlFor="identifier" className={styles.label}>Email atau nama pengguna</label>
-            <input id="identifier" name="identifier" autoComplete="username" required className={styles.input} />
+            <Input id="identifier" name="identifier" autoComplete="username" required defaultValue="superadmin" className={styles.input} />
           </div>
           <div className={styles.field}>
             <label htmlFor="password" className={styles.label}>Kata sandi</label>
-            <input id="password" name="password" type="password" autoComplete="current-password" required className={styles.input} />
+            <Input id="password" name="password" type="password" autoComplete="current-password" required defaultValue="123123" className={styles.input} />
           </div>
-          <button className={styles.submit} disabled={isLoading}>{isLoading ? 'Memeriksa…' : 'Masuk'}</button>
+          <Button varian="polos" className={styles.submit} disabled={isLoading}>{isLoading ? 'Memeriksa…' : 'Masuk'}</Button>
         </form>
         <div className={styles.footer}>
           <p>Yayasan Pendidikan Islam Nurul Huda Mergosono</p>

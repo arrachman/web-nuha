@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { Badge, Kosong } from '@/components';
+import { Badge, Button, Input, Kosong, Select, Textarea } from '@/components';
 import { ajukanIzin } from '../actions';
 
 const JENIS_OPTS = ['Pulang', 'Sakit', 'Keperluan keluarga', 'Lainnya'];
@@ -36,29 +36,29 @@ export async function TabIzin({ santriId }: { santriId: bigint }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 13 }}>
             <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <span style={{ fontSize: 12.5, fontWeight: 600, color: '#374151' }}>Jenis izin</span>
-              <select name="jenis" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FFF', fontSize: 13.5 }}>
+              <Select name="jenis" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FFF', fontSize: 13.5 }}>
                 {JENIS_OPTS.map((o) => <option key={o} value={o}>{o}</option>)}
-              </select>
+              </Select>
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 <span style={{ fontSize: 12.5, fontWeight: 600, color: '#374151' }}>Mulai</span>
-                <input type="date" name="mulai" required style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13.5 }} />
+                <Input type="date" name="mulai" required style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13.5 }} />
               </label>
               <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 <span style={{ fontSize: 12.5, fontWeight: 600, color: '#374151' }}>Kembali</span>
-                <input type="date" name="selesai" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13.5 }} />
+                <Input type="date" name="selesai" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13.5 }} />
               </label>
             </div>
             <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <span style={{ fontSize: 12.5, fontWeight: 600, color: '#374151' }}>Alasan</span>
-              <textarea name="alasan" rows={2} required placeholder="Contoh: hajatan keluarga di rumah" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13.5, resize: 'vertical' }} />
+              <Textarea name="alasan" rows={2} required placeholder="Contoh: hajatan keluarga di rumah" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13.5, resize: 'vertical' }} />
             </label>
             <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <span style={{ fontSize: 12.5, fontWeight: 600, color: '#374151' }}>Penjemput (wajib mahram)</span>
-              <input name="penjemput" required placeholder="Bpk. Sulaiman Hadi (ayah)" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13.5 }} />
+              <Input name="penjemput" required placeholder="Bpk. Sulaiman Hadi (ayah)" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13.5 }} />
             </label>
-            <button className="btn" type="submit">Kirim pengajuan izin</button>
+            <Button type="submit">Kirim pengajuan izin</Button>
           </div>
         </form>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>

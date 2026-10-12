@@ -262,3 +262,91 @@ export async function hapusOverride(formData: FormData): Promise<HasilAksi> {
   revalidatePath("/keuangan");
   return { ok: true, pesan: "Override dihapus; kembali ke tarif standar." };
 }
+
+const buatKode = (prefix: string) =>
+  `${prefix}-${Date.now().toString(36).toUpperCase()}${Math.floor(Math.random() * 1296)
+    .toString(36)
+    .toUpperCase()
+    .padStart(2, "0")}`;
+
+/** Catat utang baru pondok ke pihak luar (pemasok, toko bangunan, dsb). */
+export async function catatUtang(formData: FormData): Promise<HasilAksi> {
+  const session = await requirePage("keuangan");
+  const tanggal = new Date(`${String(formData.get("tanggal") ?? "")}T00:00:00`);
+  if (Number.isNaN(tanggal.getTime())) return { ok: false, pesan: "Tanggal tidak valid." };
+  const kreditur = String(formData.get("kreditur") ?? "").trim().slice(0, 160);
+  const keterangan = String(formData.get("keterangan") ?? "").trim().slice(0, 255);
+  const pokok = keNominal(formData.get("pokok"));
+  const tempoMentah = String(formData.get("jatuhTempo") ?? "").trim();
+  const jatuhTempo = tempoMentah ? new Date(`${tempoMentah}T00:00:00`) : null;
+  if (jatuhTempo && Number.isNaN(jatuhTempo.getTime())) return { ok: false, pesan: "Tanggal jatuh tempo tidak valid." };
+  if (!kreditur) return { ok: false, pesan: "Kreditur wajib diisi." };
+  if (!keterangan) return { ok: false, pesan: "Keterangan wajib diisi." };
+  if (pokok <= 0) return { ok: false, pesan: "Pokok utang harus lebih dari 0." };
+
+  const row = await prisma.utangPondok.create({
+    data: { kode: buatKode("UTG"), kreditur, keterangan, pokok, tanggal, jatuhTempo },
+  });
+  await recordAudit({
+    aksi: "catat_utang",
+    entitas: "utang_pondok",
+    entitasId: String(row.id),
+    ringkasan: `Utang baru ke ${kreditur}: ${keterangan} Rp${pokok.toLocaleString("id-ID")}.`,
+    aktor: aktor(session),
+  });
+  revalidatePath("/keuangan");
+  return { ok: true, pesan: "Utang tercatat." };
+}
+
+/** Bayar/cicil utang: pembayaran dicatat + kas keluar dibukukan dalam satu
+ * transaksi, supaya saldo kas selalu sinkron dengan sisa kewajiban. */
+export async function bayarUtang(formData: FormData): Promise<HasilAksi> {
+  const session = await requirePage("keuangan");
+  const mentah = String(formData.get("utangId") ?? "");
+  if (!/^\d+$/.test(mentah)) return { ok: false, pesan: "Utang tidak valid." };
+  const utangId = BigInt(mentah);
+  const tanggal = new Date(`${String(formData.get("tanggal") ?? "")}T00:00:00`);
+  if (Number.isNaN(tanggal.getTime())) return { ok: false, pesan: "Tanggal tidak valid." };
+  const jumlah = keNominal(formData.get("jumlah"));
+  const metode = String(formData.get("metode") ?? "Tunai").trim().slice(0, 64) || "Tunai";
+  if (jumlah <= 0) return { ok: false, pesan: "Jumlah pembayaran harus lebih dari 0." };
+
+  const utang = await prisma.utangPondok.findUnique({
+    where: { id: utangId },
+    include: { pembayaran: { select: { jumlah: true } } },
+  });
+  if (!utang) return { ok: false, pesan: "Utang tidak ditemukan." };
+  const dibayar = utang.pembayaran.reduce((s, p) => s + Number(p.jumlah), 0);
+  const sisa = Number(utang.pokok) - dibayar;
+  if (sisa <= 0) return { ok: false, pesan: "Utang ini sudah lunas." };
+  if (jumlah > sisa) {
+    return { ok: false, pesan: `Jumlah melebihi sisa kewajiban (Rp${sisa.toLocaleString("id-ID")}).` };
+  }
+
+  await prisma.$transaction(async (tx) => {
+    const kas = await tx.cashTransaction.create({
+      data: {
+        code: buatKode("KAS"),
+        date: tanggal,
+        description: `Pembayaran utang ${utang.kreditur}: ${utang.keterangan}`,
+        category: "Pembayaran Utang",
+        method: metode,
+        direction: "Outbound",
+        amount: jumlah,
+        unitId: null,
+      },
+    });
+    await tx.utangPembayaran.create({
+      data: { utangId, tanggal, jumlah, metode, cashTransactionId: kas.id },
+    });
+  });
+  await recordAudit({
+    aksi: "bayar_utang",
+    entitas: "utang_pondok",
+    entitasId: String(utangId),
+    ringkasan: `Bayar utang ${utang.kreditur} Rp${jumlah.toLocaleString("id-ID")} via ${metode}; sisa Rp${(sisa - jumlah).toLocaleString("id-ID")}.`,
+    aktor: aktor(session),
+  });
+  revalidatePath("/keuangan");
+  return { ok: true, pesan: "Pembayaran utang tercatat; kas keluar sudah dibukukan." };
+}

@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { readSession } from '@/lib/auth';
 import { recordAudit } from '@/lib/audit';
 import { jalankanAksi, teks, teksAtauNull, angka, wajib } from '@/lib/aksi-form';
-import { sisaEksemplar } from './data';
+import { formatKodeEksemplar } from './data';
 
 const OPSI = { bawaan: '/perpustakaan', prefiks: ['/perpustakaan'], revalidate: ['/perpustakaan'] };
 
@@ -42,6 +42,34 @@ async function pastikanUnit(unitId: number) {
   return unit;
 }
 
+
+/** Nomor urut eksemplar berikutnya untuk sebuah buku (dari sufiks kode terbesar). */
+async function urutBerikutnya(bookId: bigint): Promise<number> {
+  const copies = await prisma.bookCopy.findMany({ where: { bookId }, select: { kode: true } });
+  let maks = 0;
+  for (const c of copies) {
+    const m = /-(\d+)$/.exec(c.kode);
+    if (m) maks = Math.max(maks, Number(m[1]));
+  }
+  return maks + 1;
+}
+
+/** Buat N eksemplar baru untuk buku (kode berurutan). */
+async function buatEksemplar(buku: { id: bigint; unitId: number; kode: string }, jumlah: number) {
+  let urut = await urutBerikutnya(buku.id);
+  const data: { bookId: bigint; unitId: number; kode: string }[] = [];
+  for (let i = 0; i < jumlah; i++, urut++) {
+    data.push({ bookId: buku.id, unitId: buku.unitId, kode: formatKodeEksemplar(buku.kode, urut) });
+  }
+  if (data.length) await prisma.bookCopy.createMany({ data });
+}
+
+/** Samakan Book.jumlah dengan jumlah baris eksemplar. */
+async function sinkronJumlah(bookId: bigint) {
+  const n = await prisma.bookCopy.count({ where: { bookId } });
+  await prisma.book.update({ where: { id: bookId }, data: { jumlah: n } });
+}
+
 /** Tambah buku baru ke katalog unit. */
 export async function tambahBuku(fd: FormData): Promise<never> {
   return jalankanAksi(fd, async () => {
@@ -69,8 +97,9 @@ export async function tambahBuku(fd: FormData): Promise<never> {
         keterangan: teksAtauNull(fd, 'keterangan'),
       },
     });
+    await buatEksemplar(buku, jumlah);
     await recordAudit({ aksi: 'perpustakaan.buku.tambah', entitas: 'Book', entitasId: String(buku.id), ringkasan: `${kode} — ${judul}`, aktor: aktor(session) });
-    return `Buku "${judul}" ditambahkan ke katalog.`;
+    return `Buku "${judul}" ditambahkan ke katalog (${jumlah} eksemplar dibuat).`;
   }, OPSI);
 }
 
@@ -86,8 +115,6 @@ export async function ubahBuku(fd: FormData): Promise<never> {
     const jumlah = Math.max(1, angka(fd, 'jumlah') || 1);
     const duplikat = await prisma.book.count({ where: { unitId: buku.unitId, kode, id: { not: id } } });
     if (duplikat > 0) throw new Error(`Kode "${kode}" sudah dipakai di unit ini.`);
-    const sedangDipinjam = await prisma.bookLoan.count({ where: { bookId: id, status: 'Dipinjam' } });
-    if (jumlah < sedangDipinjam) throw new Error(`Jumlah tidak boleh kurang dari ${sedangDipinjam} (sedang dipinjam).`);
 
     await prisma.book.update({
       where: { id },
@@ -104,6 +131,25 @@ export async function ubahBuku(fd: FormData): Promise<never> {
         keterangan: teksAtauNull(fd, 'keterangan'),
       },
     });
+    // Sinkronkan eksemplar: ganti kode mengikuti kode buku baru, lalu samakan jumlahnya.
+    const copies = await prisma.bookCopy.findMany({ where: { bookId: id }, orderBy: { kode: 'asc' } });
+    if (kode !== buku.kode) {
+      for (const c of copies) {
+        const m = /-(\d+)$/.exec(c.kode);
+        const suffix = m ? Number(m[1]) : 0;
+        await prisma.bookCopy.update({ where: { id: c.id }, data: { kode: formatKodeEksemplar(kode, suffix) } });
+      }
+    }
+    if (jumlah > copies.length) {
+      await buatEksemplar({ id, unitId: buku.unitId, kode }, jumlah - copies.length);
+    } else if (jumlah < copies.length) {
+      const bisaHapus = copies.filter((c) => c.status === 'Tersedia').slice(-(copies.length - jumlah));
+      if (copies.length - bisaHapus.length > jumlah) {
+        throw new Error('Tidak bisa mengurangi jumlah: sebagian eksemplar sedang dipinjam/hilang.');
+      }
+      if (bisaHapus.length) await prisma.bookCopy.deleteMany({ where: { id: { in: bisaHapus.map((c) => c.id) } } });
+    }
+    await sinkronJumlah(id);
     await recordAudit({ aksi: 'perpustakaan.buku.ubah', entitas: 'Book', entitasId: String(id), ringkasan: `${kode} — ${judul}`, aktor: aktor(session) });
     return `Buku "${judul}" diperbarui.`;
   }, OPSI);
@@ -118,6 +164,7 @@ export async function hapusBuku(fd: FormData): Promise<never> {
     if (!buku) throw new Error('Buku tidak ditemukan.');
     const aktif = await prisma.bookLoan.count({ where: { bookId: id, status: 'Dipinjam' } });
     if (aktif > 0) throw new Error('Buku masih dipinjam, tidak bisa dihapus.');
+    await prisma.bookCopy.deleteMany({ where: { bookId: id } });
     await prisma.bookLoan.deleteMany({ where: { bookId: id } });
     await prisma.book.delete({ where: { id } });
     await recordAudit({ aksi: 'perpustakaan.buku.hapus', entitas: 'Book', entitasId: String(id), ringkasan: `${buku.kode} — ${buku.judul}`, aktor: aktor(session) });
@@ -125,66 +172,76 @@ export async function hapusBuku(fd: FormData): Promise<never> {
   }, OPSI);
 }
 
-/** Catat peminjaman baru. */
-export async function pinjamBuku(fd: FormData): Promise<never> {
+/** Tambah eksemplar untuk buku yang sudah ada. */
+export async function tambahEksemplar(fd: FormData): Promise<never> {
   return jalankanAksi(fd, async () => {
     const session = await sesi();
-    const bookId = idBig(fd, 'bookId');
+    const bookId = idBig(fd);
     const buku = await prisma.book.findUnique({ where: { id: bookId } });
     if (!buku) throw new Error('Buku tidak ditemukan.');
-    const sisa = await sisaEksemplar(bookId);
-    if (sisa <= 0) throw new Error('Stok buku habis, tidak bisa dipinjam.');
-
-    const tipe = wajib(fd, 'tipePeminjam', 'Tipe peminjam');
-    if (!['santri', 'pegawai', 'umum'].includes(tipe)) throw new Error('Tipe peminjam tidak valid.');
-    let santriId: bigint | null = null;
-    let staffId: bigint | null = null;
-    let nama = '';
-    if (tipe === 'santri') {
-      santriId = idBig(fd, 'santriId');
-      const s = await prisma.santri.findUnique({ where: { id: santriId }, include: { person: true } });
-      if (!s) throw new Error('Santri tidak ditemukan.');
-      nama = s.person.fullName;
-    } else if (tipe === 'pegawai') {
-      staffId = idBig(fd, 'staffId');
-      const st = await prisma.staff.findUnique({ where: { id: staffId }, include: { person: true } });
-      if (!st) throw new Error('Pegawai tidak ditemukan.');
-      nama = st.person.fullName;
-    } else {
-      nama = wajib(fd, 'namaPeminjam', 'Nama peminjam');
-    }
-
-    const tglPinjam = tanggal(fd, 'tanggalPinjam', 'Tanggal pinjam');
-    const tglJatuhTempo = tanggal(fd, 'tanggalJatuhTempo', 'Jatuh tempo');
-    if (tglJatuhTempo < tglPinjam) throw new Error('Jatuh tempo tidak boleh sebelum tanggal pinjam.');
-
-    const loan = await prisma.bookLoan.create({
-      data: {
-        bookId, unitId: buku.unitId, tipePeminjam: tipe,
-        santriId, staffId, namaPeminjam: nama.trim(),
-        tanggalPinjam: tglPinjam, tanggalJatuhTempo: tglJatuhTempo,
-        status: 'Dipinjam', catatan: teksAtauNull(fd, 'catatan'),
-      },
-    });
-    await recordAudit({ aksi: 'perpustakaan.pinjam', entitas: 'BookLoan', entitasId: String(loan.id), ringkasan: `${buku.kode} dipinjam ${nama}`, aktor: aktor(session) });
-    return `Peminjaman "${buku.judul}" oleh ${nama} dicatat.`;
+    const jumlah = Math.max(1, angka(fd, 'jumlah') || 1);
+    await buatEksemplar(buku, jumlah);
+    await sinkronJumlah(bookId);
+    await recordAudit({ aksi: 'perpustakaan.eksemplar.tambah', entitas: 'Book', entitasId: String(bookId), ringkasan: `+${jumlah} eksemplar ${buku.kode}`, aktor: aktor(session) });
+    return `${jumlah} eksemplar baru untuk "${buku.judul}" dibuat.`;
   }, OPSI);
 }
 
-/** Tandai buku dikembalikan. */
-export async function kembalikanBuku(fd: FormData): Promise<never> {
+/** Ubah kondisi/status satu eksemplar. */
+export async function ubahEksemplar(fd: FormData): Promise<never> {
   return jalankanAksi(fd, async () => {
     const session = await sesi();
     const id = idBig(fd);
-    const loan = await prisma.bookLoan.findUnique({ where: { id }, include: { book: true } });
-    if (!loan) throw new Error('Data peminjaman tidak ditemukan.');
-    if (loan.status !== 'Dipinjam') throw new Error('Buku sudah dikembalikan.');
-    const tglKembali = tanggal(fd, 'tanggalKembali', 'Tanggal kembali');
-    await prisma.bookLoan.update({ where: { id }, data: { tanggalKembali: tglKembali, status: 'Dikembalikan' } });
-    await recordAudit({ aksi: 'perpustakaan.kembali', entitas: 'BookLoan', entitasId: String(id), ringkasan: `${loan.book.kode} kembali dari ${loan.namaPeminjam}`, aktor: aktor(session) });
-    const terlambat = Math.floor((tglKembali.getTime() - loan.tanggalJatuhTempo.getTime()) / 86400000);
-    return terlambat > 0
-      ? `Buku dikembalikan (terlambat ${terlambat} hari).`
-      : 'Buku dikembalikan tepat waktu.';
+    const copy = await prisma.bookCopy.findUnique({ where: { id }, include: { book: true } });
+    if (!copy) throw new Error('Eksemplar tidak ditemukan.');
+    if (copy.status === 'Dipinjam') throw new Error('Eksemplar sedang dipinjam — kembalikan dulu untuk mengubahnya.');
+    const kondisi = wajib(fd, 'kondisi', 'Kondisi');
+    if (!['Baik', 'Rusak', 'Diperbaiki', 'Hilang'].includes(kondisi)) throw new Error('Kondisi tidak valid.');
+    const status = kondisi === 'Hilang' ? 'Hilang' : 'Tersedia';
+    await prisma.bookCopy.update({ where: { id }, data: { kondisi, status } });
+    await recordAudit({ aksi: 'perpustakaan.eksemplar.ubah', entitas: 'BookCopy', entitasId: String(id), ringkasan: `${copy.kode} → ${kondisi}/${status}`, aktor: aktor(session) });
+    return `Eksemplar ${copy.kode} kini ${kondisi.toLowerCase()} (${status.toLowerCase()}).`;
+  }, OPSI);
+}
+
+/** Hapus satu eksemplar (tidak sedang dipinjam). */
+export async function hapusEksemplar(fd: FormData): Promise<never> {
+  return jalankanAksi(fd, async () => {
+    const session = await sesi();
+    const id = idBig(fd);
+    const copy = await prisma.bookCopy.findUnique({ where: { id }, include: { book: true } });
+    if (!copy) throw new Error('Eksemplar tidak ditemukan.');
+    if (copy.status === 'Dipinjam') throw new Error('Eksemplar sedang dipinjam, tidak bisa dihapus.');
+    await prisma.bookCopy.delete({ where: { id } });
+    await sinkronJumlah(copy.bookId);
+    await recordAudit({ aksi: 'perpustakaan.eksemplar.hapus', entitas: 'BookCopy', entitasId: String(id), ringkasan: `Hapus eksemplar ${copy.kode}`, aktor: aktor(session) });
+    return `Eksemplar ${copy.kode} dihapus.`;
+  }, OPSI);
+}
+
+/** Simpan aturan sirkulasi per unit (AppSetting perpus:<unitId>:*). */
+export async function simpanAturanPerpus(fd: FormData): Promise<never> {
+  return jalankanAksi(fd, async () => {
+    const session = await sesi();
+    const unitId = idInt(fd, 'unitId');
+    await pastikanUnit(unitId);
+    const positif = (k: string, label: string, min = 0) => {
+      const n = angka(fd, k);
+      if (n === null || !Number.isFinite(n) || n < min) throw new Error(`${label} tidak valid.`);
+      return String(Math.floor(n));
+    };
+    const nilai: Record<string, string> = {
+      'lama-pinjam': positif('lamaPinjam', 'Lama pinjam', 1),
+      'maks-buku': positif('maksBuku', 'Maks. buku', 1),
+      'denda-per-hari': positif('dendaPerHari', 'Denda per hari'),
+      'maks-perpanjang': positif('maksPerpanjang', 'Maks. perpanjangan', 1),
+      'libur': teks(fd, 'libur').split(/[\n,;]+/).map((s) => s.trim()).filter((s) => /^\d{4}-\d{2}-\d{2}$/.test(s)).join('\n'),
+    };
+    for (const [nama, value] of Object.entries(nilai)) {
+      const key = `perpus:${unitId}:${nama}`;
+      await prisma.appSetting.upsert({ where: { key }, create: { key, value }, update: { value } });
+    }
+    await recordAudit({ aksi: 'perpustakaan.aturan.simpan', entitas: 'AppSetting', entitasId: String(unitId), ringkasan: `Aturan sirkulasi unit ${unitId} diperbarui`, aktor: aktor(session) });
+    return 'Aturan peminjaman & denda disimpan.';
   }, OPSI);
 }

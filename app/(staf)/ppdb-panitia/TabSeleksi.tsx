@@ -2,7 +2,7 @@ import type { ApplicantStatus } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { readSession } from '@/lib/auth';
 import { getUnitAktifKey } from '@/lib/unit-scope';
-import { Avatar, Badge, Kosong, Pagination, UKURAN_HALAMAN, bacaHalaman, type SearchParams } from '@/components';
+import { Avatar, Badge, Button, Input, Kosong, Pagination, UKURAN_HALAMAN, bacaHalaman, type SearchParams } from '@/components';
 import { ubahStatusSeleksi } from './actions';
 
 function hrefSeleksi(params: Record<string, string>) {
@@ -51,14 +51,14 @@ export async function TabSeleksi({ searchParams }: { searchParams: SearchParams 
               <Badge status={p.status} />
               <div style={{ display: 'flex', gap: 8 }}>
                 <form action={ubahStatusSeleksi}>
-                  <input type="hidden" name="id" value={String(p.id)} />
-                  <input type="hidden" name="aksi" value="lulus" />
-                  <button className="btn" type="submit">Luluskan</button>
+                  <Input type="hidden" name="id" value={String(p.id)} />
+                  <Input type="hidden" name="aksi" value="lulus" />
+                  <Button type="submit">Luluskan</Button>
                 </form>
                 <form action={ubahStatusSeleksi}>
-                  <input type="hidden" name="id" value={String(p.id)} />
-                  <input type="hidden" name="aksi" value="tolak" />
-                  <button className="btn btn-sekunder" type="submit">Tidak lulus</button>
+                  <Input type="hidden" name="id" value={String(p.id)} />
+                  <Input type="hidden" name="aksi" value="tolak" />
+                  <Button varian="sekunder" type="submit">Tidak lulus</Button>
                 </form>
               </div>
             </div>

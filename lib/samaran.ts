@@ -1,7 +1,6 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { createSession, isSuperAdmin, readSession, PERAN_SUPERADMIN } from '@/lib/auth';
 import { recordAudit } from '@/lib/audit';
@@ -46,8 +45,8 @@ export async function gantiPeran(formData: FormData): Promise<void> {
   });
 
   revalidatePath('/', 'layout');
-  // Sidebar dan menu ikut berubah, sedangkan halaman saat ini bisa saja tidak
-  // boleh diakses peran baru. Kembalikan ke beranda agar gate berjalan normal
-  // dan cache router tidak menyajikan layout peran lama.
-  redirect('/');
+  // Navigasi sesudahnya ditangani client (PemilihPeranSelect): muat keras ke
+  // beranda aplikasi. Sidebar dan menu ikut berubah, sedangkan halaman saat
+  // ini bisa saja tidak boleh diakses peran baru — muat keras memastikan gate
+  // berjalan normal dan tidak ada state/cache peran lama yang tersisa.
 }

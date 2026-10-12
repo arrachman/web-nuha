@@ -17,7 +17,7 @@ export async function TabTransaksi() {
   ]);
 
   return (
-    <Card judul={unit ? `Riwayat transaksi kas — ${unit.nama}` : 'Riwayat transaksi kas yayasan'} sub={unit ? undefined : 'Semua unit. Pilih unit di pemilih unit halaman ini untuk memisahkan per unit.'}>
+    <Card judul={unit ? `Riwayat transaksi kas — ${unit.nama}` : 'Riwayat transaksi kas yayasan'} sub={unit ? undefined : 'Semua unit. Gunakan pemilih Unit di bilah atas untuk memisahkan per unit.'}>
       {rows.length === 0 ? (
         <Kosong pesan="Belum ada transaksi kas tercatat." />
       ) : (

@@ -431,6 +431,7 @@ model Unit {
   procurements      Procurement[]       @relation("PengadaanUnit")
   books             Book[]
   bookLoans         BookLoan[]
+  bookCopies        BookCopy[]
   cashTransactions  CashTransaction[]
 
   @@index([desaId])
@@ -1366,6 +1367,43 @@ model CashTransaction {
   @@index([date])
   @@index([unitId])
   @@map("cash_transactions")
+}
+
+/// Utang pondok ke pihak luar (pemasok, toko bangunan, dsb) — sisi kewajiban
+/// dari modul Piutang & Utang. Pembayaran/cicilan dicatat di UtangPembayaran
+/// dan SELALU dibukukan juga sebagai kas keluar (CashTransaction), supaya
+/// saldo kas dan sisa kewajiban tidak pernah selisih.
+model UtangPondok {
+  id         BigInt    @id @default(autoincrement())
+  kode       String    @unique @map("kode") @db.VarChar(24)
+  kreditur   String    @map("kreditur") @db.VarChar(160)
+  keterangan String    @map("keterangan") @db.VarChar(255)
+  pokok      Decimal   @map("pokok") @db.Decimal(14, 2)
+  tanggal    DateTime  @map("tanggal") @db.Date
+  jatuhTempo DateTime? @map("jatuh_tempo") @db.Date
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  pembayaran UtangPembayaran[]
+
+  @@index([jatuhTempo])
+  @@map("utang_pondok")
+}
+
+model UtangPembayaran {
+  id                BigInt   @id @default(autoincrement())
+  utangId           BigInt   @map("utang_id")
+  tanggal           DateTime @map("tanggal") @db.Date
+  jumlah            Decimal  @map("jumlah") @db.Decimal(14, 2)
+  metode            String   @map("metode") @db.VarChar(64)
+  /// Baris kas keluar pasangannya di cash_transactions (tanpa relasi Prisma —
+  /// cukup id, pola sama seperti penanda silang antar-modul lain).
+  cashTransactionId BigInt?  @map("cash_transaction_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  utang UtangPondok @relation(fields: [utangId], references: [id], onDelete: Cascade)
+
+  @@index([utangId])
+  @@map("utang_pembayaran")
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -2529,8 +2567,9 @@ model Book {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  unit  Unit       @relation(fields: [unitId], references: [id])
-  loans BookLoan[]
+  unit   Unit       @relation(fields: [unitId], references: [id])
+  loans  BookLoan[]
+  copies BookCopy[]
 
   @@unique([unitId, kode])
   @@index([unitId])
@@ -2551,20 +2590,52 @@ model BookLoan {
   tanggalPinjam    DateTime  @map("tanggal_pinjam") @db.Date
   tanggalJatuhTempo DateTime @map("tanggal_jatuh_tempo") @db.Date
   tanggalKembali   DateTime? @map("tanggal_kembali") @db.Date
+  copyId           BigInt?   @map("copy_id")
   /// "Dipinjam" | "Dikembalikan"
   status           String    @default("Dipinjam") @db.VarChar(16)
+  /// Denda keterlambatan final (Rp) — dihitung saat pengembalian.
+  denda            Int       @default(0)
+  /// Total denda yang sudah dibayar (Rp); lunas bila >= denda.
+  dendaDibayar     Int       @default(0) @map("denda_dibayar")
+  jumlahPerpanjang Int       @default(0) @map("jumlah_perpanjang")
   catatan          String?   @db.Text
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @updatedAt @map("updated_at")
 
-  book   Book    @relation(fields: [bookId], references: [id])
-  unit   Unit    @relation(fields: [unitId], references: [id])
+  book   Book      @relation(fields: [bookId], references: [id])
+  copy   BookCopy? @relation(fields: [copyId], references: [id])
+  unit   Unit      @relation(fields: [unitId], references: [id])
   santri Santri? @relation(fields: [santriId], references: [id])
   staff  Staff?  @relation(fields: [staffId], references: [id])
 
   @@index([unitId, status])
   @@index([bookId])
+  @@index([copyId])
   @@map("book_loans")
+}
+
+/// Eksemplar satuan dari sebuah judul buku (satu baris = satu buku fisik berkode).
+model BookCopy {
+  id        BigInt   @id @default(autoincrement())
+  bookId    BigInt   @map("book_id")
+  unitId    Int      @map("unit_id")
+  /// Kode eksemplar unik per unit, mis. "B0001-03" (kode buku + nomor urut).
+  kode      String   @db.VarChar(40)
+  /// "Baik" | "Rusak" | "Diperbaiki" | "Hilang"
+  kondisi   String   @default("Baik") @db.VarChar(16)
+  /// "Tersedia" | "Dipinjam" | "Hilang"
+  status    String   @default("Tersedia") @db.VarChar(16)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  book  Book       @relation(fields: [bookId], references: [id])
+  unit  Unit       @relation(fields: [unitId], references: [id])
+  loans BookLoan[]
+
+  @@unique([unitId, kode])
+  @@index([bookId])
+  @@index([unitId, status])
+  @@map("book_copies")
 }
 
 // Keuangan pondok - fase 1 (2026-10-11): komponen iuran syariah bulanan,

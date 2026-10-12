@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { aturAktifPengguna } from './actions';
 import { TombolResetSandi } from './TombolResetSandi';
-import { Avatar, Badge, Kosong, Tabel, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
+import { Avatar, Badge, Button, Input, Kosong, Tabel, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
 
 function hrefPengguna(params: Record<string, string>) {
   const qs = new URLSearchParams({ tab: 'pengguna', ...params });
@@ -35,8 +35,8 @@ export async function TabPengguna({ searchParams }: { searchParams: SearchParams
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap', marginBottom: 14 }}>
         <h3 className="card-judul" style={{ marginBottom: 0 }}>Pengguna &amp; peran</h3>
         <form method="get" style={{ display: 'flex' }}>
-          <input type="hidden" name="tab" value="pengguna" />
-          <input className="field" name="q" defaultValue={q} placeholder="Cari nama / email" style={{ padding: '10px 12px', borderRadius: 10, border: '1px solid var(--garis)', minWidth: 230 }} />
+          <Input type="hidden" name="tab" value="pengguna" />
+          <Input className="field" name="q" defaultValue={q} placeholder="Cari nama / email" style={{ padding: '10px 12px', borderRadius: 10, border: '1px solid var(--garis)', minWidth: 230 }} />
         </form>
       </div>
       {users.length === 0 ? (
@@ -61,9 +61,9 @@ export async function TabPengguna({ searchParams }: { searchParams: SearchParams
                 <div style={{ display: 'flex', gap: 6, alignItems: 'flex-start', flexWrap: 'wrap' }}>
                   <TombolResetSandi userId={String(user.id)} nama={user.person.fullName} />
                   <form action={aturAktifPengguna}>
-                    <input type="hidden" name="_kembali" value={hrefPengguna({ q, halaman: String(halaman) })} />
-                    <input type="hidden" name="id" value={String(user.id)} /><input type="hidden" name="aktif" value={user.aktif ? '0' : '1'} />
-                    <button type="submit" className="btn-sekunder" style={{ fontSize: 12, padding: '6px 10px' }}>{user.aktif ? 'Nonaktifkan' : 'Aktifkan'}</button>
+                    <Input type="hidden" name="_kembali" value={hrefPengguna({ q, halaman: String(halaman) })} />
+                    <Input type="hidden" name="id" value={String(user.id)} /><Input type="hidden" name="aktif" value={user.aktif ? '0' : '1'} />
+                    <Button type="submit" varian="sekunder" style={{ fontSize: 12, padding: '6px 10px' }}>{user.aktif ? 'Nonaktifkan' : 'Aktifkan'}</Button>
                   </form>
                 </div>
               </td>

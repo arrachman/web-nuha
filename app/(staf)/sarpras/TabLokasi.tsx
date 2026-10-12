@@ -1,10 +1,9 @@
-import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import type { SessionPayload } from '@/lib/auth';
 import type { IzinSarpras } from '@/lib/aset/akses';
 import { JENIS_RUANG, LABEL_KONDISI } from '@/lib/aset/konstanta';
 import { getUnitAktif, whereUnitAktif } from '@/lib/unit-scope';
-import { Kosong, Tabel } from '@/components';
+import { Button, ButtonLink, FormField, Input, Kosong, Select, Tabel } from '@/components';
 import { bangkitkanLokasiDariData, simpanLokasi } from './actions';
 import { BadgeKondisi, Kembali } from './Kembali';
 import { stafPilihan, unitDalamCakupan } from './data';
@@ -43,34 +42,34 @@ export async function TabLokasi({ session, izin }: { session: SessionPayload; iz
             <h3 className="card-judul" style={{ marginBottom: 0 }}>Tambah lokasi</h3>
             <form action={bangkitkanLokasiDariData}>
               <Kembali ke="/sarpras?tab=lokasi" />
-              <button type="submit" className="btn-sekunder">Bangkitkan dari data kelas & kamar asrama</button>
+              <Button type="submit" varian="sekunder">Bangkitkan dari data kelas & kamar asrama</Button>
             </form>
           </div>
           <form action={simpanLokasi} className="grid g3" style={{ marginTop: 12 }}>
             <Kembali ke="/sarpras?tab=lokasi" />
-            <div className="field"><label>Kode *</label><input name="code" required placeholder="mis. G-A.2.05" /></div>
-            <div className="field"><label>Nama *</label><input name="name" required placeholder="mis. Kelas 8B" /></div>
-            <div className="field"><label>Tipe *</label>
-              <select name="type" defaultValue="Ruang">{['Kampus', 'Gedung', 'Lantai', 'Ruang', 'Area'].map((t) => <option key={t}>{t}</option>)}</select>
-            </div>
-            <div className="field"><label>Induk</label>
-              <select name="parentId"><option value="">— tidak ada —</option>{lokasi.filter((l) => l.type !== 'Ruang').map((l) => <option key={l.id} value={l.id}>{l.code} · {l.name}</option>)}</select>
-            </div>
-            <div className="field"><label>Unit pengelola</label>
-              <select name="unitId"><option value="">Bersama (tanpa unit)</option>{units.map((u) => <option key={u.id} value={u.id}>{u.nama}</option>)}</select>
-            </div>
-            <div className="field"><label>Jenis ruang (Dapodik)</label>
-              <select name="roomUsage"><option value="">—</option>{JENIS_RUANG.map((j) => <option key={j}>{j}</option>)}</select>
-            </div>
-            <div className="field"><label>Luas (m²)</label><input name="areaM2" type="number" min={0} step="0.01" /></div>
-            <div className="field"><label>Kapasitas</label><input name="capacity" type="number" min={0} /></div>
-            <div className="field"><label>Kondisi ruang</label>
-              <select name="condition"><option value="">—</option>{Object.entries(LABEL_KONDISI).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
-            </div>
-            <div className="field"><label>Penanggung jawab (PIC)</label>
-              <select name="picStaffId"><option value="">—</option>{staf.map((s) => <option key={String(s.id)} value={String(s.id)}>{s.person.fullName}</option>)}</select>
-            </div>
-            <div className="field" style={{ alignSelf: 'end' }}><button type="submit" className="btn">Simpan lokasi</button></div>
+            <FormField label="Kode *" htmlFor="code"><Input id="code" name="code" required placeholder="mis. G-A.2.05" /></FormField>
+            <FormField label="Nama *" htmlFor="name"><Input id="name" name="name" required placeholder="mis. Kelas 8B" /></FormField>
+            <FormField label="Tipe *" htmlFor="type">
+              <Select id="type" name="type" defaultValue="Ruang">{['Kampus', 'Gedung', 'Lantai', 'Ruang', 'Area'].map((t) => <option key={t}>{t}</option>)}</Select>
+            </FormField>
+            <FormField label="Induk" htmlFor="parentId">
+              <Select id="parentId" name="parentId"><option value="">— tidak ada —</option>{lokasi.filter((l) => l.type !== 'Ruang').map((l) => <option key={l.id} value={l.id}>{l.code} · {l.name}</option>)}</Select>
+            </FormField>
+            <FormField label="Unit pengelola" htmlFor="unitId">
+              <Select id="unitId" name="unitId"><option value="">Bersama (tanpa unit)</option>{units.map((u) => <option key={u.id} value={u.id}>{u.nama}</option>)}</Select>
+            </FormField>
+            <FormField label="Jenis ruang (Dapodik)" htmlFor="roomUsage">
+              <Select id="roomUsage" name="roomUsage"><option value="">—</option>{JENIS_RUANG.map((j) => <option key={j}>{j}</option>)}</Select>
+            </FormField>
+            <FormField label="Luas (m²)" htmlFor="areaM2"><Input id="areaM2" name="areaM2" type="number" min={0} step="0.01" /></FormField>
+            <FormField label="Kapasitas" htmlFor="capacity"><Input id="capacity" name="capacity" type="number" min={0} /></FormField>
+            <FormField label="Kondisi ruang" htmlFor="condition">
+              <Select id="condition" name="condition"><option value="">—</option>{Object.entries(LABEL_KONDISI).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select>
+            </FormField>
+            <FormField label="Penanggung jawab (PIC)" htmlFor="picStaffId">
+              <Select id="picStaffId" name="picStaffId"><option value="">—</option>{staf.map((s) => <option key={String(s.id)} value={String(s.id)}>{s.person.fullName}</option>)}</Select>
+            </FormField>
+            <div className="field" style={{ alignSelf: 'end' }}><Button type="submit">Simpan lokasi</Button></div>
           </form>
         </div>
       )}
@@ -90,7 +89,7 @@ export async function TabLokasi({ session, izin }: { session: SessionPayload; iz
                 <td>{l.picStaffId ? pic.get(String(l.picStaffId)) ?? '-' : '-'}</td>
                 <td className="num">{jumlahAset.find((j) => j.locationId === l.id)?._count._all ?? 0}</td>
                 <td style={{ whiteSpace: 'nowrap' }}>
-                  {(l.type === 'Ruang' || l.type === 'Area') && <Link href={`/cetak/kir/${l.id}`} target="_blank" className="btn-sekunder" style={{ fontSize: 12 }}>KIR + QR</Link>}
+                  {(l.type === 'Ruang' || l.type === 'Area') && <ButtonLink href={`/cetak/kir/${l.id}`} target="_blank" varian="sekunder" style={{ fontSize: 12 }}>KIR + QR</ButtonLink>}
                 </td>
               </tr>
             ))}

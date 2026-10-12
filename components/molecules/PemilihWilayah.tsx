@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { apiPath } from '@/lib/api-path';
+import { Button } from '@/components/atoms/Button';
+import { Input } from '@/components/atoms/Input';
 
 type OpsiWilayah = { id: string; nama: string; keterangan: string };
 
@@ -52,7 +54,7 @@ export function PemilihWilayah({ name, label, id, hint, placeholder, nilaiAwal, 
   }, [ketik, terbuka]);
 
   return <div style={{ position: 'relative' }}>
-    <input
+    <Input
       id={id ?? `pilih-${name}`}
       aria-label={label}
       type="text"
@@ -67,8 +69,8 @@ export function PemilihWilayah({ name, label, id, hint, placeholder, nilaiAwal, 
     {terbuka && <ul className="saran">
       {memuat && <li className="saran-kosong">Mencari…</li>}
       {!memuat && hasil.length === 0 && <li className="saran-kosong">Tidak ada desa yang cocok.</li>}
-      {hasil.map((item) => <li key={item.id}><button type="button" onClick={() => { setDipilih(item); setKetik(''); setTerbuka(false); onChange?.(item.id); }}><strong>{item.nama}</strong><span>{item.keterangan}</span></button></li>)}
+      {hasil.map((item) => <li key={item.id}><Button varian="polos" type="button" onClick={() => { setDipilih(item); setKetik(''); setTerbuka(false); onChange?.(item.id); }}><strong>{item.nama}</strong><span>{item.keterangan}</span></Button></li>)}
     </ul>}
-    <input type="hidden" name={name} value={dipilih?.id ?? ''} />
+    <Input type="hidden" name={name} value={dipilih?.id ?? ''} />
   </div>;
 }

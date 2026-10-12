@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { PemilihWilayah } from '@/components';
+import { Button, ButtonLink, FormField, Input, PemilihWilayah, Select, Textarea } from '@/components';
 import { kirimLamaran, type ErrorsLamaran } from '@/app/karir/actions';
 
 const LABEL_LANGKAH = ['Data Diri', 'Pendidikan & Pengalaman', 'Berkas', 'Pernyataan & Kirim'];
@@ -142,7 +141,7 @@ export function Wizard({ jobCode, documents }: { jobCode: string; documents: Doc
 
       <div className="card" style={{ marginTop: 22 }}>
         {/* Honeypot — kolom disembunyikan lewat CSS, hanya bot yang mengisinya. */}
-        <input type="text" name="website" value="" onChange={() => {}} tabIndex={-1} autoComplete="off" style={{ position: 'absolute', left: -9999, width: 1, height: 1, opacity: 0 }} aria-hidden />
+        <Input type="text" name="website" value="" onChange={() => {}} tabIndex={-1} autoComplete="off" style={{ position: 'absolute', left: -9999, width: 1, height: 1, opacity: 0 }} aria-hidden />
 
         {step === 1 && (
           <div>
@@ -150,59 +149,52 @@ export function Wizard({ jobCode, documents }: { jobCode: string; documents: Doc
             <div className="grid g2">
               <div className="field" style={{ gridColumn: 'span 2' }}>
                 <label>Nama lengkap *</label>
-                <input value={form.fullName} onChange={(e) => ubah('fullName', e.target.value)} />
+                <Input value={form.fullName} onChange={(e) => ubah('fullName', e.target.value)} />
                 {errors.fullName && <span className="error">{errors.fullName}</span>}
               </div>
-              <div className="field">
-                <label>NIK *</label>
-                <input value={form.nik} onChange={(e) => ubah('nik', e.target.value)} placeholder="16 digit" />
+              <FormField label="NIK *" htmlFor="nik">
+                <Input id="nik" value={form.nik} onChange={(e) => ubah('nik', e.target.value)} placeholder="16 digit" />
                 {errors.nik && <span className="error">{errors.nik}</span>}
-              </div>
-              <div className="field">
-                <label>Jenis kelamin</label>
-                <select value={form.gender} onChange={(e) => ubah('gender', e.target.value)}>
+              </FormField>
+              <FormField label="Jenis kelamin" htmlFor="gender">
+                <Select id="gender" value={form.gender} onChange={(e) => ubah('gender', e.target.value)}>
                   <option value="L">Laki-laki</option>
                   <option value="P">Perempuan</option>
-                </select>
-              </div>
-              <div className="field">
-                <label>Tempat lahir *</label>
-                <input value={form.birthPlace} onChange={(e) => ubah('birthPlace', e.target.value)} />
+                </Select>
+              </FormField>
+              <FormField label="Tempat lahir *" htmlFor="birthPlace">
+                <Input id="birthPlace" value={form.birthPlace} onChange={(e) => ubah('birthPlace', e.target.value)} />
                 {errors.birthPlace && <span className="error">{errors.birthPlace}</span>}
-              </div>
-              <div className="field">
-                <label>Tanggal lahir *</label>
-                <input type="date" value={form.birthDate} onChange={(e) => ubah('birthDate', e.target.value)} />
+              </FormField>
+              <FormField label="Tanggal lahir *" htmlFor="birthDate">
+                <Input id="birthDate" type="date" value={form.birthDate} onChange={(e) => ubah('birthDate', e.target.value)} />
                 {errors.birthDate && <span className="error">{errors.birthDate}</span>}
-              </div>
-              <div className="field">
-                <label>No. HP *</label>
-                <input value={form.phone} onChange={(e) => ubah('phone', e.target.value)} placeholder="08xxxxxxxxxx" />
+              </FormField>
+              <FormField label="No. HP *" htmlFor="phone">
+                <Input id="phone" value={form.phone} onChange={(e) => ubah('phone', e.target.value)} placeholder="08xxxxxxxxxx" />
                 {errors.phone && <span className="error">{errors.phone}</span>}
-              </div>
-              <div className="field">
-                <label>Email</label>
-                <input value={form.email} onChange={(e) => ubah('email', e.target.value)} />
+              </FormField>
+              <FormField label="Email" htmlFor="email">
+                <Input id="email" value={form.email} onChange={(e) => ubah('email', e.target.value)} />
                 {errors.email && <span className="error">{errors.email}</span>}
-              </div>
+              </FormField>
               <div className="field" style={{ gridColumn: 'span 2' }}>
                 <label>Alamat *</label>
-                <textarea rows={2} value={form.addressLine} onChange={(e) => ubah('addressLine', e.target.value)} />
+                <Textarea rows={2} value={form.addressLine} onChange={(e) => ubah('addressLine', e.target.value)} />
                 {errors.addressLine && <span className="error">{errors.addressLine}</span>}
               </div>
               <div className="field" style={{ gridColumn: 'span 2' }}>
                 <PemilihWilayah name="regionId" label="Desa atau kelurahan" hint="Domisili saat ini." onChange={(regionId) => ubah('regionId', regionId)} />
                 {errors.regionId && <span className="error">{errors.regionId}</span>}
               </div>
-              <div className="field">
-                <label>Status perkawinan</label>
-                <select value={form.maritalStatus} onChange={(e) => ubah('maritalStatus', e.target.value)}>
+              <FormField label="Status perkawinan" htmlFor="maritalStatus">
+                <Select id="maritalStatus" value={form.maritalStatus} onChange={(e) => ubah('maritalStatus', e.target.value)}>
                   <option value="">— pilih —</option>
                   <option value="Belum Menikah">Belum Menikah</option>
                   <option value="Menikah">Menikah</option>
                   <option value="Cerai">Cerai</option>
-                </select>
-              </div>
+                </Select>
+              </FormField>
             </div>
           </div>
         )}
@@ -211,56 +203,49 @@ export function Wizard({ jobCode, documents }: { jobCode: string; documents: Doc
           <div>
             <h2 style={{ marginTop: 0 }}>Pendidikan &amp; Pengalaman</h2>
             <div className="grid g2">
-              <div className="field">
-                <label>Pendidikan terakhir *</label>
-                <select value={form.lastEducation} onChange={(e) => ubah('lastEducation', e.target.value)}>
+              <FormField label="Pendidikan terakhir *" htmlFor="lastEducation">
+                <Select id="lastEducation" value={form.lastEducation} onChange={(e) => ubah('lastEducation', e.target.value)}>
                   <option value="">— pilih —</option>
                   <option value="SMA/MA">SMA/MA</option>
                   <option value="D3">D3</option>
                   <option value="S1">S1</option>
                   <option value="S2">S2</option>
                   <option value="S3">S3</option>
-                </select>
+                </Select>
                 {errors.lastEducation && <span className="error">{errors.lastEducation}</span>}
-              </div>
-              <div className="field">
-                <label>Jurusan</label>
-                <input value={form.major} onChange={(e) => ubah('major', e.target.value)} />
-              </div>
+              </FormField>
+              <FormField label="Jurusan" htmlFor="major">
+                <Input id="major" value={form.major} onChange={(e) => ubah('major', e.target.value)} />
+              </FormField>
               <div className="field" style={{ gridColumn: 'span 2' }}>
                 <label>Institusi/Universitas *</label>
-                <input value={form.institution} onChange={(e) => ubah('institution', e.target.value)} />
+                <Input value={form.institution} onChange={(e) => ubah('institution', e.target.value)} />
                 {errors.institution && <span className="error">{errors.institution}</span>}
               </div>
-              <div className="field">
-                <label>Tahun lulus *</label>
-                <input value={form.graduationYear} onChange={(e) => ubah('graduationYear', e.target.value)} />
+              <FormField label="Tahun lulus *" htmlFor="graduationYear">
+                <Input id="graduationYear" value={form.graduationYear} onChange={(e) => ubah('graduationYear', e.target.value)} />
                 {errors.graduationYear && <span className="error">{errors.graduationYear}</span>}
-              </div>
-              <div className="field">
-                <label>IPK (jika ada)</label>
-                <input value={form.gpa} onChange={(e) => ubah('gpa', e.target.value)} placeholder="mis. 3.50" />
-              </div>
+              </FormField>
+              <FormField label="IPK (jika ada)" htmlFor="gpa">
+                <Input id="gpa" value={form.gpa} onChange={(e) => ubah('gpa', e.target.value)} placeholder="mis. 3.50" />
+              </FormField>
               <div className="field" style={{ gridColumn: 'span 2' }}>
                 <label>Riwayat pesantren</label>
-                <textarea rows={2} value={form.pesantrenHistory} onChange={(e) => ubah('pesantrenHistory', e.target.value)} placeholder="Nama pesantren & tahun, jika pernah mondok" />
+                <Textarea rows={2} value={form.pesantrenHistory} onChange={(e) => ubah('pesantrenHistory', e.target.value)} placeholder="Nama pesantren & tahun, jika pernah mondok" />
               </div>
-              <div className="field">
-                <label>Hafalan Qur&apos;an (juz)</label>
-                <input value={form.quranMemorization} onChange={(e) => ubah('quranMemorization', e.target.value)} />
-              </div>
-              <div className="field">
-                <label>Kemampuan kitab kuning</label>
-                <input value={form.kitabAbility} onChange={(e) => ubah('kitabAbility', e.target.value)} />
-              </div>
+              <FormField label="Hafalan Qur'an (juz)" htmlFor="quranMemorization">
+                <Input id="quranMemorization" value={form.quranMemorization} onChange={(e) => ubah('quranMemorization', e.target.value)} />
+              </FormField>
+              <FormField label="Kemampuan kitab kuning" htmlFor="kitabAbility">
+                <Input id="kitabAbility" value={form.kitabAbility} onChange={(e) => ubah('kitabAbility', e.target.value)} />
+              </FormField>
               <div className="field" style={{ gridColumn: 'span 2' }}>
                 <label>Pengalaman kerja/mengajar</label>
-                <textarea rows={3} value={form.experienceText} onChange={(e) => ubah('experienceText', e.target.value)} />
+                <Textarea rows={3} value={form.experienceText} onChange={(e) => ubah('experienceText', e.target.value)} />
               </div>
-              <div className="field">
-                <label>Ekspektasi gaji (Rp)</label>
-                <input value={form.expectedSalary} onChange={(e) => ubah('expectedSalary', e.target.value)} placeholder="opsional" />
-              </div>
+              <FormField label="Ekspektasi gaji (Rp)" htmlFor="expectedSalary">
+                <Input id="expectedSalary" value={form.expectedSalary} onChange={(e) => ubah('expectedSalary', e.target.value)} placeholder="opsional" />
+              </FormField>
             </div>
           </div>
         )}
@@ -279,7 +264,7 @@ export function Wizard({ jobCode, documents }: { jobCode: string; documents: Doc
                         <div style={{ fontSize: 14, fontWeight: 600 }}>{d.label} {d.required ? '*' : '(opsional)'}</div>
                         <div style={{ fontSize: 12, color: '#6B7280' }}>Maks {Math.round(d.maxSizeKb / 1024) || 1} MB · {d.accept}</div>
                       </div>
-                      <input
+                      <Input
                         type="file"
                         accept={d.accept.split(',').map((a) => `.${a.trim()}`).join(',')}
                         data-testid={`doc-${d.code}`}
@@ -313,7 +298,7 @@ export function Wizard({ jobCode, documents }: { jobCode: string; documents: Doc
               ))}
             </div>
             <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', fontSize: 13.5, cursor: 'pointer' }}>
-              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} style={{ marginTop: 3 }} data-testid="consent" />
+              <Input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} style={{ marginTop: 3 }} data-testid="consent" />
               <span>Saya menyatakan data yang diisi benar dan menyetujui data ini diproses untuk keperluan seleksi rekrutmen.</span>
             </label>
             {errors.consent && <div className="error" style={{ marginTop: 8 }}>{errors.consent}</div>}
@@ -325,9 +310,9 @@ export function Wizard({ jobCode, documents }: { jobCode: string; documents: Doc
                 <div style={{ fontSize: 13.5, color: '#256B45', lineHeight: 1.6 }}>
                   Nomor lamaran Anda: <strong data-testid="hasil-number">{hasil.number}</strong><br />Simpan nomor ini untuk mengecek status seleksi.
                 </div>
-                <Link href={`/karir/status?number=${encodeURIComponent(hasil.number)}`} className="btn" style={{ marginTop: 14, display: 'inline-block' }}>
+                <ButtonLink href={`/karir/status?number=${encodeURIComponent(hasil.number)}`} style={{ marginTop: 14, display: 'inline-block' }}>
                   Cek status sekarang
-                </Link>
+                </ButtonLink>
               </div>
             )}
           </div>
@@ -335,10 +320,10 @@ export function Wizard({ jobCode, documents }: { jobCode: string; documents: Doc
 
         {!hasil && (
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginTop: 26, paddingTop: 20, borderTop: '1px solid #F0EDE4' }}>
-            <button type="button" className="btn-sekunder" onClick={kembali} disabled={step === 1 || mengirim}>Kembali</button>
-            <button type="button" className="btn" onClick={lanjut} disabled={mengirim} data-testid="tombol-lanjut">
+            <Button type="button" varian="sekunder" onClick={kembali} disabled={step === 1 || mengirim}>Kembali</Button>
+            <Button type="button" onClick={lanjut} disabled={mengirim} data-testid="tombol-lanjut">
               {step === 4 ? (mengirim ? 'Mengirim…' : 'Kirim Lamaran') : 'Lanjut'}
-            </button>
+            </Button>
           </div>
         )}
       </div>

@@ -3,6 +3,9 @@
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { apiPath } from '@/lib/api-path';
+import { Button } from '@/components/atoms/Button';
+import { Input } from '@/components/atoms/Input';
+import { FormField } from '@/components/molecules/FormField';
 
 export default function GantiSandiPage() {
   const router = useRouter();
@@ -46,21 +49,18 @@ export default function GantiSandiPage() {
         {error && <div className="error" role="alert">{error}</div>}
         {sukses && <div className="muted">Kata sandi berhasil diganti, mengarahkan…</div>}
         <form onSubmit={handleSubmit}>
-          <div className="field">
-            <label htmlFor="sandiSaatIni">Kata sandi saat ini</label>
-            <input id="sandiSaatIni" name="sandiSaatIni" type="password" autoComplete="current-password" required />
-          </div>
-          <div className="field">
-            <label htmlFor="sandiBaru">Kata sandi baru</label>
-            <input id="sandiBaru" name="sandiBaru" type="password" autoComplete="new-password" minLength={8} required />
-          </div>
-          <div className="field">
-            <label htmlFor="konfirmasiSandi">Konfirmasi kata sandi baru</label>
-            <input id="konfirmasiSandi" name="konfirmasiSandi" type="password" autoComplete="new-password" minLength={8} required />
-          </div>
-          <button className="btn" style={{ width: '100%' }} disabled={isLoading}>
+          <FormField label="Kata sandi saat ini" htmlFor="sandiSaatIni">
+            <Input id="sandiSaatIni" name="sandiSaatIni" type="password" autoComplete="current-password" required />
+          </FormField>
+          <FormField label="Kata sandi baru" htmlFor="sandiBaru">
+            <Input id="sandiBaru" name="sandiBaru" type="password" autoComplete="new-password" minLength={8} required />
+          </FormField>
+          <FormField label="Konfirmasi kata sandi baru" htmlFor="konfirmasiSandi">
+            <Input id="konfirmasiSandi" name="konfirmasiSandi" type="password" autoComplete="new-password" minLength={8} required />
+          </FormField>
+          <Button style={{ width: '100%' }} disabled={isLoading}>
             {isLoading ? 'Menyimpan…' : 'Simpan Kata Sandi Baru'}
-          </button>
+          </Button>
         </form>
       </section>
     </main>

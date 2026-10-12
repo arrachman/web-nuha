@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { inisial } from '@/components';
+import { Button, Input, inisial } from '@/components';
 
 const LABEL_STATUS: Record<string, string> = {
   Submitted: 'Terkirim', Screening: 'Diperiksa Berkas', Shortlisted: 'Lolos Seleksi Administrasi',
@@ -50,8 +50,8 @@ export default async function StatusLamaranPage({ searchParams }: { searchParams
 
       <div className="card">
         <form method="get" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <input name="number" defaultValue={number} placeholder="LMR-2026-XXXX" style={{ flex: 1, minWidth: 200 }} data-testid="input-nomor" />
-          <button type="submit" className="btn">Cari</button>
+          <Input varian="cari" name="number" defaultValue={number} placeholder="LMR-2026-XXXX" style={{ flex: 1, minWidth: 200 }} data-testid="input-nomor" />
+          <Button type="submit">Cari</Button>
         </form>
 
         {(tidakDitemukan || salahToken) && (

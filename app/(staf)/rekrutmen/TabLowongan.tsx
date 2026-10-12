@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { getUnitAktif } from '@/lib/unit-scope';
 import { readSession } from '@/lib/auth';
 import { can } from '@/lib/access';
-import { Kosong } from '@/components';
+import { Button, FormField, Input, Kosong, Select, Textarea } from '@/components';
 import { buatLowongan, ajukanLowongan, setujuiLowongan, tutupLowongan } from './actions';
 
 const LABEL_STATUS: Record<string, string> = { Draft: 'Draf', PendingApproval: 'Menunggu Persetujuan', Open: 'Dibuka', Closed: 'Ditutup', Cancelled: 'Dibatalkan' };
@@ -26,61 +26,53 @@ export async function TabLowongan() {
           <form action={buatLowongan} className="grid g2">
             <div className="field" style={{ gridColumn: 'span 2' }}>
               <label>Judul posisi *</label>
-              <input name="title" required placeholder="mis. Guru Matematika SMP" />
+              <Input name="title" required placeholder="mis. Guru Matematika SMP" />
             </div>
-            <div className="field">
-              <label>Unit *</label>
-              <select name="unitId" required>
+            <FormField label="Unit *" htmlFor="unitId">
+              <Select id="unitId" name="unitId" required>
                 {units.map((u) => <option key={u.id} value={u.id}>{u.nama}</option>)}
-              </select>
-            </div>
-            <div className="field">
-              <label>Tipe</label>
-              <select name="type">
+              </Select>
+            </FormField>
+            <FormField label="Tipe" htmlFor="type">
+              <Select id="type" name="type">
                 <option value="Guru">Guru</option>
                 <option value="Staf">Staf</option>
                 <option value="Asatidz">Asatidz</option>
                 <option value="Musyrif">Musyrif/Musyrifah</option>
-              </select>
-            </div>
-            <div className="field">
-              <label>Mata pelajaran/bidang</label>
-              <input name="subject" placeholder="opsional" />
-            </div>
-            <div className="field">
-              <label>Kuota</label>
-              <input name="quota" type="number" min={1} defaultValue={1} />
-            </div>
-            <div className="field">
-              <label>Jenis hubungan kerja *</label>
-              <input name="employmentType" required placeholder="mis. Kontrak, Tetap" />
-            </div>
-            <div className="field">
-              <label>Pendidikan minimal *</label>
-              <input name="minEducation" required placeholder="mis. S1" />
-            </div>
-            <div className="field">
-              <label>Tanggal buka *</label>
-              <input name="openAt" type="date" required />
-            </div>
-            <div className="field">
-              <label>Tanggal tutup *</label>
-              <input name="closeAt" type="date" required />
-            </div>
+              </Select>
+            </FormField>
+            <FormField label="Mata pelajaran/bidang" htmlFor="subject">
+              <Input id="subject" name="subject" placeholder="opsional" />
+            </FormField>
+            <FormField label="Kuota" htmlFor="quota">
+              <Input id="quota" name="quota" type="number" min={1} defaultValue={1} />
+            </FormField>
+            <FormField label="Jenis hubungan kerja *" htmlFor="employmentType">
+              <Input id="employmentType" name="employmentType" required placeholder="mis. Kontrak, Tetap" />
+            </FormField>
+            <FormField label="Pendidikan minimal *" htmlFor="minEducation">
+              <Input id="minEducation" name="minEducation" required placeholder="mis. S1" />
+            </FormField>
+            <FormField label="Tanggal buka *" htmlFor="openAt">
+              <Input id="openAt" name="openAt" type="date" required />
+            </FormField>
+            <FormField label="Tanggal tutup *" htmlFor="closeAt">
+              <Input id="closeAt" name="closeAt" type="date" required />
+            </FormField>
             <div className="field" style={{ gridColumn: 'span 2' }}>
               <label>Deskripsi pekerjaan *</label>
-              <textarea name="description" required rows={2} />
+              <Textarea name="description" required rows={2} />
             </div>
             <div className="field" style={{ gridColumn: 'span 2' }}>
               <label>Persyaratan *</label>
-              <textarea name="requirements" required rows={2} />
+              <Textarea name="requirements" required rows={2} />
             </div>
             <div className="field" style={{ gridColumn: 'span 2' }}>
               <label>Fasilitas</label>
-              <textarea name="benefits" rows={2} />
+              <Textarea name="benefits" rows={2} />
             </div>
             <div style={{ gridColumn: 'span 2' }}>
-              <button type="submit" className="btn">Buat sebagai Draf</button>
+              <Button type="submit">Buat sebagai Draf</Button>
             </div>
           </form>
         </div>
@@ -100,13 +92,13 @@ export async function TabLowongan() {
                   <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                     <span className={`badge ${KELAS_BADGE[job.status] ?? 'badge-netral'}`}>{LABEL_STATUS[job.status] ?? job.status}</span>
                     {bisaKelola && job.status === 'Draft' && (
-                      <form action={ajukanLowongan}><input type="hidden" name="id" value={String(job.id)} /><button type="submit" className="btn-sekunder">Ajukan</button></form>
+                      <form action={ajukanLowongan}><Input type="hidden" name="id" value={String(job.id)} /><Button type="submit" varian="sekunder">Ajukan</Button></form>
                     )}
                     {bisaSetujui && job.status === 'PendingApproval' && (
-                      <form action={setujuiLowongan}><input type="hidden" name="id" value={String(job.id)} /><button type="submit" className="btn">Setujui &amp; Buka</button></form>
+                      <form action={setujuiLowongan}><Input type="hidden" name="id" value={String(job.id)} /><Button type="submit">Setujui &amp; Buka</Button></form>
                     )}
                     {bisaSetujui && job.status === 'Open' && (
-                      <form action={tutupLowongan}><input type="hidden" name="id" value={String(job.id)} /><button type="submit" className="btn-sekunder">Tutup</button></form>
+                      <form action={tutupLowongan}><Input type="hidden" name="id" value={String(job.id)} /><Button type="submit" varian="sekunder">Tutup</Button></form>
                     )}
                   </div>
                 </div>

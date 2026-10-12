@@ -1,6 +1,10 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
+import { Button } from '@/components/atoms/Button';
+import { Input } from '@/components/atoms/Input';
+import { Select } from '@/components/atoms/Select';
+import { FormField } from '@/components/molecules/FormField';
 import { apiPath } from '@/lib/api-path';
 
 export function DaftarPpdb() {
@@ -17,9 +21,9 @@ export function DaftarPpdb() {
   return <form onSubmit={submit} className="card" style={{ maxWidth: 680 }}>
     <h3>Daftar PPDB Online</h3><p className="muted">Isi data awal, panitia akan memverifikasi berkas Anda.</p>
     {message && <div className={message.startsWith('Pendaftaran diterima') ? 'badge badge-hijau' : 'error'} style={{ margin: '12px 0', display: 'block' }}>{message}</div>}
-    <div className="grid g2"><div className="field"><label>Nama lengkap</label><input name="nama" required maxLength={160} /></div><div className="field"><label>Jenis kelamin</label><select name="jk" required><option value="L">Putra</option><option value="P">Putri</option></select></div></div>
-    <div className="grid g2"><div className="field"><label>Pilihan unit</label><select name="pilihan" required><option value="SMP">SMP Nurul Huda</option><option value="MA">MA Nurul Huda</option><option value="Pondok">Pondok Pesantren</option></select></div><div className="field"><label>Asal sekolah</label><input name="asalSekolah" maxLength={160} /></div></div>
-    <div className="field"><label>Nomor HP wali</label><input name="hpWali" inputMode="tel" required maxLength={20} /></div>
-    <button className="btn" disabled={isSaving}>{isSaving ? 'Mengirim…' : 'Kirim pendaftaran'}</button>
+    <div className="grid g2"><FormField label="Nama lengkap" htmlFor="nama"><Input id="nama" name="nama" required maxLength={160} /></FormField><FormField label="Jenis kelamin" htmlFor="jk"><Select id="jk" name="jk" required><option value="L">Putra</option><option value="P">Putri</option></Select></FormField></div>
+    <div className="grid g2"><FormField label="Pilihan unit" htmlFor="pilihan"><Select id="pilihan" name="pilihan" required><option value="SMP">SMP Nurul Huda</option><option value="MA">MA Nurul Huda</option><option value="Pondok">Pondok Pesantren</option></Select></FormField><FormField label="Asal sekolah" htmlFor="asalSekolah"><Input id="asalSekolah" name="asalSekolah" maxLength={160} /></FormField></div>
+    <FormField label="Nomor HP wali" htmlFor="hpWali"><Input id="hpWali" name="hpWali" inputMode="tel" required maxLength={20} /></FormField>
+    <Button disabled={isSaving}>{isSaving ? 'Mengirim…' : 'Kirim pendaftaran'}</Button>
   </form>;
 }

@@ -1,6 +1,5 @@
-import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { satu, type SearchParams } from '@/components';
+import { Button, ButtonLink, Input, satu, type SearchParams } from '@/components';
 import { simpanMatriksIzin } from './actions';
 
 const MODUL_UTAMA = ['presensi', 'sarpras', 'rekrutmen'];
@@ -22,11 +21,11 @@ export async function TabIzin({ sp }: { sp: SearchParams }) {
   return (
     <div className="card">
       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
-        {modul.map((m) => <Link key={m} href={`/pengaturan?tab=izin&modul=${m}`} className={`chip ${m === dipilih ? 'chip-aktif' : ''}`}>{m}</Link>)}
+        {modul.map((m) => <ButtonLink key={m} href={`/pengaturan?tab=izin&modul=${m}`} varian="chip" aktif={m === dipilih}>{m}</ButtonLink>)}
       </div>
       <form action={simpanMatriksIzin}>
-        <input type="hidden" name="_kembali" value={`/pengaturan?tab=izin&modul=${dipilih}`} />
-        <input type="hidden" name="menuKey" value={dipilih} />
+        <Input type="hidden" name="_kembali" value={`/pengaturan?tab=izin&modul=${dipilih}`} />
+        <Input type="hidden" name="menuKey" value={dipilih} />
         <div className="tabel-wrap">
           <table data-testid="matriks-izin">
             <thead>
@@ -41,7 +40,7 @@ export async function TabIzin({ sp }: { sp: SearchParams }) {
                   <td><div style={{ fontWeight: 600, fontSize: 12.5 }}>{p.key}</div><div className="muted" style={{ fontSize: 11.5 }}>{p.label}</div></td>
                   {roles.map((r) => (
                     <td key={r.id} style={{ textAlign: 'center' }}>
-                      <input type="checkbox" name="rp" value={`${p.id}:${r.id}`} defaultChecked={p.roles.some((x) => x.roleId === r.id)} aria-label={`${r.key} ${p.key}`} />
+                      <Input type="checkbox" name="rp" value={`${p.id}:${r.id}`} defaultChecked={p.roles.some((x) => x.roleId === r.id)} aria-label={`${r.key} ${p.key}`} />
                     </td>
                   ))}
                 </tr>
@@ -50,7 +49,7 @@ export async function TabIzin({ sp }: { sp: SearchParams }) {
           </table>
         </div>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 12 }}>
-          <button type="submit" className="btn">Simpan matriks {dipilih}</button>
+          <Button type="submit">Simpan matriks {dipilih}</Button>
           <span className="muted" style={{ fontSize: 12 }}>Perubahan dicatat di audit (daftar yang ditambah/dicabut).</span>
         </div>
       </form>

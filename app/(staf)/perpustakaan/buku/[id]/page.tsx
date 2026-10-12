@@ -4,6 +4,7 @@ import { JudulHalaman, PesanAksi, satu, type SearchParams } from '@/components';
 import { prisma } from '@/lib/prisma';
 import { unitPerpustakaan } from '../../data';
 import { BukuForm } from '../../BukuForm';
+import { EksemplarPanel } from '../../EksemplarPanel';
 
 export default async function BukuUbahPage({
   params,
@@ -26,6 +27,7 @@ export default async function BukuUbahPage({
       <JudulHalaman judul="Ubah buku" sub={`${buku.kode} — ${unit.nama}.`} />
       <PesanAksi pesan={satu(sp.pesan) || undefined} galat={satu(sp.galat) || undefined} />
       <BukuForm unit={unit} buku={buku} />
+      <EksemplarPanel buku={buku} />
     </>
   );
 }

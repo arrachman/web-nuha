@@ -1,6 +1,8 @@
+import { Input } from '@/components';
+
 /** Hidden input `_kembali` — ke mana Server Action redirect setelah selesai (lib/aksi-form.ts). */
 export function Kembali({ ke }: { ke: string }) {
-  return <input type="hidden" name="_kembali" value={ke} />;
+  return <Input type="hidden" name="_kembali" value={ke} />;
 }
 
 export function BadgeKondisi({ kondisi }: { kondisi: string | null | undefined }) {

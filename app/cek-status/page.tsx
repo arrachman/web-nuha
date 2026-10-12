@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { inisial } from '@/components';
+import { Button, Input, inisial } from '@/components';
 
 type Tahap = { judul: string; ket: string; status: 'selesai' | 'gagal' | 'menunggu' };
 
@@ -57,8 +57,8 @@ export default async function CekStatusPage({ searchParams }: { searchParams: Pr
 
       <div className="card">
         <form method="get" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <input name="noReg" defaultValue={q} placeholder="PPDB-2026-XXXX" style={{ flex: 1, minWidth: 200 }} />
-          <button type="submit" className="btn">Cari</button>
+          <Input varian="cari" name="noReg" defaultValue={q} placeholder="PPDB-2026-XXXX" style={{ flex: 1, minWidth: 200 }} />
+          <Button type="submit">Cari</Button>
         </form>
 
         {tidakDitemukan && (

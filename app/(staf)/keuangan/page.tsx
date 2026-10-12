@@ -12,12 +12,13 @@ import { TabKas } from './TabKas';
 import { TabPiutang } from './TabPiutang';
 import { TabUtilitas } from './TabUtilitas';
 import { TabTriwulan } from './TabTriwulan';
-import { PemilihUnitKeuangan } from './PemilihUnitKeuangan';
+import { TabUtang } from './TabUtang';
 
 const TABS: TabDef[] = [
   { key: 'syariah', label: 'Syariah Bulanan' },
   { key: 'kas', label: 'Kas & Pengeluaran' },
   { key: 'piutang', label: 'Piutang' },
+  { key: 'utang', label: 'Utang Pondok' },
   { key: 'utilitas', label: 'Utilitas' },
   { key: 'triwulan', label: 'Triwulan' },
   { key: 'invoices', label: 'Invoice' },
@@ -66,8 +67,6 @@ export default async function KeuanganPage({ searchParams }: { searchParams: Sea
         sub="SPP unit sekolah, syahriyah pondok, uang makan, dan laundry dalam satu tagihan per santri."
       />
 
-      <PemilihUnitKeuangan session={session} />
-
       <section className="grid g4">
         <StatCard label="Total tagihan" nilai={rp(kartu.totalInvoice)} />
         <StatCard label="Sudah dibayar" nilai={rp(kartu.totalBayar)} warna="#0F6B3D" />
@@ -80,6 +79,7 @@ export default async function KeuanganPage({ searchParams }: { searchParams: Sea
       {aktif === 'syariah' && <TabSyariah periode={periode} />}
       {aktif === 'kas' && <TabKas />}
       {aktif === 'piutang' && <TabPiutang />}
+      {aktif === 'utang' && <TabUtang />}
       {aktif === 'utilitas' && <TabUtilitas periode={periode} />}
       {aktif === 'triwulan' && <TabTriwulan tw={tw} />}
       {aktif === 'invoices' && <TabInvoice q={typeof sp.q === 'string' ? sp.q : ''} />}

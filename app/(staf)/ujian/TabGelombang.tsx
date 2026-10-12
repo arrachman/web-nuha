@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { readSession } from '@/lib/auth';
 import { getUnitAktif } from '@/lib/unit-scope';
-import { Kosong, ProgressBar, Tabel } from '@/components';
+import { Button, Input, Kosong, ProgressBar, Tabel } from '@/components';
 import { ubahStatusUjian } from './actions';
 
 const WARNA_STATUS: Record<string, string> = { Draf: 'badge-netral', Berjalan: 'badge-kuning', Selesai: 'badge-hijau' };
@@ -72,9 +72,9 @@ export async function TabGelombang({ bolehKelola }: { bolehKelola: boolean }) {
 function TombolStatus({ id, status, label }: { id: number; status: string; label: string }) {
   return (
     <form action={ubahStatusUjian}>
-      <input type="hidden" name="id" value={id} />
-      <input type="hidden" name="status" value={status} />
-      <button className="btn btn-sekunder" type="submit">{label}</button>
+      <Input type="hidden" name="id" value={id} />
+      <Input type="hidden" name="status" value={status} />
+      <Button varian="sekunder" type="submit">{label}</Button>
     </form>
   );
 }

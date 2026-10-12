@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { Kosong, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
+import { Input, Kosong, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
 
 const warnaLevel = (level: string): { bg: string; fg: string } => {
   if (level.startsWith('C2')) return { bg: '#DBEAFE', fg: '#1E40AF' };
@@ -41,8 +41,8 @@ export async function TabSoal({ searchParams }: { searchParams: SearchParams }) 
           <p className="card-sub">{totalAgregat._sum.butir ?? 0} butir soal dalam {totalAgregat._count._all} paket, dapat langsung dipakai pada ujian LMS.</p>
         </div>
         <form method="get" action="/kurikulum" className="field" style={{ margin: 0, minWidth: 200 }}>
-          <input type="hidden" name="tab" value="soal" />
-          <input name="q" defaultValue={q} placeholder="Cari topik / mapel" />
+          <Input type="hidden" name="tab" value="soal" />
+          <Input name="q" defaultValue={q} placeholder="Cari topik / mapel" />
         </form>
       </div>
       {baris.length === 0 ? <Kosong pesan="Tidak ada butir soal yang cocok." /> : (

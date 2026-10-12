@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { Kosong, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
+import { Button, Input, Kosong, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
 import { ajukanPerangkat, setujuiPerangkat } from './actions';
 
 function hrefPerangkat(params: Record<string, string>) {
@@ -35,8 +35,8 @@ export async function TabPerangkat({ searchParams }: { searchParams: SearchParam
           <p className="card-sub">Guru menyusun lalu mengajukan; kepala unit menyetujui sebelum dipakai mengajar.</p>
         </div>
         <form method="get" action="/kurikulum" className="field" style={{ margin: 0, minWidth: 220 }}>
-          <input type="hidden" name="tab" value="perangkat" />
-          <input name="q" defaultValue={q} placeholder="Cari topik / mapel / guru" />
+          <Input type="hidden" name="tab" value="perangkat" />
+          <Input name="q" defaultValue={q} placeholder="Cari topik / mapel / guru" />
         </form>
       </div>
       {baris.length === 0 ? <Kosong pesan="Tidak ada perangkat ajar yang cocok." /> : (
@@ -60,14 +60,14 @@ export async function TabPerangkat({ searchParams }: { searchParams: SearchParam
               <div style={{ display: 'flex', gap: 8 }}>
                 {p.status === 'Draf' && (
                   <form action={ajukanPerangkat}>
-                    <input type="hidden" name="id" value={p.id} />
-                    <button type="submit" className="btn">Ajukan review</button>
+                    <Input type="hidden" name="id" value={p.id} />
+                    <Button type="submit">Ajukan review</Button>
                   </form>
                 )}
                 {p.status === 'Menunggu review' && (
                   <form action={setujuiPerangkat}>
-                    <input type="hidden" name="id" value={p.id} />
-                    <button type="submit" className="btn-sekunder">Setujui</button>
+                    <Input type="hidden" name="id" value={p.id} />
+                    <Button type="submit" varian="sekunder">Setujui</Button>
                   </form>
                 )}
               </div>

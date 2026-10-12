@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { isSuperAdmin, readSession } from "@/lib/auth";
 import { getUnitAktif } from "@/lib/unit-scope";
-import { Card, StatCard, Tabel, Kosong, rp } from "@/components";
+import { Card, StatCard, Tabel, Kosong, rp, FormField, Input, Select } from "@/components";
 import { FormAksi } from "./FormAksi";
 import { catatKas } from "./aksi";
 
@@ -49,40 +49,40 @@ export async function TabKas() {
       <Card judul="Catat transaksi kas" sub="Pemasukan/pengeluaran di luar iuran santri (mis. bayar listrik, wifi, belanja).">
         <FormAksi action={catatKas} tombol="Catat transaksi">
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "end" }}>
-            <label style={{ fontSize: 13 }}>Tanggal
-              <input type="date" name="tanggal" defaultValue={hariIni} className="field" style={{ display: "block", marginTop: 4 }} required />
-            </label>
-            <label style={{ fontSize: 13 }}>Arah
-              <select name="arah" className="field" style={{ display: "block", marginTop: 4 }}>
+            <FormField label="Tanggal" htmlFor="kas-tanggal" rapat>
+              <Input type="date" id="kas-tanggal" name="tanggal" defaultValue={hariIni} required />
+            </FormField>
+            <FormField label="Arah" htmlFor="kas-arah" rapat>
+              <Select id="kas-arah" name="arah">
                 <option value="keluar">Pengeluaran</option>
                 <option value="masuk">Pemasukan</option>
-              </select>
-            </label>
-            <label style={{ fontSize: 13 }}>Kategori
-              <select name="kategori" className="field" style={{ display: "block", marginTop: 4 }}>
+              </Select>
+            </FormField>
+            <FormField label="Kategori" htmlFor="kas-kategori" rapat>
+              <Select id="kas-kategori" name="kategori">
                 {KATEGORI.map((k) => <option key={k}>{k}</option>)}
-              </select>
-            </label>
-            <label style={{ fontSize: 13 }}>Unit
-              <select name="unit" className="field" style={{ display: "block", marginTop: 4 }} defaultValue={unitAktif != null ? String(unitAktif) : ""}>
+              </Select>
+            </FormField>
+            <FormField label="Unit" htmlFor="kas-unit" rapat>
+              <Select id="kas-unit" name="unit" defaultValue={unitAktif != null ? String(unitAktif) : ""}>
                 <option value="">Umum / Yayasan</option>
                 {unitBoleh.map((u) => <option key={u.id} value={u.id}>{u.nama}</option>)}
-              </select>
-            </label>
-            <label style={{ fontSize: 13 }}>Metode
-              <select name="metode" className="field" style={{ display: "block", marginTop: 4 }}>
+              </Select>
+            </FormField>
+            <FormField label="Metode" htmlFor="kas-metode" rapat>
+              <Select id="kas-metode" name="metode">
                 <option>Tunai</option>
                 <option>Transfer BRI</option>
                 <option>QRIS</option>
                 <option>Transfer Bank Lain</option>
-              </select>
-            </label>
-            <label style={{ fontSize: 13 }}>Nominal (Rp)
-              <input type="number" name="nominal" min={1} className="field" style={{ display: "block", marginTop: 4, width: 160 }} required />
-            </label>
-            <label style={{ fontSize: 13, flex: 1, minWidth: 200 }}>Uraian
-              <input type="text" name="uraian" className="field" placeholder="mis. Bayar listrik pondok Oktober" style={{ display: "block", marginTop: 4, width: "100%" }} required />
-            </label>
+              </Select>
+            </FormField>
+            <FormField label="Nominal (Rp)" htmlFor="kas-nominal" rapat style={{ width: 160 }}>
+              <Input type="number" id="kas-nominal" name="nominal" min={1} required />
+            </FormField>
+            <FormField label="Uraian" htmlFor="kas-uraian" rapat style={{ flex: 1, minWidth: 200 }}>
+              <Input type="text" id="kas-uraian" name="uraian" placeholder="mis. Bayar listrik pondok Oktober" required />
+            </FormField>
           </div>
         </FormAksi>
       </Card>

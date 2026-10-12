@@ -1,20 +1,41 @@
 import { prisma } from '@/lib/prisma';
+import { ButtonLink, rp } from '@/components';
+import { bacaAturanPerpus, dendaProspektif } from './data';
 
 type Unit = { id: number; nama: string };
 
+function fmtTanggal(d: Date) {
+  return new Date(d).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
 export async function TabDashboard({ unit }: { unit: Unit }) {
-  const [totalJudul, totalEksemplar, dipinjam, terlambat, kembaliBulanIni] = await Promise.all([
+  const sekarang = new Date();
+  const [totalJudul, totalEksemplar, dipinjam, terlambat, kembaliBulanIni, agregatDenda, eksemplarBermasalah, terlambatTeratas, aturan] = await Promise.all([
     prisma.book.count({ where: { unitId: unit.id } }),
     prisma.book.aggregate({ where: { unitId: unit.id }, _sum: { jumlah: true } }),
     prisma.bookLoan.count({ where: { unitId: unit.id, status: 'Dipinjam' } }),
-    prisma.bookLoan.count({ where: { unitId: unit.id, status: 'Dipinjam', tanggalJatuhTempo: { lt: new Date() } } }),
+    prisma.bookLoan.count({ where: { unitId: unit.id, status: 'Dipinjam', tanggalJatuhTempo: { lt: sekarang } } }),
     prisma.bookLoan.count({
       where: {
         unitId: unit.id,
         status: 'Dikembalikan',
-        tanggalKembali: { gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1) },
+        tanggalKembali: { gte: new Date(sekarang.getFullYear(), sekarang.getMonth(), 1) },
       },
     }),
+    prisma.bookLoan.aggregate({
+      where: { unitId: unit.id, status: 'Dikembalikan' },
+      _sum: { denda: true, dendaDibayar: true },
+    }),
+    prisma.bookCopy.count({
+      where: { unitId: unit.id, OR: [{ kondisi: { in: ['Rusak', 'Hilang'] } }, { status: 'Hilang' }] },
+    }),
+    prisma.bookLoan.findMany({
+      where: { unitId: unit.id, status: 'Dipinjam', tanggalJatuhTempo: { lt: sekarang } },
+      include: { book: { select: { kode: true, judul: true } } },
+      orderBy: { tanggalJatuhTempo: 'asc' },
+      take: 5,
+    }),
+    bacaAturanPerpus(unit.id),
   ]);
 
   const perKategori = await prisma.book.groupBy({
@@ -26,12 +47,16 @@ export async function TabDashboard({ unit }: { unit: Unit }) {
     take: 8,
   });
 
-  const kartu = [
+  const dendaBelumDibayar = Math.max(0, (agregatDenda._sum.denda ?? 0) - (agregatDenda._sum.dendaDibayar ?? 0));
+
+  const kartu: { label: string; nilai: string | number }[] = [
     { label: 'Judul buku', nilai: totalJudul },
     { label: 'Total eksemplar', nilai: totalEksemplar._sum.jumlah ?? 0 },
     { label: 'Sedang dipinjam', nilai: dipinjam },
     { label: 'Terlambat kembali', nilai: terlambat },
     { label: 'Kembali bulan ini', nilai: kembaliBulanIni },
+    { label: 'Denda belum dibayar', nilai: rp(dendaBelumDibayar) },
+    { label: 'Eksemplar bermasalah', nilai: eksemplarBermasalah },
   ];
 
   return (
@@ -43,6 +68,35 @@ export async function TabDashboard({ unit }: { unit: Unit }) {
             <div className="muted" style={{ fontSize: 12.5 }}>{k.label}</div>
           </div>
         ))}
+      </div>
+
+      <div className="card">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 12 }}>
+          <h3 style={{ margin: 0 }}>Perlu ditagih — terlambat teratas</h3>
+          <ButtonLink varian="sekunder" href="/perpustakaan/laporan" style={{ fontSize: 12.5 }}>Lihat laporan</ButtonLink>
+        </div>
+        {terlambatTeratas.length === 0 ? (
+          <p className="muted" style={{ margin: 0 }}>Tidak ada keterlambatan. Semua peminjaman tertib.</p>
+        ) : (
+          <div className="tabel-wrap">
+            <table>
+              <thead><tr><th>Buku</th><th>Peminjam</th><th>Jatuh tempo</th><th className="num">Hari terlambat</th><th className="num">Denda prospektif</th></tr></thead>
+              <tbody>
+                {terlambatTeratas.map((l) => (
+                  <tr key={String(l.id)}>
+                    <td><div style={{ fontWeight: 600 }}>{l.book.judul}</div><div className="muted" style={{ fontSize: 11.5 }}>{l.book.kode}</div></td>
+                    <td>{l.namaPeminjam}</td>
+                    <td>{fmtTanggal(l.tanggalJatuhTempo)}</td>
+                    <td className="num" style={{ color: 'var(--merah, #b3261e)', fontWeight: 700 }}>
+                      {Math.floor((sekarang.getTime() - new Date(l.tanggalJatuhTempo).getTime()) / 86400000)}
+                    </td>
+                    <td className="num">{rp(dendaProspektif(l.tanggalJatuhTempo, aturan))}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       <div className="card">

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { Button } from '@/components/atoms/Button';
 
 /** Batas error global: menggantikan layar error Next mentah saat query/render
  * halaman gagal (mis. Prisma down). `reset()` mencoba render ulang segmen ini
@@ -17,9 +18,9 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
         <p className="muted" style={{ margin: 0, fontSize: 13 }}>
           Halaman ini gagal dimuat. Coba lagi — kalau masih gagal, hubungi admin sistem.
         </p>
-        <button type="button" className="btn" onClick={() => reset()} style={{ alignSelf: 'center' }}>
+        <Button type="button" onClick={() => reset()} style={{ alignSelf: 'center' }}>
           Coba lagi
-        </button>
+        </Button>
       </div>
     </div>
   );

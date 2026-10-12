@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { IkonMenu } from '@/components/atoms/IkonMenu';
+import { Input } from '@/components/atoms/Input';
 
 type Persona = { key: string; label: string; ringkas: string };
 type Entity = { key: string; label: string };
@@ -30,13 +31,13 @@ export function PencarianEntitas({ persona, kelompok }: { persona: (Persona & { 
   return (
     <>
       <div className="card" style={{ marginTop: 16 }}>
-        <input
+        <Input
+          varian="cari"
           type="search"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Cari data yang mau dikelola…"
           aria-label="Cari entitas data"
-          className="input-cari"
           style={{ width: '100%' }}
         />
       </div>

@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { Kosong, ProgressBar, Tabel } from '@/components';
+import { Button, Input, Kosong, ProgressBar, Tabel } from '@/components';
 import { analisisPaket, putarToken, terbitkanPeserta, ubahStatusSesi } from './cbt-actions';
 
 const WARNA_STATUS: Record<string, string> = {
@@ -78,27 +78,27 @@ export async function TabSesiCbt({ bolehKelola }: { bolehKelola: boolean }) {
                   <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                     {total === 0 && (
                       <form action={terbitkanPeserta}>
-                        <input type="hidden" name="sesiId" value={s.id} />
-                        <button className="btn btn-sekunder" style={{ fontSize: 12 }}>Terbitkan peserta</button>
+                        <Input type="hidden" name="sesiId" value={s.id} />
+                        <Button varian="sekunder" style={{ fontSize: 12 }}>Terbitkan peserta</Button>
                       </form>
                     )}
                     {lanjut && total > 0 && (
                       <form action={ubahStatusSesi}>
-                        <input type="hidden" name="id" value={s.id} />
-                        <input type="hidden" name="status" value={lanjut} />
-                        <button className="btn" style={{ fontSize: 12 }}>{lanjut}</button>
+                        <Input type="hidden" name="id" value={s.id} />
+                        <Input type="hidden" name="status" value={lanjut} />
+                        <Button style={{ fontSize: 12 }}>{lanjut}</Button>
                       </form>
                     )}
                     {s.status === 'Berjalan' && (
                       <form action={putarToken}>
-                        <input type="hidden" name="id" value={s.id} />
-                        <button className="btn btn-sekunder" style={{ fontSize: 12 }}>Putar token</button>
+                        <Input type="hidden" name="id" value={s.id} />
+                        <Button varian="sekunder" style={{ fontSize: 12 }}>Putar token</Button>
                       </form>
                     )}
                     {s.status === 'Selesai' && (
                       <form action={analisisPaket}>
-                        <input type="hidden" name="paketId" value={s.paket.id} />
-                        <button className="btn btn-sekunder" style={{ fontSize: 12 }}>Analisis butir</button>
+                        <Input type="hidden" name="paketId" value={s.paket.id} />
+                        <Button varian="sekunder" style={{ fontSize: 12 }}>Analisis butir</Button>
                       </form>
                     )}
                   </div>

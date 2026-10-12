@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { readSession } from '@/lib/auth';
 import { getUnitAktifKey } from '@/lib/unit-scope';
-import { Avatar, Badge, Kosong, Tabel, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
+import { Avatar, Badge, Input, Kosong, Tabel, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
 import { DaftarPpdb } from './DaftarPpdb';
 
 function hrefPendaftar(params: Record<string, string>) {
@@ -37,8 +37,8 @@ export async function TabPendaftar({ searchParams }: { searchParams: SearchParam
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap', marginBottom: 14 }}>
         <h3 className="card-judul" style={{ marginBottom: 0 }}>Seluruh pendaftar</h3>
         <form method="get" style={{ display: 'flex' }}>
-          <input type="hidden" name="tab" value="pendaftar" />
-          <input className="field" name="q" defaultValue={q} placeholder="Cari nama / no. pendaftaran" style={{ padding: '10px 12px', borderRadius: 10, border: '1px solid var(--garis)', minWidth: 230 }} />
+          <Input type="hidden" name="tab" value="pendaftar" />
+          <Input className="field" name="q" defaultValue={q} placeholder="Cari nama / no. pendaftaran" style={{ padding: '10px 12px', borderRadius: 10, border: '1px solid var(--garis)', minWidth: 230 }} />
         </form>
       </div>
       {pendaftar.length === 0 ? (

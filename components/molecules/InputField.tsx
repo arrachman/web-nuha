@@ -2,6 +2,9 @@
 
 import type { ClientField, Row } from '@/lib/crud/types';
 import { IkonOpsi } from '@/components/atoms/IkonOpsi';
+import { Input } from '@/components/atoms/Input';
+import { Select } from '@/components/atoms/Select';
+import { Textarea } from '@/components/atoms/Textarea';
 import { PemilihBanyakOrang } from '@/components/molecules/PemilihBanyakOrang';
 import { PemilihWilayah } from '@/components/molecules/PemilihWilayah';
 
@@ -49,7 +52,7 @@ export function InputField({ field, id, row, onPilih }: Props) {
     // padahal artinya centang/lepas.
     return <div className="centang-chip" role="group" aria-labelledby={`${id}-label`}>
       {field.options.map((option) => <label className="centang-chip-opsi" key={option} data-opsi={option}>
-        <input
+        <Input
           type="checkbox"
           name={field.name}
           value={option}
@@ -72,17 +75,17 @@ export function InputField({ field, id, row, onPilih }: Props) {
   if (field.type === 'boolean') {
     const aktif = row ? Boolean(row[field.name]) : true;
     return <label className="toggle">
-      <input id={id} name={field.name} type="checkbox" defaultChecked={aktif} />
+      <Input id={id} name={field.name} type="checkbox" defaultChecked={aktif} />
       <span className="toggle-jalur" aria-hidden><span className="toggle-bulat" /></span>
       <span className="toggle-teks">{field.labelYa ?? 'Aktif'}</span>
     </label>;
   }
 
   if (field.refOptions) {
-    return <select id={id} name={field.name} required={field.required} defaultValue={nilai}>
+    return <Select id={id} name={field.name} required={field.required} defaultValue={nilai}>
       <option value="">Pilih…</option>
       {field.refOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
-    </select>;
+    </Select>;
   }
 
   if (field.type === 'select' && field.options) {
@@ -96,7 +99,7 @@ export function InputField({ field, id, row, onPilih }: Props) {
           const teks = field.optionLabels?.[option] ?? option;
           const ikon = field.optionIcons?.[option];
           return <label className="segmen-opsi" key={option} title={ikonSaja ? teks : undefined} data-opsi={option}>
-            <input type="radio" name={field.name} value={option} required={field.required} defaultChecked={nilai === option} onChange={lapor} aria-label={ikonSaja ? teks : undefined} />
+            <Input type="radio" name={field.name} value={option} required={field.required} defaultChecked={nilai === option} onChange={lapor} aria-label={ikonSaja ? teks : undefined} />
             <span>
               {ikon && <IkonOpsi nama={ikon} />}
               {!ikonSaja && teks}
@@ -105,17 +108,17 @@ export function InputField({ field, id, row, onPilih }: Props) {
         })}
       </div>;
     }
-    return <select id={id} name={field.name} required={field.required} defaultValue={nilai} onChange={lapor}>
+    return <Select id={id} name={field.name} required={field.required} defaultValue={nilai} onChange={lapor}>
       <option value="">Pilih…</option>
       {field.options.map((option) => <option key={option} value={option}>{field.optionLabels?.[option] ?? option}</option>)}
-    </select>;
+    </Select>;
   }
 
   if (field.type === 'textarea') {
-    return <textarea id={id} name={field.name} required={field.required} placeholder={field.placeholder} defaultValue={nilai} rows={3} />;
+    return <Textarea id={id} name={field.name} required={field.required} placeholder={field.placeholder} defaultValue={nilai} rows={3} />;
   }
 
-  return <input
+  return <Input
     id={id}
     name={field.name}
     type={field.type === 'number' ? 'number' : field.type === 'date' ? 'date' : 'text'}

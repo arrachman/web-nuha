@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { Kosong } from '@/components';
+import { Button, Input, Kosong } from '@/components';
 import { nilaiEsai } from './cbt-actions';
 
 /**
@@ -41,8 +41,8 @@ export async function PanelEsai({ sesiId }: { sesiId: number }) {
             <div style={{ fontSize: 12.5, color: '#4B5563', marginTop: 4 }}>{j.soal.pertanyaan}</div>
             <div style={{ fontSize: 13.5, color: '#1F2937', marginTop: 8, whiteSpace: 'pre-wrap' }}>{j.jawaban}</div>
             <form action={nilaiEsai} style={{ marginTop: 10, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-              <input type="hidden" name="jawabanId" value={String(j.id)} />
-              <input
+              <Input type="hidden" name="jawabanId" value={String(j.id)} />
+              <Input
                 name="skor"
                 type="number"
                 min={0}
@@ -53,7 +53,7 @@ export async function PanelEsai({ sesiId }: { sesiId: number }) {
                 style={{ width: 90, padding: '8px 10px', borderRadius: 10, border: '1px solid #E8E3D9' }}
               />
               <span style={{ fontSize: 12, color: '#6B7280' }}>dari {Number(j.soal.bobot)} poin</span>
-              <button className="btn btn-sekunder" style={{ fontSize: 12 }}>Simpan nilai</button>
+              <Button varian="sekunder" style={{ fontSize: 12 }}>Simpan nilai</Button>
               {j.dinilaiOleh && (
                 <span style={{ fontSize: 11.5, color: '#0F6B3D' }}>Dinilai {j.dinilaiOleh}</span>
               )}

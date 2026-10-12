@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { readSession } from '@/lib/auth';
 import { getUnitAktif } from '@/lib/unit-scope';
-import { Card, Avatar, Tabel, Badge, Kosong, rp } from '@/components';
+import { Card, Avatar, Tabel, Badge, Kosong, rp, Button, FormField, Input, Select } from '@/components';
 
 /** Status invoices diturunkan dari rasio paidAmount/amount — sama seperti TabInvoice. */
 function statusInvoice(amount: number, paidAmount: number): string {
@@ -45,16 +45,15 @@ export async function TabSpp({ anakId }: { anakId?: string }) {
             <div className="muted">{anak.unit?.nama ?? '-'} {anak.kelas?.nama ?? ''} · NIS {anak.nis} · {anak.status} · tarif {rp(tarifBerjalan)}/invoices</div>
           </div>
           <form method="get" style={{ display: 'flex', gap: 8, alignItems: 'flex-end' }}>
-            <input type="hidden" name="tab" value="spp" />
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-              <span className="label">Pilih anak</span>
-              <select className="field" name="anak" defaultValue={String(anak.id)} style={{ minWidth: 220 }}>
+            <Input type="hidden" name="tab" value="spp" />
+            <FormField label="Pilih anak" htmlFor="spp-anak" rapat style={{ minWidth: 220 }}>
+              <Select id="spp-anak" name="anak" defaultValue={String(anak.id)}>
                 {opsiAnak.map((o) => (
                   <option key={String(o.id)} value={String(o.id)}>{o.person.fullName}</option>
                 ))}
-              </select>
-            </label>
-            <button type="submit" className="btn">Tampilkan</button>
+              </Select>
+            </FormField>
+            <Button type="submit">Tampilkan</Button>
           </form>
         </div>
       </Card>

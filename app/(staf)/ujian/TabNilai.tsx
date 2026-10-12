@@ -1,6 +1,5 @@
-import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { Kosong, Tabel } from '@/components';
+import { Button, ButtonLink, Input, Kosong, Tabel } from '@/components';
 import { simpanNilaiUjian } from './actions';
 
 const tanggal = (tgl: Date) => tgl.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
@@ -65,18 +64,18 @@ export async function TabNilai({
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         {sesiSemua.map((s) => (
-          <Link
+          <ButtonLink
             key={s.id}
             href={`/ujian?tab=nilai&sesi=${s.id}`}
-            className={s.id === dipilih ? 'btn' : 'btn btn-sekunder'}
+            varian={s.id === dipilih ? 'primer' : 'sekunder'}
           >
             {s.mapel.nama} · {s.kelas.nama} · {tanggal(s.tgl)}
-          </Link>
+          </ButtonLink>
         ))}
       </div>
 
       <form action={simpanNilaiUjian} className="card">
-        <input type="hidden" name="jadwalId" value={sesi.id} />
+        <Input type="hidden" name="jadwalId" value={sesi.id} />
         <h3 className="card-judul">
           {sesi.mapel.nama} · Kelas {sesi.kelas.nama}
         </h3>
@@ -97,7 +96,7 @@ export async function TabNilai({
                     <td className="muted">{santri.nis}</td>
                     <td>{santri.person.fullName}</td>
                     <td>
-                      <input
+                      <Input
                         type="checkbox"
                         name={`hadir-${santri.id}`}
                         defaultChecked={ada ? ada.hadir : true}
@@ -105,13 +104,12 @@ export async function TabNilai({
                       />
                     </td>
                     <td style={{ textAlign: 'right' }}>
-                      <input
-                        className="input"
+                      <Input
                         type="number"
                         min={0}
                         max={100}
                         step="0.01"
-                        style={{ width: 96, textAlign: 'right' }}
+                        style={{ width: 96, textAlign: 'right', padding: '7px 10px', border: '1px solid var(--garis-input)', borderRadius: 10, background: 'var(--krem-2)', fontSize: 13, fontFamily: 'inherit', color: 'var(--teks)' }}
                         name={`nilai-${santri.id}`}
                         defaultValue={ada ? Number(ada.nilai) : ''}
                         disabled={terkunci}
@@ -123,7 +121,7 @@ export async function TabNilai({
             </Tabel>
             {!terkunci && (
               <div style={{ marginTop: 14 }}>
-                <button className="btn" type="submit">Simpan nilai</button>
+                <Button type="submit">Simpan nilai</Button>
               </div>
             )}
           </>

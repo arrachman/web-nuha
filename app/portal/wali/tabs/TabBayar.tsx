@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { rupiah } from '@/lib/gaji';
-import { Badge, Kosong } from '@/components';
+import { Badge, Button, Input, Kosong, Select } from '@/components';
 import { konfirmasiPembayaranWali } from '../actions';
 
 const METODE_OPTS = ['Transfer bank', 'QRIS', 'Tunai di kantor'];
@@ -31,30 +31,30 @@ export async function TabBayar({ santriId }: { santriId: bigint }) {
       {belumLunasFiltered.length > 0 && (
         <form action={konfirmasiPembayaranWali} style={{ background: '#FFFFFF', border: '1px solid #E8E3D9', borderRadius: 14, padding: 16, marginTop: 14, display: 'flex', flexDirection: 'column', gap: 13 }}>
           <div style={{ fontFamily: 'var(--font-lora), serif', fontSize: 15, color: '#0A4A2B', fontWeight: 600 }}>Form pembayaran</div>
-          <input type="hidden" name="santriId" value={String(santriId)} />
+          <Input type="hidden" name="santriId" value={String(santriId)} />
           <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: '#374151' }}>Tagihan yang dibayar</span>
-            <select name="invoiceId" required style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FFF', fontSize: 13 }}>
+            <Select name="invoiceId" required style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FFF', fontSize: 13 }}>
               {belumLunasFiltered.map((t) => (
                 <option key={String(t.id)} value={String(t.id)}>{t.type} · {t.period} · sisa {rupiah(Number(t.amount) - Number(t.paidAmount))}</option>
               ))}
-            </select>
+            </Select>
           </label>
           <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: '#374151' }}>Nominal (Rp)</span>
-            <input type="number" name="amount" min={1} required placeholder="1350000" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13 }} />
+            <Input type="number" name="amount" min={1} required placeholder="1350000" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13 }} />
           </label>
           <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: '#374151' }}>Metode pembayaran</span>
-            <select name="method" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FFF', fontSize: 13 }}>
+            <Select name="method" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FFF', fontSize: 13 }}>
               {METODE_OPTS.map((m) => <option key={m} value={m}>{m}</option>)}
-            </select>
+            </Select>
           </label>
           <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: '#374151' }}>Nomor referensi / bukti transfer</span>
-            <input name="bukti" placeholder="Contoh: TRF/BSI/220826/8841" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13 }} />
+            <Input name="bukti" placeholder="Contoh: TRF/BSI/220826/8841" style={{ padding: '11px 12px', borderRadius: 10, border: '1px solid #E8E3D9', background: '#FAF8F3', fontSize: 13 }} />
           </label>
-          <button className="btn" type="submit">Kirim konfirmasi pembayaran</button>
+          <Button type="submit">Kirim konfirmasi pembayaran</Button>
         </form>
       )}
 

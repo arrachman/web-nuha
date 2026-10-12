@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/atoms/Button";
 
 /** Tombol salin teks (untuk rekap WhatsApp). */
 export function TombolSalin({ teks, label = "Salin teks WA" }: { teks: string; label?: string }) {
   const [ok, setOk] = useState(false);
   return (
-    <button
+    <Button
       type="button"
-      className="btn"
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(teks);
@@ -20,6 +20,6 @@ export function TombolSalin({ teks, label = "Salin teks WA" }: { teks: string; l
       }}
     >
       {ok ? "Tersalin ✓" : label}
-    </button>
+    </Button>
   );
 }

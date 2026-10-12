@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
-import { PemilihWilayah } from '@/components';
+import { Button, ButtonLink, FormField, Input, PemilihWilayah, Select, Textarea } from '@/components';
 import { daftarPpdb, type PayloadDaftarPpdb } from './actions';
 
 const LABEL_LANGKAH = ['Data Diri', 'Asal Sekolah', 'Unit & Program', 'Berkas', 'Ringkasan'];
@@ -115,33 +114,29 @@ export function Wizard() {
             <div className="grid g2">
               <div className="field" style={{ gridColumn: 'span 2' }}>
                 <label>Nama lengkap *</label>
-                <input value={form.nama} onChange={(e) => ubah('nama', e.target.value)} placeholder="Sesuai akta kelahiran" />
+                <Input value={form.nama} onChange={(e) => ubah('nama', e.target.value)} placeholder="Sesuai akta kelahiran" />
                 {errors.nama && <span className="error">{errors.nama}</span>}
               </div>
-              <div className="field">
-                <label>NISN *</label>
-                <input value={form.nisn} onChange={(e) => ubah('nisn', e.target.value)} placeholder="10 digit" />
+              <FormField label="NISN *" htmlFor="nisn">
+                <Input id="nisn" value={form.nisn} onChange={(e) => ubah('nisn', e.target.value)} placeholder="10 digit" />
                 {errors.nisn && <span className="error">{errors.nisn}</span>}
-              </div>
-              <div className="field">
-                <label>Jenis kelamin</label>
-                <select value={form.jk} onChange={(e) => ubah('jk', e.target.value)}>
+              </FormField>
+              <FormField label="Jenis kelamin" htmlFor="jk">
+                <Select id="jk" value={form.jk} onChange={(e) => ubah('jk', e.target.value)}>
                   <option value="L">Laki-laki</option>
                   <option value="P">Perempuan</option>
-                </select>
-              </div>
-              <div className="field">
-                <label>Tempat lahir</label>
-                <input value={form.tempatLahir} onChange={(e) => ubah('tempatLahir', e.target.value)} placeholder="Kabupaten Malang" />
-              </div>
-              <div className="field">
-                <label>Tanggal lahir *</label>
-                <input type="date" value={form.tglLahir} onChange={(e) => ubah('tglLahir', e.target.value)} />
+                </Select>
+              </FormField>
+              <FormField label="Tempat lahir" htmlFor="tempatLahir">
+                <Input id="tempatLahir" value={form.tempatLahir} onChange={(e) => ubah('tempatLahir', e.target.value)} placeholder="Kabupaten Malang" />
+              </FormField>
+              <FormField label="Tanggal lahir *" htmlFor="tglLahir">
+                <Input id="tglLahir" type="date" value={form.tglLahir} onChange={(e) => ubah('tglLahir', e.target.value)} />
                 {errors.tglLahir && <span className="error">{errors.tglLahir}</span>}
-              </div>
+              </FormField>
               <div className="field" style={{ gridColumn: 'span 2' }}>
                 <label>Alamat</label>
-                <textarea rows={2} value={form.alamat} onChange={(e) => ubah('alamat', e.target.value)} placeholder="Dusun, desa, kecamatan, kabupaten" />
+                <Textarea rows={2} value={form.alamat} onChange={(e) => ubah('alamat', e.target.value)} placeholder="Dusun, desa, kecamatan, kabupaten" />
               </div>
               <div className="field" style={{ gridColumn: 'span 2' }}>
                 <PemilihWilayah
@@ -152,16 +147,14 @@ export function Wizard() {
                 />
                 {errors.regionId && <span className="error">{errors.regionId}</span>}
               </div>
-              <div className="field">
-                <label>Nama wali *</label>
-                <input value={form.wali} onChange={(e) => ubah('wali', e.target.value)} placeholder="Bpk. / Ibu" />
+              <FormField label="Nama wali *" htmlFor="wali">
+                <Input id="wali" value={form.wali} onChange={(e) => ubah('wali', e.target.value)} placeholder="Bpk. / Ibu" />
                 {errors.wali && <span className="error">{errors.wali}</span>}
-              </div>
-              <div className="field">
-                <label>No. HP wali *</label>
-                <input value={form.hp} onChange={(e) => ubah('hp', e.target.value)} placeholder="08xxxxxxxxxx" />
+              </FormField>
+              <FormField label="No. HP wali *" htmlFor="hp">
+                <Input id="hp" value={form.hp} onChange={(e) => ubah('hp', e.target.value)} placeholder="08xxxxxxxxxx" />
                 {errors.hp && <span className="error">{errors.hp}</span>}
-              </div>
+              </FormField>
             </div>
           </div>
         )}
@@ -172,32 +165,28 @@ export function Wizard() {
             <div className="grid g2">
               <div className="field" style={{ gridColumn: 'span 2' }}>
                 <label>Nama sekolah asal *</label>
-                <input value={form.asalSekolah} onChange={(e) => ubah('asalSekolah', e.target.value)} placeholder="SD / MI / SMP / MTs" />
+                <Input value={form.asalSekolah} onChange={(e) => ubah('asalSekolah', e.target.value)} placeholder="SD / MI / SMP / MTs" />
                 {errors.asalSekolah && <span className="error">{errors.asalSekolah}</span>}
               </div>
-              <div className="field">
-                <label>Kabupaten/Kota sekolah</label>
-                <input value={form.kabSekolah} onChange={(e) => ubah('kabSekolah', e.target.value)} placeholder="Malang" />
-              </div>
-              <div className="field">
-                <label>Tahun lulus</label>
-                <select value={form.tahunLulus} onChange={(e) => ubah('tahunLulus', e.target.value)}>
+              <FormField label="Kabupaten/Kota sekolah" htmlFor="kabSekolah">
+                <Input id="kabSekolah" value={form.kabSekolah} onChange={(e) => ubah('kabSekolah', e.target.value)} placeholder="Malang" />
+              </FormField>
+              <FormField label="Tahun lulus" htmlFor="tahunLulus">
+                <Select id="tahunLulus" value={form.tahunLulus} onChange={(e) => ubah('tahunLulus', e.target.value)}>
                   <option value="2026">2026</option>
                   <option value="2025">2025</option>
                   <option value="2024">2024</option>
-                </select>
-              </div>
-              <div className="field">
-                <label>Rata-rata nilai rapor</label>
-                <input value={form.nilaiRapor} onChange={(e) => ubah('nilaiRapor', e.target.value)} placeholder="mis. 84.5" />
-              </div>
-              <div className="field">
-                <label>Pernah mondok?</label>
-                <select value={form.pernahMondok} onChange={(e) => ubah('pernahMondok', e.target.value)}>
+                </Select>
+              </FormField>
+              <FormField label="Rata-rata nilai rapor" htmlFor="nilaiRapor">
+                <Input id="nilaiRapor" value={form.nilaiRapor} onChange={(e) => ubah('nilaiRapor', e.target.value)} placeholder="mis. 84.5" />
+              </FormField>
+              <FormField label="Pernah mondok?" htmlFor="pernahMondok">
+                <Select id="pernahMondok" value={form.pernahMondok} onChange={(e) => ubah('pernahMondok', e.target.value)}>
                   <option value="Belum">Belum pernah</option>
                   <option value="Pernah">Pernah</option>
-                </select>
-              </div>
+                </Select>
+              </FormField>
             </div>
           </div>
         )}
@@ -242,24 +231,22 @@ export function Wizard() {
             </div>
             {errors.unit && <div className="error" style={{ marginTop: 8 }}>{errors.unit}</div>}
             <div className="grid g2" style={{ marginTop: 18 }}>
-              <div className="field">
-                <label>Jurusan (khusus MA)</label>
-                <select value={form.jurusan} onChange={(e) => ubah('jurusan', e.target.value)}>
+              <FormField label="Jurusan (khusus MA)" htmlFor="jurusan">
+                <Select id="jurusan" value={form.jurusan} onChange={(e) => ubah('jurusan', e.target.value)}>
                   <option value="-">— tidak memilih MA —</option>
                   <option value="IPA">IPA</option>
                   <option value="IPS">IPS</option>
                   <option value="Keagamaan">Keagamaan</option>
-                </select>
-              </div>
-              <div className="field">
-                <label>Program pondok</label>
-                <select value={form.programPondok} onChange={(e) => ubah('programPondok', e.target.value)}>
+                </Select>
+              </FormField>
+              <FormField label="Program pondok" htmlFor="programPondok">
+                <Select id="programPondok" value={form.programPondok} onChange={(e) => ubah('programPondok', e.target.value)}>
                   <option value="-">— tidak mondok —</option>
                   <option value="Tahfidz">Tahfidz Al-Qur&apos;an</option>
                   <option value="Kitab">Kitab Kuning</option>
                   <option value="Reguler">Reguler (diniyah)</option>
-                </select>
-              </div>
+                </Select>
+              </FormField>
             </div>
           </div>
         )}
@@ -331,9 +318,9 @@ export function Wizard() {
                 <div style={{ fontSize: 13.5, color: '#256B45', lineHeight: 1.6 }}>
                   Nomor pendaftaran Anda: <strong>{hasil.noReg}</strong><br />Simpan nomor ini untuk mengecek status seleksi.
                 </div>
-                <Link href={`/cek-status?noReg=${encodeURIComponent(hasil.noReg)}`} className="btn" style={{ marginTop: 14, display: 'inline-block' }}>
+                <ButtonLink href={`/cek-status?noReg=${encodeURIComponent(hasil.noReg)}`} style={{ marginTop: 14, display: 'inline-block' }}>
                   Cek status sekarang
-                </Link>
+                </ButtonLink>
               </div>
             )}
           </div>
@@ -341,10 +328,10 @@ export function Wizard() {
 
         {!hasil && (
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginTop: 26, paddingTop: 20, borderTop: '1px solid #F0EDE4' }}>
-            <button type="button" className="btn-sekunder" onClick={kembali} disabled={step === 1 || mengirim}>Kembali</button>
-            <button type="button" className="btn" onClick={lanjut} disabled={mengirim}>
+            <Button type="button" varian="sekunder" onClick={kembali} disabled={step === 1 || mengirim}>Kembali</Button>
+            <Button type="button" onClick={lanjut} disabled={mengirim}>
               {step === 5 ? (mengirim ? 'Mengirim…' : 'Kirim Pendaftaran') : 'Lanjut'}
-            </button>
+            </Button>
           </div>
         )}
       </div>

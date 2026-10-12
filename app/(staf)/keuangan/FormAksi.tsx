@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { Button } from "@/components/atoms/Button";
 import type { HasilAksi } from "./aksi";
 
 /**
@@ -45,9 +46,9 @@ export function FormAksi({
         </div>
       )}
       <div>
-        <button type="submit" className="btn" disabled={pending}>
+        <Button type="submit" disabled={pending}>
           {pending ? "Menyimpan…" : tombol}
-        </button>
+        </Button>
       </div>
     </form>
   );

@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import type { SessionPayload } from '@/lib/auth';
-import { BarHorizontal, Kosong } from '@/components';
+import { BarHorizontal, Input, Kosong } from '@/components';
 
 const WARNA_KELOMPOK: Record<string, { bg: string; fg: string; bar: string }> = {
   A: { bg: '#DBEAFE', fg: '#1E40AF', bar: '#1D4ED8' },
@@ -45,8 +45,8 @@ export async function TabStruktur({
             <p className="card-sub">Baris bertanda hijau adalah mapel yang Anda ampu.</p>
           </div>
           <form method="get" action="/kurikulum" className="field" style={{ margin: 0, minWidth: 220 }}>
-            <input type="hidden" name="tab" value="struktur" />
-            <input name="q" defaultValue={q} placeholder="Cari mapel / guru" />
+            <Input type="hidden" name="tab" value="struktur" />
+            <Input name="q" defaultValue={q} placeholder="Cari mapel / guru" />
           </form>
         </div>
         {baris.length === 0 ? <Kosong pesan="Tidak ada mapel yang cocok." /> : (

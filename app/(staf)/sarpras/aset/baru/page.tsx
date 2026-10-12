@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { requirePage } from '@/lib/access';
 import { prisma } from '@/lib/prisma';
 import { izinSarpras } from '@/lib/aset/akses';
-import { JudulHalaman, PesanAksi, satu, type SearchParams } from '@/components';
+import { Button, FormField, Input, JudulHalaman, PesanAksi, satu, type SearchParams } from '@/components';
 import { registrasiAset } from '../../actions';
 import { Kembali } from '../../Kembali';
 import { lokasiPilihan, stafPilihan, unitDalamCakupan } from '../../data';
@@ -26,8 +26,8 @@ export default async function RegistrasiAsetPage({ searchParams }: { searchParam
       <form action={registrasiAset} className="card">
         <Kembali ke="/sarpras/aset/baru" />
         <FormAset pilihan={{ units, kategori, lokasi, dana, vendor, staf }} />
-        <div className="field"><label>Foto aset (JPEG/PNG/WebP, maks 5 MB)</label><input type="file" name="foto" accept="image/*" capture="environment" /></div>
-        <button type="submit" className="btn">Simpan &amp; bangkitkan kode</button>
+        <FormField label="Foto aset (JPEG/PNG/WebP, maks 5 MB)" htmlFor="foto"><Input id="foto" type="file" name="foto" accept="image/*" capture="environment" /></FormField>
+        <Button type="submit">Simpan &amp; bangkitkan kode</Button>
       </form>
     </>
   );

@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import type { SessionPayload } from '@/lib/auth';
 import type { IzinSarpras } from '@/lib/aset/akses';
 import { LABEL_KONDISI, STATUS_PINJAM_AKTIF } from '@/lib/aset/konstanta';
-import { Kosong, Tabel } from '@/components';
+import { Button, FormField, Input, Kosong, Select, Tabel } from '@/components';
 import { ajukanPinjam, batalkanPinjam, kembalikanPinjam, putuskanPinjam, serahkanPinjam } from './actions';
 import { BadgeStatus, FormKeputusan, Kembali } from './Kembali';
 
@@ -33,16 +33,16 @@ export async function TabPeminjaman({ session, izin }: { session: SessionPayload
           <form action={ajukanPinjam}>
             <Kembali ke={K} />
             <div className="grid g3">
-              <div className="field"><label>Mulai *</label><input type="datetime-local" name="startAt" required /></div>
-              <div className="field"><label>Selesai *</label><input type="datetime-local" name="endAt" required /></div>
-              <div className="field"><label>Keperluan *</label><input name="purpose" required placeholder="mis. Rapat wali santri" /></div>
+              <FormField label="Mulai *" htmlFor="startAt"><Input id="startAt" type="datetime-local" name="startAt" required /></FormField>
+              <FormField label="Selesai *" htmlFor="endAt"><Input id="endAt" type="datetime-local" name="endAt" required /></FormField>
+              <FormField label="Keperluan *" htmlFor="purpose"><Input id="purpose" name="purpose" required placeholder="mis. Rapat wali santri" /></FormField>
             </div>
             <div className="grid g2">
               <fieldset style={{ border: '1px solid var(--garis)', borderRadius: 10, padding: 10 }}>
                 <legend style={{ fontSize: 13, fontWeight: 600 }}>Aset yang bisa dipinjam</legend>
                 {aset.length === 0 ? <span className="muted">Tidak ada.</span> : aset.map((a) => (
                   <label key={String(a.id)} style={{ display: 'flex', gap: 8, fontSize: 13, padding: '3px 0' }}>
-                    <input type="checkbox" name="assetIds" value={String(a.id)} /> {a.name} <span className="muted">({a.location?.name ?? 'gudang'})</span>
+                    <Input type="checkbox" name="assetIds" value={String(a.id)} /> {a.name} <span className="muted">({a.location?.name ?? 'gudang'})</span>
                   </label>
                 ))}
               </fieldset>
@@ -50,12 +50,12 @@ export async function TabPeminjaman({ session, izin }: { session: SessionPayload
                 <legend style={{ fontSize: 13, fontWeight: 600 }}>Ruang</legend>
                 {ruang.map((r) => (
                   <label key={r.id} style={{ display: 'flex', gap: 8, fontSize: 13, padding: '3px 0' }}>
-                    <input type="checkbox" name="locationIds" value={r.id} /> {r.name} <span className="muted">({r.roomUsage}{r.capacity ? `, ${r.capacity} org` : ''})</span>
+                    <Input type="checkbox" name="locationIds" value={r.id} /> {r.name} <span className="muted">({r.roomUsage}{r.capacity ? `, ${r.capacity} org` : ''})</span>
                   </label>
                 ))}
               </fieldset>
             </div>
-            <button type="submit" className="btn" style={{ marginTop: 12 }}>Ajukan peminjaman</button>
+            <Button type="submit" style={{ marginTop: 12 }}>Ajukan peminjaman</Button>
           </form>
         </div>
       )}
@@ -78,7 +78,7 @@ export async function TabPeminjaman({ session, izin }: { session: SessionPayload
                 <td>{l.code}</td><td>{namaItem(l)}<div className="muted" style={{ fontSize: 11.5 }}>{l.purpose}</div></td>
                 <td>{waktu(l.startAt)} – {waktu(l.endAt)}</td><td><BadgeStatus status={l.status} /></td>
                 <td>{['Diajukan', 'Disetujui'].includes(l.status) && (
-                  <form action={batalkanPinjam}><Kembali ke={K} /><input type="hidden" name="id" value={String(l.id)} /><button type="submit" className="btn-sekunder" style={{ fontSize: 12 }}>Batalkan</button></form>
+                  <form action={batalkanPinjam}><Kembali ke={K} /><Input type="hidden" name="id" value={String(l.id)} /><Button type="submit" varian="sekunder" style={{ fontSize: 12 }}>Batalkan</Button></form>
                 )}</td>
               </tr>
             ))}
@@ -100,14 +100,14 @@ export async function TabPeminjaman({ session, izin }: { session: SessionPayload
                     <td>
                       {l.status === 'Diajukan' && <FormKeputusan action={putuskanPinjam} id={String(l.id)} kembali={K} kecil />}
                       {l.status === 'Disetujui' && (
-                        <form action={serahkanPinjam}><Kembali ke={K} /><input type="hidden" name="id" value={String(l.id)} /><button type="submit" className="btn-sekunder" style={{ fontSize: 12 }}>Serahkan</button></form>
+                        <form action={serahkanPinjam}><Kembali ke={K} /><Input type="hidden" name="id" value={String(l.id)} /><Button type="submit" varian="sekunder" style={{ fontSize: 12 }}>Serahkan</Button></form>
                       )}
                       {['Dipinjam', 'Terlambat'].includes(l.status) && (
                         <form action={kembalikanPinjam} style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                          <Kembali ke={K} /><input type="hidden" name="id" value={String(l.id)} />
-                          <select name="returnCondition" style={gaya}>{Object.entries(LABEL_KONDISI).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
-                          <input name="returnNote" placeholder="Catatan" style={{ ...gaya, width: 120 }} />
-                          <button type="submit" className="btn-sekunder" style={{ fontSize: 12 }}>Kembalikan</button>
+                          <Kembali ke={K} /><Input type="hidden" name="id" value={String(l.id)} />
+                          <Select name="returnCondition" style={gaya}>{Object.entries(LABEL_KONDISI).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select>
+                          <Input name="returnNote" placeholder="Catatan" style={{ ...gaya, width: 120 }} />
+                          <Button type="submit" varian="sekunder" style={{ fontSize: 12 }}>Kembalikan</Button>
                         </form>
                       )}
                     </td>

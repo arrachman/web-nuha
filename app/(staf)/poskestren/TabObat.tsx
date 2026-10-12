@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { Kosong, ProgressBar, Tabel } from '@/components';
+import { Input, Kosong, ProgressBar, Tabel } from '@/components';
 
 export async function TabObat({ q }: { q: string }) {
   const semuaObat = await prisma.medicine.findMany({ orderBy: { name: 'asc' } });
@@ -17,7 +17,7 @@ export async function TabObat({ q }: { q: string }) {
           <p className="card-sub">{menipisN} item perlu segera dibelanjakan.</p>
         </div>
         <form>
-          <input className="field" name="q" defaultValue={q} placeholder="Cari nama obat / kategori" style={{ minWidth: 220 }} />
+          <Input varian="cari" name="q" defaultValue={q} placeholder="Cari nama obat / kategori" style={{ minWidth: 220 }} />
         </form>
       </header>
       {obat.length === 0 ? <Kosong /> : (

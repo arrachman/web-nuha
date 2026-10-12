@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { apiPath } from '@/lib/api-path';
+import { Button } from '@/components/atoms/Button';
+import { Input } from '@/components/atoms/Input';
+import { Select } from '@/components/atoms/Select';
 
 export type OpsiOrang = { id: string; nama: string; keterangan: string };
 /** Satu baris pilihan: siapa orangnya + hubungannya dengan pihak seberang. */
@@ -110,7 +113,7 @@ export function PemilihBanyakOrang({ name, label, id, hint, hubungan, placeholde
   const sudahAda = new Set(dipilih.map((item) => item.orang.id));
 
   return <div style={{ position: 'relative' }}>
-    <input
+    <Input
       id={id ?? `pilih-${name}`}
       aria-label={label}
       type="text"
@@ -128,10 +131,10 @@ export function PemilihBanyakOrang({ name, label, id, hint, hubungan, placeholde
       {memuat && <li className="saran-kosong">Mencari…</li>}
       {!memuat && hasil.length === 0 && <li className="saran-kosong">Tidak ada yang cocok.</li>}
       {hasil.map((item) => <li key={item.id}>
-        <button type="button" disabled={sudahAda.has(item.id)} onClick={() => tambah(item)}>
+        <Button varian="polos" type="button" disabled={sudahAda.has(item.id)} onClick={() => tambah(item)}>
           <strong>{item.nama}</strong>
           <span>{sudahAda.has(item.id) ? 'sudah dipilih' : item.keterangan}</span>
-        </button>
+        </Button>
       </li>)}
     </ul>}
 
@@ -141,17 +144,17 @@ export function PemilihBanyakOrang({ name, label, id, hint, hubungan, placeholde
           <strong>{item.orang.nama}</strong>
           {item.orang.keterangan && <p className="petunjuk" style={{ margin: '2px 0 0' }}>{item.orang.keterangan}</p>}
         </div>
-        <select
+        <Select
           aria-label={`Hubungan dengan ${item.orang.nama}`}
           value={item.hubungan}
           onChange={(event) => ubahHubungan(item.orang.id, event.target.value)}
         >
           {hubungan.map((pilihan) => <option key={pilihan} value={pilihan}>{pilihan}</option>)}
-        </select>
-        <button type="button" className="btn btn-sekunder" style={{ padding: '5px 12px', fontSize: 12 }} onClick={() => buang(item.orang.id)}>Hapus</button>
+        </Select>
+        <Button varian="sekunder" type="button" style={{ padding: '5px 12px', fontSize: 12 }} onClick={() => buang(item.orang.id)}>Hapus</Button>
       </li>)}
     </ul>}
 
-    <input type="hidden" name={name} value={JSON.stringify(dipilih.map((item) => ({ id: item.orang.id, hubungan: item.hubungan })))} />
+    <Input type="hidden" name={name} value={JSON.stringify(dipilih.map((item) => ({ id: item.orang.id, hubungan: item.hubungan })))} />
   </div>;
 }

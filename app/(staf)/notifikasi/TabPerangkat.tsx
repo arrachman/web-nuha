@@ -1,4 +1,5 @@
 import { daftarPerangkat, ambilQr, type Perangkat } from '@/lib/wa-gateway';
+import { Button, ButtonLink, Input } from '@/components';
 import { tambahPerangkatWa, hapusPerangkatWa, putuskanPerangkatWa } from './actions';
 
 /**
@@ -41,13 +42,13 @@ export async function TabPerangkat({ searchParams }: { searchParams: Record<stri
         <form action={tambahPerangkatWa} style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'flex-end' }}>
           <span className="field" style={{ marginBottom: 0, flex: '1 1 200px' }}>
             <label htmlFor="wa-nama">Nama perangkat</label>
-            <input id="wa-nama" name="nama" required placeholder="Admin Pondok" />
+            <Input id="wa-nama" name="nama" required placeholder="Admin Pondok" />
           </span>
           <span className="field" style={{ marginBottom: 0, flex: '1 1 200px' }}>
             <label htmlFor="wa-nomor">Nomor WhatsApp</label>
-            <input id="wa-nomor" name="nomor" required placeholder="08123456789" inputMode="numeric" />
+            <Input id="wa-nomor" name="nomor" required placeholder="08123456789" inputMode="numeric" />
           </span>
-          <button type="submit" className="btn">Daftarkan</button>
+          <Button type="submit">Daftarkan</Button>
         </form>
       </div>
 
@@ -74,17 +75,17 @@ export async function TabPerangkat({ searchParams }: { searchParams: Record<stri
                     <td style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                       {item.terhubung ? (
                         <form action={putuskanPerangkatWa}>
-                          <input type="hidden" name="token" value={item.token} />
-                          <button type="submit" className="btn-sekunder btn">Putuskan</button>
+                          <Input type="hidden" name="token" value={item.token} />
+                          <Button type="submit" varian="sekunder">Putuskan</Button>
                         </form>
                       ) : (
-                        <a className="btn-sekunder btn" href={`/notifikasi?tab=perangkat&device=${item.token}`}>
+                        <ButtonLink varian="sekunder" href={`/notifikasi?tab=perangkat&device=${item.token}`}>
                           Tampilkan QR
-                        </a>
+                        </ButtonLink>
                       )}
                       <form action={hapusPerangkatWa}>
-                        <input type="hidden" name="nomor" value={item.nomor} />
-                        <button type="submit" className="btn-sekunder btn">Hapus</button>
+                        <Input type="hidden" name="nomor" value={item.nomor} />
+                        <Button type="submit" varian="sekunder">Hapus</Button>
                       </form>
                     </td>
                   </tr>

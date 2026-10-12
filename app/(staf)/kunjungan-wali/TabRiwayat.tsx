@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { readSession } from '@/lib/auth';
 import { getUnitAktif, filterSantriAktif } from '@/lib/unit-scope';
-import { Card, Tabel, Kosong, Badge } from '@/components';
+import { Card, Input, Tabel, Kosong, Badge } from '@/components';
 
 /** Riwayat seluruh kunjungan; pencarian nama wali/santri lewat query ?q=. */
 export async function TabRiwayat({ searchParams }: { searchParams: Record<string, string | string[] | undefined> }) {
@@ -25,8 +25,8 @@ export async function TabRiwayat({ searchParams }: { searchParams: Record<string
       judul="Riwayat buku tamu"
       aksi={
         <form method="get" style={{ display: 'flex', gap: 8 }}>
-          <input type="hidden" name="tab" value="riwayat" />
-          <input className="field" name="q" defaultValue={q} placeholder="Cari wali / santri" style={{ minWidth: 200 }} />
+          <Input type="hidden" name="tab" value="riwayat" />
+          <Input varian="cari" name="q" defaultValue={q} placeholder="Cari wali / santri" style={{ minWidth: 200 }} />
         </form>
       }
     >

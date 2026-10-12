@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { readSession } from '@/lib/auth';
 import { getUnitAktif, filterStaffAktif } from '@/lib/unit-scope';
-import { Card, Avatar, Kosong } from '@/components';
+import { Button, Card, Avatar, Input, Kosong, Select } from '@/components';
 import { hitungGaji, rupiah } from '@/lib/gaji';
 
 /** Slip cetak untuk satu pegawai; pegawai dipilih lewat query ?peg=id. */
@@ -45,14 +45,14 @@ export async function TabSlip({
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
       <Card>
         <form method="get" style={{ display: 'flex', gap: 12, alignItems: 'flex-end', flexWrap: 'wrap' }}>
-          <input type="hidden" name="tab" value="slip" />
+          <Input type="hidden" name="tab" value="slip" />
           <div className="field" style={{ flex: 1, minWidth: 220 }}>
             <label htmlFor="peg">Pilih pegawai</label>
-            <select id="peg" name="peg" defaultValue={String(pilihan.id)}>
+            <Select id="peg" name="peg" defaultValue={String(pilihan.id)}>
               {pegawai.map((p) => <option key={String(p.id)} value={String(p.id)}>{p.person.fullName}</option>)}
-            </select>
+            </Select>
           </div>
-          <button className="btn" type="submit">Tampilkan slip</button>
+          <Button type="submit">Tampilkan slip</Button>
         </form>
       </Card>
 

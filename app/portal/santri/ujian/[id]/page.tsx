@@ -1,8 +1,8 @@
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { pesertaSaya } from '@/app/(staf)/ujian/cbt-bersama';
 import { selesaikanKerja } from '@/app/(staf)/ujian/peserta-actions';
 import { prisma } from '@/lib/prisma';
+import { Button, ButtonLink, Input } from '@/components';
 import { Pengawas } from './Pengawas';
 import { KartuSoal } from './KartuSoal';
 
@@ -103,10 +103,10 @@ function SelesaiPanel({ pesertaId, terjawab, total }: { pesertaId: string; terja
           {terjawab} dari {total} soal terjawab. Setelah diakhiri, jawaban tidak dapat diubah.
         </div>
       </div>
-      <Link href="/portal/santri?tab=ujian" className="btn btn-sekunder">Kembali nanti</Link>
+      <ButtonLink href="/portal/santri?tab=ujian" varian="sekunder">Kembali nanti</ButtonLink>
       <form action={selesaikanKerja}>
-        <input type="hidden" name="pesertaId" value={pesertaId} />
-        <button type="submit" className="btn">Akhiri ujian</button>
+        <Input type="hidden" name="pesertaId" value={pesertaId} />
+        <Button type="submit">Akhiri ujian</Button>
       </form>
     </div>
   );

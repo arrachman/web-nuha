@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { readSession } from '@/lib/auth';
 import { getUnitAktif, filterStaffAktif } from '@/lib/unit-scope';
-import { Card, Tabel, Kosong, Avatar } from '@/components';
+import { Card, Input, Tabel, Kosong, Avatar } from '@/components';
 import { hitungGaji, rupiah } from '@/lib/gaji';
 import { SlipActions } from '@/components/SlipActions';
 
@@ -35,8 +35,8 @@ export async function TabPayroll({
       sub="Semua pemegang akses menu Penggajian dapat menerbitkan, membayar, atau merevisi. Revisi setelah bayar tetap tercatat di audit log."
       aksi={
         <form method="get" style={{ display: 'flex', gap: 8 }}>
-          <input type="hidden" name="tab" value="payroll" />
-          <input className="field" name="q" defaultValue={q} placeholder="Cari nama / jabatan" style={{ minWidth: 200 }} />
+          <Input type="hidden" name="tab" value="payroll" />
+          <Input varian="cari" name="q" defaultValue={q} placeholder="Cari nama / jabatan" style={{ minWidth: 200 }} />
         </form>
       }
     >

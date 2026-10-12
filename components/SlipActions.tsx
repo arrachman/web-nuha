@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { apiPath } from '@/lib/api-path';
+import { Button } from '@/components/atoms/Button';
 
 type Aksi = 'terbitkan' | 'bayar' | 'revisi';
 
@@ -23,8 +24,8 @@ export function SlipActions({ pegawaiId, periode, status }: { pegawaiId: string;
   }
 
   return <div style={{ display: 'flex', gap: 6 }}>
-    {!status && <button className="btn" disabled={busy} onClick={() => jalankan('terbitkan')}>Terbitkan</button>}
-    {status && status !== 'Dibayar' && <button className="btn" disabled={busy} onClick={() => jalankan('bayar')}>Tandai dibayar</button>}
-    {status && <button className="btn btn-sekunder" disabled={busy} onClick={() => jalankan('revisi')}>Revisi</button>}
+    {!status && <Button disabled={busy} onClick={() => jalankan('terbitkan')}>Terbitkan</Button>}
+    {status && status !== 'Dibayar' && <Button disabled={busy} onClick={() => jalankan('bayar')}>Tandai dibayar</Button>}
+    {status && <Button varian="sekunder" disabled={busy} onClick={() => jalankan('revisi')}>Revisi</Button>}
   </div>;
 }

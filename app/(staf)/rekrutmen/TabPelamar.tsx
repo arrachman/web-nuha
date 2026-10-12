@@ -1,8 +1,7 @@
-import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { readSession } from '@/lib/auth';
 import { getUnitAktif } from '@/lib/unit-scope';
-import { Avatar, Kosong, Tabel, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
+import { Avatar, Button, ButtonLink, Input, Kosong, Select, Tabel, Pagination, UKURAN_HALAMAN, satu, bacaHalaman, type SearchParams } from '@/components';
 
 const LABEL_STATUS: Record<string, string> = {
   Submitted: 'Terkirim', Screening: 'Diperiksa Berkas', Shortlisted: 'Lolos Administrasi',
@@ -52,17 +51,17 @@ export async function TabPelamar({ searchParams }: { searchParams: SearchParams 
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap', marginBottom: 14 }}>
         <h3 className="card-judul" style={{ marginBottom: 0 }}>Seluruh pelamar</h3>
         <form method="get" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <input type="hidden" name="tab" value="pelamar" />
-          <select name="jobId" defaultValue={jobId} style={{ padding: '10px 12px', borderRadius: 10, border: '1px solid var(--garis)' }}>
+          <Input type="hidden" name="tab" value="pelamar" />
+          <Select name="jobId" defaultValue={jobId} style={{ padding: '10px 12px', borderRadius: 10, border: '1px solid var(--garis)' }}>
             <option value="">Semua lowongan</option>
             {lowongan.map((j) => <option key={String(j.id)} value={String(j.id)}>{j.title} ({j.code})</option>)}
-          </select>
-          <select name="status" defaultValue={status} style={{ padding: '10px 12px', borderRadius: 10, border: '1px solid var(--garis)' }}>
+          </Select>
+          <Select name="status" defaultValue={status} style={{ padding: '10px 12px', borderRadius: 10, border: '1px solid var(--garis)' }}>
             <option value="">Semua status</option>
             {Object.entries(LABEL_STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-          </select>
-          <input name="q" defaultValue={q} placeholder="Cari nama / nomor" style={{ padding: '10px 12px', borderRadius: 10, border: '1px solid var(--garis)', minWidth: 200 }} />
-          <button type="submit" className="btn-sekunder">Cari</button>
+          </Select>
+          <Input name="q" defaultValue={q} placeholder="Cari nama / nomor" style={{ padding: '10px 12px', borderRadius: 10, border: '1px solid var(--garis)', minWidth: 200 }} />
+          <Button type="submit" varian="sekunder">Cari</Button>
         </form>
       </div>
       {pelamar.length === 0 ? <Kosong pesan="Belum ada pelamar yang cocok." /> : (
@@ -81,7 +80,7 @@ export async function TabPelamar({ searchParams }: { searchParams: SearchParams 
               <td>{p.job.title}</td>
               <td className="num" style={{ fontWeight: 700 }}>{p.totalScore ? Number(p.totalScore).toFixed(1) : '-'}</td>
               <td><span className={`badge ${KELAS_BADGE[p.status] ?? 'badge-netral'}`}>{LABEL_STATUS[p.status] ?? p.status}</span></td>
-              <td><Link href={`/rekrutmen/pelamar/${p.id}`} className="btn-sekunder" style={{ fontSize: 12.5 }}>Detail</Link></td>
+              <td><ButtonLink href={`/rekrutmen/pelamar/${p.id}`} varian="sekunder" style={{ fontSize: 12.5 }}>Detail</ButtonLink></td>
             </tr>
           ))}
         </Tabel>

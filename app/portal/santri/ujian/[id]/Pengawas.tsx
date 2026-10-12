@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { apiPath } from '@/lib/api-path';
+import { Button } from '@/components/atoms/Button';
 
 /**
  * Pengawasan sisi klien. Ini lapisan pencegah, bukan pengaman: server tetap
@@ -100,13 +101,13 @@ export function Pengawas({
         >
           {menit}:{detik}
         </div>
-        <button
+        <Button
+          varian="sekunder"
           type="button"
-          className="btn btn-sekunder"
           onClick={() => document.documentElement.requestFullscreen?.().catch(() => {})}
         >
           Layar penuh
-        </button>
+        </Button>
       </div>
       {pesan && <div className="alert alert-kritis">{pesan}</div>}
     </div>

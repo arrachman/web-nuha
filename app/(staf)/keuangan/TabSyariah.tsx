@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { readSession } from "@/lib/auth";
 import { getUnitAktif } from "@/lib/unit-scope";
-import { Card, Tabel, Kosong, rp } from "@/components";
+import { Card, Tabel, Kosong, rp, Button, FormField, Input, Select } from "@/components";
 import { StatusSantri } from "@prisma/client";
 import { FormAksi } from "./FormAksi";
 import {
@@ -67,15 +67,14 @@ export async function TabSyariah({ periode }: { periode: string }) {
       >
         <div style={{ display: "flex", gap: 12, alignItems: "end", flexWrap: "wrap", marginBottom: 14 }}>
           <form method="get" style={{ display: "flex", gap: 8, alignItems: "end" }}>
-            <input type="hidden" name="tab" value="syariah" />
-            <label style={{ fontSize: 13 }}>
-              Periode
-              <input type="month" name="periode" defaultValue={periode} className="field" style={{ display: "block", marginTop: 4 }} />
-            </label>
-            <button type="submit" className="btn">Tampilkan</button>
+            <Input type="hidden" name="tab" value="syariah" />
+            <FormField label="Periode" htmlFor="syariah-periode" rapat>
+              <Input type="month" id="syariah-periode" name="periode" defaultValue={periode} />
+            </FormField>
+            <Button type="submit">Tampilkan</Button>
           </form>
           <FormAksi action={generateTagihanBulanan} tombol={`Generate tagihan ${periode}`}>
-            <input type="hidden" name="periode" value={periode} />
+            <Input type="hidden" name="periode" value={periode} />
           </FormAksi>
         </div>
 
@@ -105,18 +104,24 @@ export async function TabSyariah({ periode }: { periode: string }) {
                       <div style={{ marginTop: 8, minWidth: 240 }}>
                         {sisa > 0 ? (
                           <FormAksi action={catatPembayaran} tombol="Catat bayar">
-                            <input type="hidden" name="invoiceId" value={String(t.id)} />
-                            <label style={{ fontSize: 12 }}>Tanggal<input type="date" name="tanggal" defaultValue={hariIni} className="field" style={{ display: "block", width: "100%", marginTop: 2 }} required /></label>
-                            <label style={{ fontSize: 12 }}>Nominal<input type="number" name="nominal" defaultValue={sisa} min={1} max={sisa} className="field" style={{ display: "block", width: "100%", marginTop: 2 }} required /></label>
-                            <label style={{ fontSize: 12 }}>Metode
-                              <select name="metode" className="field" style={{ display: "block", width: "100%", marginTop: 2 }}>
+                            <Input type="hidden" name="invoiceId" value={String(t.id)} />
+                            <FormField label="Tanggal" rapat>
+                              <Input type="date" name="tanggal" defaultValue={hariIni} required />
+                            </FormField>
+                            <FormField label="Nominal" rapat>
+                              <Input type="number" name="nominal" defaultValue={sisa} min={1} max={sisa} required />
+                            </FormField>
+                            <FormField label="Metode" rapat>
+                              <Select name="metode">
                                 <option>Tunai</option>
                                 <option>Transfer BRI</option>
                                 <option>QRIS</option>
                                 <option>Transfer Bank Lain</option>
-                              </select>
-                            </label>
-                            <label style={{ fontSize: 12 }}>Keterangan<input type="text" name="keterangan" className="field" placeholder="opsional" style={{ display: "block", width: "100%", marginTop: 2 }} /></label>
+                              </Select>
+                            </FormField>
+                            <FormField label="Keterangan" rapat>
+                              <Input type="text" name="keterangan" placeholder="opsional" />
+                            </FormField>
                           </FormAksi>
                         ) : (
                           <div style={{ fontSize: 12, color: "#0F6B3D" }}>Lunas ✓</div>
@@ -151,7 +156,7 @@ export async function TabSyariah({ periode }: { periode: string }) {
                 <td className="muted">{o.keterangan ?? "-"}</td>
                 <td>
                   <FormAksi action={hapusOverride} tombol="Hapus">
-                    <input type="hidden" name="santriId" value={String(o.santriId)} />
+                    <Input type="hidden" name="santriId" value={String(o.santriId)} />
                   </FormAksi>
                 </td>
               </tr>
@@ -161,19 +166,19 @@ export async function TabSyariah({ periode }: { periode: string }) {
         <div style={{ marginTop: 12 }}>
           <FormAksi action={simpanOverride} tombol="Simpan tarif khusus">
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "end" }}>
-              <label style={{ fontSize: 13 }}>Santri
-                <select name="santriId" className="field" style={{ display: "block", marginTop: 4, maxWidth: 260 }} required>
+              <FormField label="Santri" htmlFor="ov-santri" rapat style={{ maxWidth: 260 }}>
+                <Select id="ov-santri" name="santriId" required>
                   {opsiSantri.map((s) => (
                     <option key={String(s.id)} value={String(s.id)}>{s.person.fullName}</option>
                   ))}
-                </select>
-              </label>
-              <label style={{ fontSize: 13 }}>Total/bln (Rp)
-                <input type="number" name="total" min={1} className="field" style={{ display: "block", marginTop: 4 }} required />
-              </label>
-              <label style={{ fontSize: 13 }}>Keterangan
-                <input type="text" name="keterangan" className="field" placeholder="mis. 1 SMP" style={{ display: "block", marginTop: 4 }} />
-              </label>
+                </Select>
+              </FormField>
+              <FormField label="Total/bln (Rp)" htmlFor="ov-total" rapat>
+                <Input type="number" id="ov-total" name="total" min={1} required />
+              </FormField>
+              <FormField label="Keterangan" htmlFor="ov-keterangan" rapat>
+                <Input type="text" id="ov-keterangan" name="keterangan" placeholder="mis. 1 SMP" />
+              </FormField>
             </div>
           </FormAksi>
         </div>

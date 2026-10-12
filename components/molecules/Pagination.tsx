@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react';
+import { Button } from '@/components/atoms/Button';
+import { ButtonLink } from '@/components/atoms/ButtonLink';
 
 type Props = {
   halaman: number;
@@ -44,9 +46,9 @@ function TombolNav({ label, judul, tujuan, aktif, buatHref, onPageChange }: Tomb
     );
   }
   if (onPageChange) {
-    return <button className="btn-sekunder" type="button" onClick={() => onPageChange(tujuan)} title={judul} aria-label={judul} style={{ ...GAYA_TOMBOL, cursor: 'pointer' }}>{label}</button>;
+    return <Button varian="sekunder" type="button" onClick={() => onPageChange(tujuan)} title={judul} aria-label={judul} style={{ ...GAYA_TOMBOL, cursor: 'pointer' }}>{label}</Button>;
   }
-  return <a className="btn-sekunder" href={buatHref!(tujuan)} title={judul} aria-label={judul} style={{ ...GAYA_TOMBOL, cursor: 'pointer' }}>{label}</a>;
+  return <ButtonLink varian="sekunder" href={buatHref!(tujuan)} title={judul} aria-label={judul} style={{ ...GAYA_TOMBOL, cursor: 'pointer' }}>{label}</ButtonLink>;
 }
 
 /** Footer pager: "Menampilkan X–Y dari Z" + navigasi awal/sebelumnya/berikutnya/akhir. Dipakai bersama util `bacaHalaman`. */
@@ -73,8 +75,8 @@ export function Pagination({ halaman, totalHalaman, total, jumlahBaris, ukuranHa
                 </span>
               )
               : onPageChange
-                ? <button key={p} type="button" onClick={() => onPageChange(p)} aria-label={`Halaman ${p}`} className="btn-sekunder" style={{ ...GAYA_TOMBOL, cursor: 'pointer' }}>{p}</button>
-                : <a key={p} href={buatHref!(p)} aria-label={`Halaman ${p}`} className="btn-sekunder" style={{ ...GAYA_TOMBOL, cursor: 'pointer' }}>{p}</a>
+                ? <Button key={p} varian="sekunder" type="button" onClick={() => onPageChange(p)} aria-label={`Halaman ${p}`} style={{ ...GAYA_TOMBOL, cursor: 'pointer' }}>{p}</Button>
+                : <ButtonLink key={p} varian="sekunder" href={buatHref!(p)} aria-label={`Halaman ${p}`} style={{ ...GAYA_TOMBOL, cursor: 'pointer' }}>{p}</ButtonLink>
             ))}
             <TombolNav label="›" judul="Halaman berikutnya" tujuan={halaman + 1} aktif={adaSesudah} buatHref={buatHref} onPageChange={onPageChange} />
             <TombolNav label="»" judul="Halaman terakhir" tujuan={totalHalaman} aktif={adaSesudah} buatHref={buatHref} onPageChange={onPageChange} />

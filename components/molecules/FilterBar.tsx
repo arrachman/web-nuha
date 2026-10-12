@@ -3,6 +3,10 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import type { ClientEntity } from '@/lib/crud/types';
 import { SEMUA } from '@/lib/crud/filter-nilai';
+import { Button } from '@/components/atoms/Button';
+import { ButtonLink } from '@/components/atoms/ButtonLink';
+import { Input } from '@/components/atoms/Input';
+import { Select } from '@/components/atoms/Select';
 
 /** Jeda sebelum ketikan pada kotak cari ikut memicu filter. */
 const JEDA_CARI_MS = 400;
@@ -75,12 +79,12 @@ export function FilterBar({ entity, hrefBase, filters, limit, onFilterChange }: 
 
   return (
     <form ref={formRef} method="get" action={hrefBase} onSubmit={submit} className="card bilah-filter">
-      <input type="hidden" name="limit" value={limit} />
+      <Input type="hidden" name="limit" value={limit} />
       <div className="bilah-filter-kolom" style={{ flex: '1 1 260px', maxWidth: 420, position: 'relative' }}>
         <label htmlFor="filter-q">Cari</label>
-        <input id="filter-q" type="text" name="q" value={nilai.q ?? ''} placeholder="Cari nama, kode, atau kata kunci…" onChange={(event) => ubahTeks('q', event.target.value)} />
+        <Input id="filter-q" type="text" name="q" value={nilai.q ?? ''} placeholder="Cari nama, kode, atau kata kunci…" onChange={(event) => ubahTeks('q', event.target.value)} />
         {Boolean(nilai.q) && (
-          <button type="button" className="bilah-filter-hapus" title="Hapus pencarian" aria-label="Hapus pencarian" onClick={() => hapusNilai('q', '')}>×</button>
+          <Button varian="polos" type="button" className="bilah-filter-hapus" title="Hapus pencarian" aria-label="Hapus pencarian" onClick={() => hapusNilai('q', '')}>×</Button>
         )}
       </div>
       {filterableFields.map((field) => {
@@ -90,18 +94,18 @@ export function FilterBar({ entity, hrefBase, filters, limit, onFilterChange }: 
         const adaNilai = nilaiSaatIni !== nilaiKosong;
         return <div className="bilah-filter-kolom" key={field.name} style={{ flex: '0 1 190px', position: 'relative' }}>
           <label htmlFor={`filter-${field.name}`}>{field.label}</label>
-          <select id={`filter-${field.name}`} name={field.name} value={nilaiSaatIni} onChange={(event) => ubahPilihan(field.name, event.target.value)}>
+          <Select id={`filter-${field.name}`} name={field.name} value={nilaiSaatIni} onChange={(event) => ubahPilihan(field.name, event.target.value)}>
             <option value={nilaiKosong}>Semua</option>
             {options.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
-          </select>
+          </Select>
           {adaNilai && (
-            <button type="button" className="bilah-filter-hapus" title={`Hapus filter ${field.label}`} aria-label={`Hapus filter ${field.label}`} onClick={() => hapusNilai(field.name, nilaiKosong)}>×</button>
+            <Button varian="polos" type="button" className="bilah-filter-hapus" title={`Hapus filter ${field.label}`} aria-label={`Hapus filter ${field.label}`} onClick={() => hapusNilai(field.name, nilaiKosong)}>×</Button>
           )}
         </div>;
       })}
       {adaFilterAktif && (
         <div className="bilah-filter-aksi">
-          <a className="btn btn-sekunder" href={`${hrefBase}?limit=${limit}`} onClick={(event) => { event.preventDefault(); setNilai({}); kirim({}); }}>Reset</a>
+          <ButtonLink varian="sekunder" href={`${hrefBase}?limit=${limit}`} onClick={(event) => { event.preventDefault(); setNilai({}); kirim({}); }}>Reset</ButtonLink>
         </div>
       )}
     </form>

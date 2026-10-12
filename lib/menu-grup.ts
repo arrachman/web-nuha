@@ -13,7 +13,7 @@ export const GRUP_MENU: Array<{ label: string | null; keys: string[] }> = [
   { label: null, keys: ['dashboard'] },
   {
     label: 'Data & Akademik',
-    keys: ['induk', 'akademik', 'kurikulum', 'ujian', 'lms', 'pesantren', 'poskestren', 'presensi', 'perpustakaan', 'kepegawaian'],
+    keys: ['induk', 'siswa', 'santri', 'akademik', 'kurikulum', 'ujian', 'lms', 'pesantren', 'poskestren', 'presensi', 'perpustakaan', 'kepegawaian'],
   },
   {
     label: 'Operasional',

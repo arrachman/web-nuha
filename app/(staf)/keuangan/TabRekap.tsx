@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { readSession } from '@/lib/auth';
 import { getUnitAktif } from '@/lib/unit-scope';
-import { Card, Avatar, Tabel, Badge, ProgressBar, Kosong, rp } from '@/components';
+import { Card, Avatar, Tabel, Badge, ProgressBar, Kosong, rp, Button, Input } from '@/components';
 
 /** Ketaatan payments per santri diringkas dari seluruh tagihannya. */
 function statusKetaatan(amount: number, paidAmount: number): string {
@@ -68,9 +68,9 @@ export async function TabRekap({ q }: { q: string }) {
         sub="Persentase dihitung dari total paidAmount dibagi total invoices tiap santri."
       >
         <form method="get" style={{ marginBottom: 14, display: 'flex', gap: 8 }}>
-          <input type="hidden" name="tab" value="rekap" />
-          <input className="field" name="q" defaultValue={q} placeholder="Cari nama / NIS" style={{ minWidth: 220 }} />
-          <button type="submit" className="btn">Cari</button>
+          <Input type="hidden" name="tab" value="rekap" />
+          <Input varian="cari" name="q" defaultValue={q} placeholder="Cari nama / NIS" style={{ minWidth: 220 }} />
+          <Button type="submit">Cari</Button>
         </form>
         {rekap.length === 0 ? (
           <Kosong pesan="Tidak ada santri yang cocok dengan pencarian." />

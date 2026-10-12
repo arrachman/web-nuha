@@ -4,7 +4,7 @@ import type { IzinSarpras } from '@/lib/aset/akses';
 import { bacaAngkaSetting } from '@/lib/aset/persetujuan';
 import { AMBANG_KAPITALISASI_BAWAAN, AMBANG_PENGADAAN_BAWAAN, SETTING_AMBANG_KAPITALISASI, SETTING_AMBANG_PENGADAAN, rupiah } from '@/lib/aset/konstanta';
 import { getUnitAktif, whereUnitAktif } from '@/lib/unit-scope';
-import { Tabel } from '@/components';
+import { Button, FormField, Input, Select, Tabel } from '@/components';
 import { mutasiPersediaan, simpanAmbang, simpanKategori, simpanSumberDana, simpanVendor, tambahPersediaan } from './actions';
 import { Kembali } from './Kembali';
 import { unitDalamCakupan } from './data';
@@ -38,11 +38,11 @@ export async function TabMaster({ session, izin }: { session: SessionPayload; iz
                 <td className="num">{p.minStock}</td><td>{p.storage ?? '-'}</td>
                 <td>
                   <form action={mutasiPersediaan} style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                    <Kembali ke={K} /><input type="hidden" name="itemId" value={p.id} />
-                    <select name="direction" style={gaya}><option>Masuk</option><option>Keluar</option></select>
-                    <input name="quantity" type="number" min={1} required placeholder="Jml" style={{ ...gaya, width: 70 }} />
-                    <input name="purpose" placeholder="Keperluan" style={{ ...gaya, width: 130 }} />
-                    <button type="submit" className="btn-sekunder" style={{ fontSize: 12 }}>Catat</button>
+                    <Kembali ke={K} /><Input type="hidden" name="itemId" value={p.id} />
+                    <Select name="direction" style={gaya}><option>Masuk</option><option>Keluar</option></Select>
+                    <Input name="quantity" type="number" min={1} required placeholder="Jml" style={{ ...gaya, width: 70 }} />
+                    <Input name="purpose" placeholder="Keperluan" style={{ ...gaya, width: 130 }} />
+                    <Button type="submit" varian="sekunder" style={{ fontSize: 12 }}>Catat</Button>
                   </form>
                 </td>
               </tr>
@@ -50,13 +50,13 @@ export async function TabMaster({ session, izin }: { session: SessionPayload; iz
           </Tabel>
           <form action={tambahPersediaan} style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 12 }}>
             <Kembali ke={K} />
-            <input name="name" required placeholder="Nama barang" style={gaya} />
-            <input name="unitOfMeasure" required placeholder="Satuan" style={{ ...gaya, width: 90 }} />
-            <input name="stock" type="number" min={0} placeholder="Stok awal" style={{ ...gaya, width: 100 }} />
-            <input name="minStock" type="number" min={0} placeholder="Stok min" style={{ ...gaya, width: 100 }} />
-            <select name="unitId" style={gaya}>{units.map((u) => <option key={u.id} value={u.id}>{u.nama}</option>)}</select>
-            <input name="storage" placeholder="Gudang" style={gaya} />
-            <button type="submit" className="btn-sekunder">Tambah barang</button>
+            <Input name="name" required placeholder="Nama barang" style={gaya} />
+            <Input name="unitOfMeasure" required placeholder="Satuan" style={{ ...gaya, width: 90 }} />
+            <Input name="stock" type="number" min={0} placeholder="Stok awal" style={{ ...gaya, width: 100 }} />
+            <Input name="minStock" type="number" min={0} placeholder="Stok min" style={{ ...gaya, width: 100 }} />
+            <Select name="unitId" style={gaya}>{units.map((u) => <option key={u.id} value={u.id}>{u.nama}</option>)}</Select>
+            <Input name="storage" placeholder="Gudang" style={gaya} />
+            <Button type="submit" varian="sekunder">Tambah barang</Button>
           </form>
         </div>
       )}
@@ -67,9 +67,9 @@ export async function TabMaster({ session, izin }: { session: SessionPayload; iz
             <h3 className="card-judul">Ambang persetujuan</h3>
             <form action={simpanAmbang} style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'end' }}>
               <Kembali ke={K} />
-              <div className="field" style={{ marginBottom: 0 }}><label>Pengadaan butuh ketua yayasan bila &gt; (Rp)</label><input name="ambangPengadaan" type="number" min={0} defaultValue={ambangPengadaan} /></div>
-              <div className="field" style={{ marginBottom: 0 }}><label>Ambang kapitalisasi per unit (Rp)</label><input name="ambangKapitalisasi" type="number" min={0} defaultValue={ambangKapitalisasi} /></div>
-              <button type="submit" className="btn">Simpan ambang</button>
+              <FormField label="Pengadaan butuh ketua yayasan bila > (Rp)" htmlFor="ambangPengadaan" rapat><Input id="ambangPengadaan" name="ambangPengadaan" type="number" min={0} defaultValue={ambangPengadaan} /></FormField>
+              <FormField label="Ambang kapitalisasi per unit (Rp)" htmlFor="ambangKapitalisasi" rapat><Input id="ambangKapitalisasi" name="ambangKapitalisasi" type="number" min={0} defaultValue={ambangKapitalisasi} /></FormField>
+              <Button type="submit">Simpan ambang</Button>
             </form>
             <p className="muted" style={{ fontSize: 12, marginTop: 8 }}>Saat ini: {rupiah(ambangPengadaan)} · kapitalisasi {rupiah(ambangKapitalisasi)} (di bawahnya barang dicatat kolektif).</p>
           </div>
@@ -84,13 +84,13 @@ export async function TabMaster({ session, izin }: { session: SessionPayload; iz
             </Tabel>
             <form action={simpanKategori} style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 12, alignItems: 'center' }}>
               <Kembali ke={K} />
-              <input name="code" required placeholder="Kode (B.02.04)" style={{ ...gaya, width: 130 }} />
-              <input name="name" required placeholder="Nama kategori" style={gaya} />
-              <select name="kibGroup" style={gaya}>{['A', 'B', 'C', 'D', 'E', 'F'].map((g) => <option key={g}>{g}</option>)}</select>
-              <input name="usefulLifeYears" type="number" min={0} placeholder="Umur (thn)" style={{ ...gaya, width: 100 }} />
-              <label style={{ fontSize: 12.5 }}><input type="checkbox" name="needsMaintenance" /> perlu servis</label>
-              <label style={{ fontSize: 12.5 }}><input type="checkbox" name="isConsumable" /> habis pakai</label>
-              <button type="submit" className="btn-sekunder">Simpan kategori</button>
+              <Input name="code" required placeholder="Kode (B.02.04)" style={{ ...gaya, width: 130 }} />
+              <Input name="name" required placeholder="Nama kategori" style={gaya} />
+              <Select name="kibGroup" style={gaya}>{['A', 'B', 'C', 'D', 'E', 'F'].map((g) => <option key={g}>{g}</option>)}</Select>
+              <Input name="usefulLifeYears" type="number" min={0} placeholder="Umur (thn)" style={{ ...gaya, width: 100 }} />
+              <label style={{ fontSize: 12.5 }}><Input type="checkbox" name="needsMaintenance" /> perlu servis</label>
+              <label style={{ fontSize: 12.5 }}><Input type="checkbox" name="isConsumable" /> habis pakai</label>
+              <Button type="submit" varian="sekunder">Simpan kategori</Button>
             </form>
           </div>
 
@@ -102,10 +102,10 @@ export async function TabMaster({ session, izin }: { session: SessionPayload; iz
               </Tabel>
               <form action={simpanSumberDana} style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 12, alignItems: 'center' }}>
                 <Kembali ke={K} />
-                <input name="code" required placeholder="KODE" style={{ ...gaya, width: 120 }} />
-                <input name="name" required placeholder="Nama" style={gaya} />
-                <label style={{ fontSize: 12.5 }}><input type="checkbox" name="restrictedDisposal" /> penghapusan jalur khusus</label>
-                <button type="submit" className="btn-sekunder">Simpan</button>
+                <Input name="code" required placeholder="KODE" style={{ ...gaya, width: 120 }} />
+                <Input name="name" required placeholder="Nama" style={gaya} />
+                <label style={{ fontSize: 12.5 }}><Input type="checkbox" name="restrictedDisposal" /> penghapusan jalur khusus</label>
+                <Button type="submit" varian="sekunder">Simpan</Button>
               </form>
             </div>
             <div className="card">
@@ -115,10 +115,10 @@ export async function TabMaster({ session, izin }: { session: SessionPayload; iz
               </Tabel>
               <form action={simpanVendor} style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 12 }}>
                 <Kembali ke={K} />
-                <input name="name" required placeholder="Nama vendor" style={gaya} />
-                <input name="phone" placeholder="Telepon" style={{ ...gaya, width: 130 }} />
-                <input name="address" placeholder="Alamat" style={gaya} />
-                <button type="submit" className="btn-sekunder">Tambah vendor</button>
+                <Input name="name" required placeholder="Nama vendor" style={gaya} />
+                <Input name="phone" placeholder="Telepon" style={{ ...gaya, width: 130 }} />
+                <Input name="address" placeholder="Alamat" style={gaya} />
+                <Button type="submit" varian="sekunder">Tambah vendor</Button>
               </form>
             </div>
           </section>

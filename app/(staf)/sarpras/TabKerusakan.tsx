@@ -1,9 +1,8 @@
-import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { isSuperAdmin, type SessionPayload } from '@/lib/auth';
 import type { IzinSarpras } from '@/lib/aset/akses';
 import { LABEL_STATUS_KERUSAKAN, STATUS_KERUSAKAN, STATUS_KERUSAKAN_TERBUKA, rupiah } from '@/lib/aset/konstanta';
-import { Kosong, Tabel, satu, type SearchParams } from '@/components';
+import { Button, ButtonLink, Input, Kosong, Select, Tabel, satu, type SearchParams } from '@/components';
 import { tanganiKerusakan } from './actions';
 import { BadgeStatus, Kembali } from './Kembali';
 import { petugasTeknis } from './data';
@@ -43,7 +42,7 @@ export async function TabKerusakan({ session, izin, sp }: { session: SessionPayl
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div className="card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
         <span style={{ fontSize: 13.5 }}>Menemukan kerusakan? Laporkan dari HP — bisa juga dengan scan QR di pintu ruang atau label aset.</span>
-        <Link href="/lapor-kerusakan" className="btn">Lapor kerusakan</Link>
+        <ButtonLink href="/lapor-kerusakan">Lapor kerusakan</ButtonLink>
       </div>
 
       {izin.damage_handle && (
@@ -51,9 +50,9 @@ export async function TabKerusakan({ session, izin, sp }: { session: SessionPayl
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap', alignItems: 'center', marginBottom: 12 }}>
             <h3 className="card-judul" style={{ marginBottom: 0 }}>{pengelola ? 'Tiket kerusakan' : 'Tiket yang ditugaskan kepada saya'}</h3>
             <form method="get" style={{ display: 'flex', gap: 8 }}>
-              <input type="hidden" name="tab" value="kerusakan" />
-              <select name="status" defaultValue={status} style={gaya}><option value="">Semua yang terbuka</option>{STATUS_KERUSAKAN.map((s) => <option key={s} value={s}>{LABEL_STATUS_KERUSAKAN[s]}</option>)}</select>
-              <button type="submit" className="btn-sekunder">Saring</button>
+              <Input type="hidden" name="tab" value="kerusakan" />
+              <Select name="status" defaultValue={status} style={gaya}><option value="">Semua yang terbuka</option>{STATUS_KERUSAKAN.map((s) => <option key={s} value={s}>{LABEL_STATUS_KERUSAKAN[s]}</option>)}</Select>
+              <Button type="submit" varian="sekunder">Saring</Button>
             </form>
           </div>
           {tiket.length === 0 ? <Kosong pesan="Tidak ada tiket." /> : tiket.map((t) => (
@@ -74,21 +73,21 @@ export async function TabKerusakan({ session, izin, sp }: { session: SessionPayl
                 {t.resolutionNote && <div className="muted">Catatan: {t.resolutionNote}</div>}
               </div>
               <form action={tanganiKerusakan} style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                <Kembali ke={kembali} /><input type="hidden" name="id" value={String(t.id)} />
-                <select name="status" defaultValue={t.status === 'Baru' ? 'Diverifikasi' : t.status} style={gaya} aria-label="Status tiket">
+                <Kembali ke={kembali} /><Input type="hidden" name="id" value={String(t.id)} />
+                <Select name="status" defaultValue={t.status === 'Baru' ? 'Diverifikasi' : t.status} style={gaya} aria-label="Status tiket">
                   {(pengelola ? STATUS_KERUSAKAN : ['Dikerjakan', 'MenungguSparepart', 'Selesai']).map((s) => <option key={s} value={s}>{LABEL_STATUS_KERUSAKAN[s]}</option>)}
-                </select>
+                </Select>
                 {pengelola && (
-                  <select name="assignedTo" defaultValue={t.assignedTo ? String(t.assignedTo) : ''} style={gaya} aria-label="Tugaskan ke">
+                  <Select name="assignedTo" defaultValue={t.assignedTo ? String(t.assignedTo) : ''} style={gaya} aria-label="Tugaskan ke">
                     <option value="">— tugaskan ke —</option>{petugas.map((p) => <option key={String(p.id)} value={String(p.id)}>{p.person.fullName}</option>)}
-                  </select>
+                  </Select>
                 )}
                 {pengelola && (
-                  <select name="vendorId" defaultValue={t.vendorId ?? ''} style={gaya} aria-label="Vendor"><option value="">— vendor luar —</option>{vendor.map((v) => <option key={v.id} value={v.id}>{v.name}</option>)}</select>
+                  <Select name="vendorId" defaultValue={t.vendorId ?? ''} style={gaya} aria-label="Vendor"><option value="">— vendor luar —</option>{vendor.map((v) => <option key={v.id} value={v.id}>{v.name}</option>)}</Select>
                 )}
-                <input name="cost" type="number" min={0} placeholder="Biaya (Rp)" defaultValue={t.cost ? Number(t.cost) : undefined} style={{ ...gaya, width: 120 }} />
-                <input name="resolutionNote" placeholder="Catatan penanganan" style={{ ...gaya, minWidth: 180 }} />
-                <button type="submit" className="btn">Simpan</button>
+                <Input name="cost" type="number" min={0} placeholder="Biaya (Rp)" defaultValue={t.cost ? Number(t.cost) : undefined} style={{ ...gaya, width: 120 }} />
+                <Input name="resolutionNote" placeholder="Catatan penanganan" style={{ ...gaya, minWidth: 180 }} />
+                <Button type="submit">Simpan</Button>
               </form>
             </details>
           ))}

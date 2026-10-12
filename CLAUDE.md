@@ -66,8 +66,9 @@ saat user eksplisit minta deploy.
    (konvensi maks 400 baris/file); pengumpul data panjang dipisah ke modul
    sendiri (contoh: `app/kurikulum/kelas-guru.ts`).
 5. **Primitif UI** — `components/` mengikuti atomic design: `atoms/`
-   (Badge, Ring, ProgressBar, Kosong, Avatar), `molecules/` (Card, StatCard,
-   Tabel, Tabs, JudulHalaman), `organisms/` (chart-chart), `templates/`
+   (Badge, Ring, ProgressBar, Kosong, Avatar, Button, ButtonLink, Input,
+   Select, Textarea), `molecules/` (Card, StatCard, Tabel, Tabs,
+   JudulHalaman, FormField), `organisms/` (chart-chart), `templates/`
    (Shell), `utils/` (helper murni: rp, inisial, avaBg, kelasStatus,
    tabAktif). Semua diekspor lewat barrel `components/index.ts` — import
    selalu dari `@/components`, **jangan** buat file flat baru langsung di
@@ -75,6 +76,16 @@ saat user eksplisit minta deploy.
    tersedia: hijau, biru, kuning, merah, netral, oranye, toska, pink —
    **tidak ada `badge-ungu`**; cek `styles/globals.css` sebelum memakai
    kelas baru.
+   **Kontrol form WAJIB dari atoms** — halaman & komponen TIDAK boleh
+   menulis `<button>`, `<input>`, `<select>`, `<textarea>` mentah. Pakai
+   `Button` (varian primer/sekunder/ikon/ikon-utama/ikon-bahaya/
+   ikon-sekunder/ghost-terang/tab/chip — jangan tempel class `btn*`
+   manual), `ButtonLink` untuk tautan berbentuk tombol, `Input`
+   (varian `cari` untuk pencarian), `Select`, `Textarea`, dan molecule
+   `FormField` untuk pola label + kontrol. Varian `polos` hanya untuk
+   tombol berkelas kustom warisan yang tampilannya diatur class-nya
+   sendiri. Elemen mentah hanya boleh hidup DI DALAM file atoms itu
+   sendiri.
 6. **Data nyata** — angka di layar dihitung dari Prisma, bukan konstanta.
    Kalau datanya belum ada, perluas `prisma/seed.ts` (idempoten, nilai contoh
    deterministik dari indeks — bukan acak).

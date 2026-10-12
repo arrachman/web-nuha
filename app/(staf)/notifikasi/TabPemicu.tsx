@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { rupiah } from '@/lib/gaji';
-import { Kosong } from '@/components';
+import { Button, Input, Kosong } from '@/components';
 import { kirimPemicu } from './actions';
 
 type Baris = { code: string; judul: string; detail: string; target: string; nomor: string; tujuan: string; isi: string };
@@ -101,10 +101,10 @@ export async function TabPemicu() {
               </div>
               <div className="muted" style={{ minWidth: 170 }}>{b.target}</div>
               <form action={kirimPemicu}>
-                <input type="hidden" name="nomor" value={b.nomor} />
-                <input type="hidden" name="tujuan" value={b.tujuan} />
-                <input type="hidden" name="isi" value={b.isi} />
-                <button className="btn" type="submit" disabled={!b.nomor}>Kirim WA</button>
+                <Input type="hidden" name="nomor" value={b.nomor} />
+                <Input type="hidden" name="tujuan" value={b.tujuan} />
+                <Input type="hidden" name="isi" value={b.isi} />
+                <Button type="submit" disabled={!b.nomor}>Kirim WA</Button>
               </form>
             </div>
           ))}

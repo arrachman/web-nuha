@@ -1,10 +1,9 @@
-import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import type { SessionPayload } from '@/lib/auth';
 import { whereAsetTerlihat, type IzinSarpras } from '@/lib/aset/akses';
 import { getUnitAktif } from '@/lib/unit-scope';
 import { LABEL_KONDISI, LABEL_STATUS_ASET, rupiah } from '@/lib/aset/konstanta';
-import { Kosong, Pagination, Tabel, UKURAN_HALAMAN, bacaHalaman, satu, type SearchParams } from '@/components';
+import { Button, ButtonLink, Input, Kosong, Pagination, Select, Tabel, UKURAN_HALAMAN, bacaHalaman, satu, type SearchParams } from '@/components';
 import { imporAsetCsv } from './actions';
 import { BadgeKondisi, BadgeStatus, Kembali } from './Kembali';
 import { lokasiPilihan, unitDalamCakupan } from './data';
@@ -52,12 +51,14 @@ export async function TabAset({ session, izin, sp }: { session: SessionPayload; 
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {izin.asset_manage && (
         <div className="card" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link href="/sarpras/aset/baru" className="btn">+ Registrasi aset</Link>
+          <ButtonLink href="/sarpras/aset/baru">+ Registrasi aset</ButtonLink>
           <form action={imporAsetCsv} style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
             <Kembali ke="/sarpras?tab=aset" />
             <span style={{ fontSize: 13, fontWeight: 600 }}>Impor buku inventaris lama (CSV):</span>
-            <input type="file" name="berkas" accept=".csv,text/csv" required />
-            <button type="submit" className="btn-sekunder">Impor</button>
+            <div className="field" style={{ marginBottom: 0 }}>
+              <Input type="file" name="berkas" accept=".csv,text/csv" required />
+            </div>
+            <Button type="submit" varian="sekunder">Impor</Button>
             <a href="/sarpras/laporan/templat-impor" style={{ fontSize: 12 }}>Unduh templat</a>
           </form>
         </div>
@@ -65,14 +66,14 @@ export async function TabAset({ session, izin, sp }: { session: SessionPayload; 
 
       <div className="card">
         <form method="get" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
-          <input type="hidden" name="tab" value="aset" />
-          <input name="q" defaultValue={q} placeholder="Cari nama / kode / nomor seri" style={{ ...gayaInput, minWidth: 220 }} />
-          <select name="unit" defaultValue={unitId} style={gayaInput}><option value="">Semua unit</option>{units.map((u) => <option key={u.id} value={u.id}>{u.nama}</option>)}</select>
-          <select name="kategori" defaultValue={kategoriId} style={gayaInput}><option value="">Semua kategori</option>{kategori.map((k) => <option key={k.id} value={k.id}>{k.code} {k.name}</option>)}</select>
-          <select name="lokasi" defaultValue={lokasiId} style={gayaInput}><option value="">Semua lokasi</option>{lokasi.map((l) => <option key={l.id} value={l.id}>{l.name}</option>)}</select>
-          <select name="kondisi" defaultValue={kondisi} style={gayaInput}><option value="">Semua kondisi</option>{Object.entries(LABEL_KONDISI).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
-          <select name="status" defaultValue={status} style={gayaInput}><option value="">Status (selain Dihapus)</option>{Object.entries(LABEL_STATUS_ASET).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
-          <button type="submit" className="btn-sekunder">Saring</button>
+          <Input type="hidden" name="tab" value="aset" />
+          <Input name="q" defaultValue={q} placeholder="Cari nama / kode / nomor seri" style={{ ...gayaInput, minWidth: 220 }} />
+          <Select name="unit" defaultValue={unitId} style={gayaInput}><option value="">Semua unit</option>{units.map((u) => <option key={u.id} value={u.id}>{u.nama}</option>)}</Select>
+          <Select name="kategori" defaultValue={kategoriId} style={gayaInput}><option value="">Semua kategori</option>{kategori.map((k) => <option key={k.id} value={k.id}>{k.code} {k.name}</option>)}</Select>
+          <Select name="lokasi" defaultValue={lokasiId} style={gayaInput}><option value="">Semua lokasi</option>{lokasi.map((l) => <option key={l.id} value={l.id}>{l.name}</option>)}</Select>
+          <Select name="kondisi" defaultValue={kondisi} style={gayaInput}><option value="">Semua kondisi</option>{Object.entries(LABEL_KONDISI).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select>
+          <Select name="status" defaultValue={status} style={gayaInput}><option value="">Status (selain Dihapus)</option>{Object.entries(LABEL_STATUS_ASET).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select>
+          <Button type="submit" varian="sekunder">Saring</Button>
         </form>
 
         {aset.length === 0 ? <Kosong pesan={izin.pengelola ? 'Belum ada aset yang cocok.' : 'Belum ada aset di ruang yang Anda tanggung jawabi atau yang Anda pegang.'} /> : (
@@ -80,7 +81,7 @@ export async function TabAset({ session, izin, sp }: { session: SessionPayload; 
             <Tabel kolom={kolom}>
               {aset.map((a) => (
                 <tr key={String(a.id)} data-testid={`aset-${a.inventoryCode}`}>
-                  <td><input type="checkbox" name="id" value={String(a.id)} aria-label={`Pilih ${a.name}`} /></td>
+                  <td><Input type="checkbox" name="id" value={String(a.id)} aria-label={`Pilih ${a.name}`} /></td>
                   <td><div style={{ fontWeight: 600 }}>{a.name}</div><div className="muted" style={{ fontSize: 11.5 }}>{a.inventoryCode}</div></td>
                   <td>{a.category.name}</td>
                   <td>{a.location?.name ?? '-'}{a.holder ? <div className="muted" style={{ fontSize: 11.5 }}>dipegang {a.holder.person.fullName}</div> : null}</td>
@@ -89,12 +90,12 @@ export async function TabAset({ session, izin, sp }: { session: SessionPayload; 
                   <td><BadgeKondisi kondisi={a.condition} /></td>
                   <td><BadgeStatus status={a.status} /></td>
                   {izin.view_value && <td className="num" data-testid="kolom-harga">{rupiah(a.acquisitionCost)}{a.isEstimatedValue ? '*' : ''}</td>}
-                  <td><Link href={`/sarpras/aset/${a.id}`} className="btn-sekunder" style={{ fontSize: 12.5 }}>Detail</Link></td>
+                  <td><ButtonLink href={`/sarpras/aset/${a.id}`} varian="sekunder" style={{ fontSize: 12.5 }}>Detail</ButtonLink></td>
                 </tr>
               ))}
             </Tabel>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12, gap: 10, flexWrap: 'wrap' }}>
-              <button type="submit" className="btn-sekunder">Cetak label QR terpilih</button>
+              <Button type="submit" varian="sekunder">Cetak label QR terpilih</Button>
               <span className="muted" style={{ fontSize: 12 }}>{total} aset{izin.view_value ? ' · * nilai taksiran' : ''}</span>
             </div>
           </form>

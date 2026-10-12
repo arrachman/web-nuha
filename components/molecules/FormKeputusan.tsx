@@ -1,3 +1,6 @@
+import { Button } from '@/components/atoms/Button';
+import { Input } from '@/components/atoms/Input';
+
 /**
  * Setujui/Tolak sebagai DUA form terpisah dengan hidden `keputusan` — jangan
  * andalkan name/value tombol submitter: pada Server Action berbasis fungsi,
@@ -11,13 +14,13 @@ export function FormKeputusan({ action, id, kembali, labelSetuju = 'Setujui', ke
   return (
     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', marginTop: kecil ? 0 : 10 }}>
       <form action={action}>
-        <input type="hidden" name="_kembali" value={kembali} /><input type="hidden" name="id" value={id} /><input type="hidden" name="keputusan" value="setuju" />
-        <button type="submit" className="btn" style={gaya}>{labelSetuju}</button>
+        <Input type="hidden" name="_kembali" value={kembali} /><Input type="hidden" name="id" value={id} /><Input type="hidden" name="keputusan" value="setuju" />
+        <Button type="submit" style={gaya}>{labelSetuju}</Button>
       </form>
       <form action={action} style={{ display: 'flex', gap: 6 }}>
-        <input type="hidden" name="_kembali" value={kembali} /><input type="hidden" name="id" value={id} /><input type="hidden" name="keputusan" value="tolak" />
-        {!kecil && <input name="note" placeholder="Alasan menolak" style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid var(--garis)' }} />}
-        <button type="submit" className="btn-sekunder" style={gaya}>Tolak</button>
+        <Input type="hidden" name="_kembali" value={kembali} /><Input type="hidden" name="id" value={id} /><Input type="hidden" name="keputusan" value="tolak" />
+        {!kecil && <Input name="note" placeholder="Alasan menolak" style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid var(--garis)' }} />}
+        <Button type="submit" varian="sekunder" style={gaya}>Tolak</Button>
       </form>
     </div>
   );

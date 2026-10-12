@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { apiPath } from '@/lib/api-path';
+import { Button } from '@/components/atoms/Button';
 
 export function LogoutButton() {
   const router = useRouter();
@@ -19,5 +20,5 @@ export function LogoutButton() {
     }
   }
 
-  return <button className="btn-ghost-terang" onClick={logout} disabled={isLoading}>{isLoading ? 'Keluar…' : 'Keluar'}</button>;
+  return <Button varian="ghost-terang" onClick={logout} disabled={isLoading}>{isLoading ? 'Keluar…' : 'Keluar'}</Button>;
 }

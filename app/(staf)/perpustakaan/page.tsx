@@ -1,46 +1,36 @@
-import { requirePage } from '@/lib/access';
-import { getUnitAktif } from '@/lib/unit-scope';
-import { JudulHalaman, PesanAksi, Tabs, tabAktif, satu, type SearchParams } from '@/components';
-import { unitPerpustakaan } from './data';
+import { redirect } from 'next/navigation';
+import { satu, type SearchParams } from '@/components';
+import { BingkaiPerpus } from './Bingkai';
 import { TabDashboard } from './TabDashboard';
-import { TabKatalog } from './TabKatalog';
-import { TabPeminjaman } from './TabPeminjaman';
-import { TabLaporan } from './TabLaporan';
 
-const TABS = [
-  { key: 'dashboard', label: 'Dashboard' },
-  { key: 'katalog', label: 'Katalog Buku' },
-  { key: 'peminjaman', label: 'Peminjaman' },
-  { key: 'laporan', label: 'Laporan' },
-];
+/** Tujuan rute baru untuk tautan lama berbentuk ?tab=… (penanda lama &
+ * kiriman form sebelum sub-menu jadi halaman sendiri). */
+const TUJUAN_TAB: Record<string, string> = {
+  peminjaman: '/perpustakaan/peminjaman',
+  pengembalian: '/perpustakaan/pengembalian',
+  perpanjangan: '/perpustakaan/perpanjangan',
+  katalog: '/perpustakaan/katalog',
+  label: '/perpustakaan/label',
+  opname: '/perpustakaan/opname',
+  anggota: '/perpustakaan/anggota',
+  laporan: '/perpustakaan/laporan',
+  pengaturan: '/perpustakaan/pengaturan',
+};
 
-export default async function PerpustakaanPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
-  const session = await requirePage('perpustakaan');
+export default async function Page({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const sp = await searchParams;
-  const units = await unitPerpustakaan();
-  // Unit selalu mengikuti pemilih unit global (topbar) — tidak ada lagi
-  // pemilih unit lokal di halaman ini dan parameter ?unit= diabaikan.
-  // Bila unit global "Semua Unit", tampilkan unit perpustakaan pertama.
-  const unitAktif = await getUnitAktif(session);
-  const unit = units.find((u) => u.id === unitAktif) ?? units[0];
-  const tab = tabAktif(TABS, sp.tab);
-
+  const tab = satu(sp.tab) ?? 'dashboard';
+  if (tab !== 'dashboard' && TUJUAN_TAB[tab]) {
+    const sisa = new URLSearchParams();
+    for (const [k, v] of Object.entries(sp)) {
+      if (k === 'tab' || k === 'ok' || k === 'galat') continue;
+      const nilai = Array.isArray(v) ? v[0] : v;
+      if (nilai) sisa.set(k, nilai);
+    }
+    const qs = sisa.toString();
+    redirect(qs ? `${TUJUAN_TAB[tab]}?${qs}` : TUJUAN_TAB[tab]);
+  }
   return (
-    <>
-      <JudulHalaman judul="Perpustakaan" sub={unit ? `Katalog buku, peminjaman, dan pengembalian — unit aktif: ${unit.nama} (mengikuti pemilih unit global).` : 'Katalog buku, peminjaman, dan pengembalian.'} />
-      <PesanAksi pesan={satu(sp.pesan) || undefined} galat={satu(sp.galat) || undefined} />
-
-      {!unit ? (
-        <div className="card"><p className="muted">Belum ada unit perpustakaan (SMP / MA / Pondok) yang aktif.</p></div>
-      ) : (
-        <>
-          <Tabs tabs={TABS} aktif={tab} basePath="/perpustakaan" />
-          {tab === 'dashboard' && <TabDashboard unit={unit} />}
-          {tab === 'katalog' && <TabKatalog unit={unit} sp={sp} />}
-          {tab === 'peminjaman' && <TabPeminjaman unit={unit} sp={sp} />}
-          {tab === 'laporan' && <TabLaporan unit={unit} />}
-        </>
-      )}
-    </>
+    <BingkaiPerpus sp={sp} sub="Ringkasan koleksi, sirkulasi, dan denda" anak={(unit) => <TabDashboard unit={unit} />} />
   );
 }

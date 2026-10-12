@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { readSession } from '@/lib/auth';
 import { getUnitAktif, filterSantriAktif } from '@/lib/unit-scope';
-import { Avatar, Badge, Kosong } from '@/components';
+import { Avatar, Badge, Button, Input, Kosong } from '@/components';
 import { setujuiKunjungan, tolakKunjungan, checkoutKunjungan } from './actions';
 
 /** Kartu kunjungan hari ini: verifikasi pengajuan atau check-out yang sedang berkunjung. */
@@ -46,12 +46,12 @@ export async function TabHari() {
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {perluAksi && (
                 <>
-                  <form action={setujuiKunjungan}><input type="hidden" name="id" value={String(k.id)} /><button className="btn" type="submit">Setujui + WA</button></form>
-                  <form action={tolakKunjungan}><input type="hidden" name="id" value={String(k.id)} /><button className="btn btn-sekunder" type="submit">Tolak</button></form>
+                  <form action={setujuiKunjungan}><Input type="hidden" name="id" value={String(k.id)} /><Button type="submit">Setujui + WA</Button></form>
+                  <form action={tolakKunjungan}><Input type="hidden" name="id" value={String(k.id)} /><Button varian="sekunder" type="submit">Tolak</Button></form>
                 </>
               )}
               {diArea && (
-                <form action={checkoutKunjungan}><input type="hidden" name="id" value={String(k.id)} /><button className="btn btn-sekunder" type="submit">Check-out</button></form>
+                <form action={checkoutKunjungan}><Input type="hidden" name="id" value={String(k.id)} /><Button varian="sekunder" type="submit">Check-out</Button></form>
               )}
             </div>
           </div>

@@ -1,6 +1,5 @@
-import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { Badge, Kosong } from '@/components';
+import { Badge, Button, ButtonLink, Input, Kosong } from '@/components';
 import { mulaiKerja } from '@/app/(staf)/ujian/peserta-actions';
 
 const waktu = (d: Date) => d.toLocaleString('id-ID', { weekday: 'long', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
@@ -49,15 +48,15 @@ export async function TabUjian({ santriId }: { santriId: bigint }) {
             )}
 
             {p.status === 'Mengerjakan' && berjalan && (
-              <Link href={`/portal/santri/ujian/${p.id}`} className="btn" style={{ marginTop: 12, display: 'inline-block' }}>
+              <ButtonLink href={`/portal/santri/ujian/${p.id}`} style={{ marginTop: 12, display: 'inline-block' }}>
                 Lanjutkan mengerjakan
-              </Link>
+              </ButtonLink>
             )}
 
             {p.status === 'Belum' && berjalan && (
               <form action={mulaiKerja} style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                <input type="hidden" name="pesertaId" value={String(p.id)} />
-                <input
+                <Input type="hidden" name="pesertaId" value={String(p.id)} />
+                <Input
                   name="token"
                   required
                   maxLength={6}
@@ -65,7 +64,7 @@ export async function TabUjian({ santriId }: { santriId: bigint }) {
                   autoComplete="off"
                   style={{ padding: '9px 12px', borderRadius: 10, border: '1px solid #E8E3D9', letterSpacing: 3, textTransform: 'uppercase', width: 150, fontWeight: 700 }}
                 />
-                <button type="submit" className="btn">Masuk ujian</button>
+                <Button type="submit">Masuk ujian</Button>
                 <span style={{ fontSize: 11.5, color: '#6B7280' }}>Token didiktekan pengawas.</span>
               </form>
             )}

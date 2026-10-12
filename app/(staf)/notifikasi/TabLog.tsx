@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { Card, Tabel, Kosong, Badge } from '@/components';
+import { Button, Card, Input, Select, Tabel, Kosong, Badge } from '@/components';
 import { WaTestForm } from '@/components/WaTestForm';
 
 /** Log pengiriman WA, difilter per peran lewat query ?role=. Form kirim uji tetap dipertahankan apa adanya. */
@@ -23,12 +23,14 @@ export async function TabLog({ searchParams }: { searchParams: Record<string, st
       <WaTestForm templates={templates.filter((t) => t.isActive).map((t) => ({ kode: t.code, judul: t.title }))} />
       <Card judul={`Log pengiriman ${role ? `— filter peran: ${role}` : ''}`} sub="Pesan yang Anda kirim dari tab &ldquo;Pemicu Otomatis&rdquo; akan muncul di baris teratas.">
         <form method="get" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
-          <input type="hidden" name="tab" value="log" />
-          <select className="field" name="role" defaultValue={role} style={{ minWidth: 200 }}>
-            <option value="">Semua peran</option>
-            {roles.map((r) => <option key={r.role} value={r.role}>{r.role}</option>)}
-          </select>
-          <button className="btn btn-sekunder" type="submit">Terapkan</button>
+          <Input type="hidden" name="tab" value="log" />
+          <div className="field" style={{ marginBottom: 0, minWidth: 200 }}>
+            <Select name="role" defaultValue={role}>
+              <option value="">Semua peran</option>
+              {roles.map((r) => <option key={r.role} value={r.role}>{r.role}</option>)}
+            </Select>
+          </div>
+          <Button varian="sekunder" type="submit">Terapkan</Button>
         </form>
         {logs.length === 0 ? (
           <Kosong pesan="Belum ada log pengiriman." />

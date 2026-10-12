@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Card, Tabel, rp } from "@/components";
+import { Card, Tabel, rp, Button, FormField, Input, Select } from "@/components";
 import { FormAksi } from "./FormAksi";
 import { TombolSalin } from "./TombolSalin";
 import { simpanUtilitasBulanan } from "./aksi";
@@ -47,14 +47,14 @@ export async function TabUtilitas({ periode }: { periode: string }) {
 
       <Card judul={`Input tagihan — ${labelPeriode(periode)}`} sub="Kosongkan unit token bila tidak ada SS pembelian (otomatis Rp0).">
         <form method="get" style={{ display: "flex", gap: 8, alignItems: "end", marginBottom: 12 }}>
-          <input type="hidden" name="tab" value="utilitas" />
-          <label style={{ fontSize: 13 }}>Periode
-            <input type="month" name="periode" defaultValue={periode} className="field" style={{ display: "block", marginTop: 4 }} />
-          </label>
-          <button type="submit" className="btn">Tampilkan</button>
+          <Input type="hidden" name="tab" value="utilitas" />
+          <FormField label="Periode" htmlFor="util-periode" rapat>
+            <Input type="month" id="util-periode" name="periode" defaultValue={periode} />
+          </FormField>
+          <Button type="submit">Tampilkan</Button>
         </form>
         <FormAksi action={simpanUtilitasBulanan} tombol={`Simpan tagihan ${labelPeriode(periode)}`}>
-          <input type="hidden" name="periode" value={periode} />
+          <Input type="hidden" name="periode" value={periode} />
           <Tabel kolom={["Unit", { label: "Volume (kWh/m³)", num: true }, { label: "Total tagihan (Rp)", num: true }, "Status"]}>
             {units.map((u) => {
               const ada = adaMap.get(String(u.id));
@@ -65,16 +65,16 @@ export async function TabUtilitas({ periode }: { periode: string }) {
                     <div className="muted" style={{ fontSize: 11 }}>{u.idpel}{u.isToken ? " · token*" : ""}</div>
                   </td>
                   <td className="num">
-                    <input type="number" name={`vol_${u.id}`} step="0.01" min={0} defaultValue={ada?.volume != null ? Number(ada.volume) : ""} className="field" style={{ width: 110, textAlign: "right" }} placeholder="0" />
+                    <Input type="number" name={`vol_${u.id}`} step="0.01" min={0} defaultValue={ada?.volume != null ? Number(ada.volume) : ""} style={{ width: 110, textAlign: "right", padding: "7px 10px", border: "1px solid var(--garis-input)", borderRadius: 10, background: "var(--krem-2)", fontSize: 13, fontFamily: "inherit", color: "var(--teks)" }} placeholder="0" />
                   </td>
                   <td className="num">
-                    <input type="number" name={`total_${u.id}`} min={0} defaultValue={ada ? Number(ada.total) : ""} className="field" style={{ width: 140, textAlign: "right" }} placeholder="0" />
+                    <Input type="number" name={`total_${u.id}`} min={0} defaultValue={ada ? Number(ada.total) : ""} style={{ width: 140, textAlign: "right", padding: "7px 10px", border: "1px solid var(--garis-input)", borderRadius: 10, background: "var(--krem-2)", fontSize: 13, fontFamily: "inherit", color: "var(--teks)" }} placeholder="0" />
                   </td>
                   <td>
-                    <select name={`status_${u.id}`} defaultValue={ada?.status ?? "Belum"} className="field">
+                    <Select name={`status_${u.id}`} defaultValue={ada?.status ?? "Belum"} style={{ padding: "7px 10px", border: "1px solid var(--garis-input)", borderRadius: 10, background: "var(--krem-2)", fontSize: 13, fontFamily: "inherit", color: "var(--teks)" }}>
                       <option value="Belum">Belum</option>
                       <option value="Lunas">Lunas</option>
-                    </select>
+                    </Select>
                   </td>
                 </tr>
               );

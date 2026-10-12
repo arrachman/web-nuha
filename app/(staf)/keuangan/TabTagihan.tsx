@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { readSession } from '@/lib/auth';
 import { getUnitAktif } from '@/lib/unit-scope';
-import { Card, Avatar, Tabel, Badge, Kosong, rp } from '@/components';
+import { Card, Avatar, Tabel, Badge, Kosong, rp, Button, Input } from '@/components';
 
 /** Status invoices diturunkan dari rasio paidAmount/amount — bukan kolom terpisah. */
 function statusInvoice(amount: number, paidAmount: number): string {
@@ -42,15 +42,15 @@ export async function TabInvoice({ q }: { q: string }) {
     <div className="grid g2" style={{ gridTemplateColumns: '1fr 300px', alignItems: 'start' }}>
       <Card judul="Tagihan santri" sub={q ? `Pencarian: "${q}"` : 'Seluruh tagihan, diurutkan dari jatuh tempo terbaru.'}>
         <form method="get" style={{ marginBottom: 14, display: 'flex', gap: 8 }}>
-          <input type="hidden" name="tab" value="invoices" />
-          <input
-            className="field"
+          <Input type="hidden" name="tab" value="invoices" />
+          <Input
+            varian="cari"
             name="q"
             defaultValue={q}
             placeholder="Cari nama santri"
             style={{ minWidth: 220 }}
           />
-          <button type="submit" className="btn">Cari</button>
+          <Button type="submit">Cari</Button>
         </form>
         {rows.length === 0 ? (
           <Kosong pesan="Tidak ada invoices yang cocok dengan pencarian." />

@@ -14,3 +14,4 @@ export * from './PemilihWilayah';
 export * from './PenyaringOtomatis';
 export * from './PesanAksi';
 export * from './FormKeputusan';
+export * from './FormField';
