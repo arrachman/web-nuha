@@ -1,6 +1,7 @@
-import Link from 'next/link';
-import { FilterAktif, type ChipFilter } from '@/components';
-import { hrefInduk, STATUS_SANTRI, type FilterInduk } from './filter';
+import { FilterAktif, ButtonLink, type ChipFilter } from '@/components';
+import { hrefInduk, type FilterInduk } from './filter';
+import type { PohonInduk } from './pohon';
+import { KotakCari } from './KotakCari';
 
 /** Satu tombol pilihan yang menyala saat nilainya sedang dipakai; klik ulang mematikannya.
  * Memakai kelas `.chip` bersama (globals.css), bukan gaya sebaris, supaya seragam
@@ -8,9 +9,9 @@ import { hrefInduk, STATUS_SANTRI, type FilterInduk } from './filter';
 function Opsi({ f, ubah, aktif, anak }: { f: FilterInduk; ubah: Partial<FilterInduk>; aktif: boolean; anak: React.ReactNode }) {
   const mati = Object.fromEntries(Object.keys(ubah).map((k) => [k, undefined])) as Partial<FilterInduk>;
   return (
-    <Link href={hrefInduk(f, aktif ? mati : ubah)} className={`chip ${aktif ? 'chip-aktif' : ''}`} aria-pressed={aktif} aria-current={aktif ? 'true' : undefined}>
+    <ButtonLink varian="chip" aktif={aktif} href={hrefInduk(f, aktif ? mati : ubah)} aria-pressed={aktif} aria-current={aktif ? 'true' : undefined}>
       {anak}
-    </Link>
+    </ButtonLink>
   );
 }
 
@@ -23,15 +24,19 @@ function Kelompok({ judul, anak }: { judul: string; anak: React.ReactNode }) {
   );
 }
 
-/** Penyaring cepat di atas daftar. Semua pilihan berupa tautan (bukan form),
- * jadi satu klik = satu keadaan URL yang bisa dibookmark dan di-back. */
-export function BarisFilter({ f, angkatan, hasil }: { f: FilterInduk; angkatan: string[]; hasil: number }) {
-  // Unit & kelas sengaja tidak dijadikan chip: pohon lembaga di sebelah sudah
-  // menyorot pilihannya, jadi chip-nya cuma duplikat yang bikin baris ini ramai.
+/** Penyaring cepat di atas daftar — TANPA tombol terapkan/cari sama sekali
+ * (permintaan user): pencarian adalah komponen klien yang menavigasi saat
+ * ketikan berubah (onchange, debounce), dan pilihan lain berupa tautan chip
+ * yang langsung berlaku satu klik. Filter Status dan filter Kelas sudah
+ * dihapus dari sini; daftar secara bawaan menampilkan santri aktif saja
+ * (lihat whereFilter), dan penelusuran per kelas tidak lagi ditawarkan.
+ * Unit dipilih lewat tab lembaga / PemilihUnit global di atas halaman ini. */
+export function BarisFilter({ f, angkatan, hasil, pohon }: { f: FilterInduk; angkatan: string[]; hasil: number; pohon: PohonInduk }) {
+  const unitAktifId = f.alumniUnitId ?? f.unitId;
+  const unitAktif = unitAktifId ? pohon.unit.find((u) => u.id === unitAktifId) : undefined;
   const copot: ChipFilter[] = [
     ...(f.q ? [{ label: `Cari: "${f.q}"`, href: hrefInduk(f, { q: '' }) }] : []),
     ...(f.alumniUnitId ? [{ label: 'Lulusan', href: hrefInduk(f, { alumniUnitId: undefined }) }] : []),
-    ...(f.status && f.status !== 'Aktif' ? [{ label: `Status: ${f.status}`, href: hrefInduk(f, { status: undefined }) }] : []),
     ...(f.jk ? [{ label: `Jenis kelamin: ${f.jk === 'L' ? 'Putra' : 'Putri'}`, href: hrefInduk(f, { jk: undefined }) }] : []),
     ...(f.angkatan ? [{ label: `Angkatan: ${f.angkatan}`, href: hrefInduk(f, { angkatan: undefined }) }] : []),
   ];
@@ -39,25 +44,7 @@ export function BarisFilter({ f, angkatan, hasil }: { f: FilterInduk; angkatan: 
   return (
     <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: 14 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
-        <form action="/induk" method="get" style={{ display: 'flex', gap: 7, alignItems: 'center', flex: '1 1 260px' }}>
-          {f.unitId && <input type="hidden" name="unit" value={f.unitId} />}
-          {f.kelasId && <input type="hidden" name="kelas" value={f.kelasId} />}
-          {f.alumniUnitId && <input type="hidden" name="alumni" value={f.alumniUnitId} />}
-          {f.status && <input type="hidden" name="status" value={f.status} />}
-          {f.angkatan && <input type="hidden" name="angkatan" value={f.angkatan} />}
-          <input
-            type="search"
-            name="q"
-            defaultValue={f.q}
-            placeholder="Cari nama, NIS, atau NISN…"
-            aria-label="Cari santri"
-            className="input-cari"
-            style={{ flex: 1, minWidth: 0 }}
-          />
-          <button type="submit" className="btn btn-sekunder" style={{ padding: '9px 16px' }}>
-            Cari
-          </button>
-        </form>
+        <KotakCari f={f} />
         <span className="muted" style={{ fontSize: 12.5 }}>
           <strong style={{ color: 'var(--teks-kuat)' }}>{hasil}</strong> santri cocok
         </span>
@@ -66,20 +53,6 @@ export function BarisFilter({ f, angkatan, hasil }: { f: FilterInduk; angkatan: 
       <FilterAktif chip={copot} hrefBersih="/induk" />
 
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', borderTop: '1px solid var(--garis)', paddingTop: 10 }}>
-        <Kelompok
-          judul="Status"
-          anak={STATUS_SANTRI.map((s) => (
-            <Opsi
-              key={s}
-              f={f}
-              ubah={{ status: s }}
-              // "Aktif" adalah bawaan: menyala juga saat tak ada status di URL,
-              // tapi tidak saat sedang menelusuri cabang Lulusan per unit.
-              aktif={s === 'Aktif' ? !f.alumniUnitId && (!f.status || f.status === 'Aktif') : f.status === s}
-              anak={s}
-            />
-          ))}
-        />
         <Kelompok
           judul="Jenis kelamin"
           anak={[
@@ -93,6 +66,27 @@ export function BarisFilter({ f, angkatan, hasil }: { f: FilterInduk; angkatan: 
             anak={angkatan.map((a) => (
               <Opsi key={a} f={f} ubah={{ angkatan: a }} aktif={f.angkatan === a} anak={a} />
             ))}
+          />
+        )}
+        {/* Lulusan per lembaga — dulu cabang di panel pohon. Mematikannya
+            mengembalikan unit aktif (bukan membersihkannya), sama seperti
+            tautan pohon sebelumnya. */}
+        {unitAktif && (unitAktif.alumni > 0 || f.alumniUnitId) && (
+          <Kelompok
+            judul="Lulusan"
+            anak={(
+              <ButtonLink
+                varian="chip"
+                aktif={!!f.alumniUnitId}
+                href={f.alumniUnitId
+                  ? hrefInduk(f, { alumniUnitId: undefined, unitId: unitAktif.id })
+                  : hrefInduk(f, { alumniUnitId: unitAktif.id })}
+                aria-pressed={!!f.alumniUnitId}
+                aria-current={f.alumniUnitId ? 'true' : undefined}
+              >
+                {`${unitAktif.nama} (${unitAktif.alumni})`}
+              </ButtonLink>
+            )}
           />
         )}
       </div>

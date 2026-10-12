@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { JudulHalaman, bacaHalaman, UKURAN_HALAMAN, Pagination } from '@/components';
 import { BarisFilter } from './BarisFilter';
 import { DaftarSantri } from './DaftarSantri';
+import { ambilDaftarKaya } from './kaya';
 import { bacaFilter, hrefInduk, whereFilter } from './filter';
 import { ambilAngkatan, ambilPohon, unitIdsPohon } from './pohon';
 import { TabUnit } from './TabUnit';
@@ -37,23 +38,7 @@ export default async function IndukPage({ searchParams }: { searchParams: Promis
   const halaman = bacaHalaman(sp);
 
   const [daftar, total, pohon, angkatan] = await Promise.all([
-    prisma.santri.findMany({
-      where,
-      select: {
-        id: true, nis: true, nisn: true, status: true,
-        person: { select: { fullName: true } },
-        kelas: { select: { nama: true } },
-        unit: { select: { nama: true } },
-        // Penanda lembaga di daftar dibaca dari `kelasLain`, bukan kolom `unit`:
-        // satu santri bisa sekolah di SMP sekaligus mengaji di Madin, dan kolom
-        // lama hanya memuat penempatan utama — memakainya akan menyembunyikan
-        // lembaga keduanya justru di tampilan "Semua lembaga".
-        kelasLain: { select: { unit: { select: { id: true, nama: true } } } },
-      },
-      orderBy: { person: { fullName: 'asc' } },
-      skip: (halaman - 1) * UKURAN_HALAMAN,
-      take: UKURAN_HALAMAN,
-    }),
+    ambilDaftarKaya(where, (halaman - 1) * UKURAN_HALAMAN, UKURAN_HALAMAN),
     prisma.santri.count({ where }),
     ambilPohon(f),
     ambilAngkatan(),
