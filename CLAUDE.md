@@ -82,6 +82,56 @@ saat user eksplisit minta deploy.
    session.nama`), belum FK pegawai. Kartu "Kelas Saya" dan filter modul Ujian
    bergantung pada kecocokan nama persis.
 
+
+## Batas modul per domain (monolit modular)
+
+Aplikasi ini SATU monolit — jangan pecah jadi app/micro-frontend per route.
+Sebagai gantinya batas antar domain di dalam monolit dijaga tegas:
+
+**Lapisan & arah impor yang boleh:**
+
+- `app/<domain>/…` boleh impor `lib/` (kernel bersama) + `components/` (UI
+  bersama) + file di dalam domainnya sendiri. TIDAK boleh impor dari folder
+  domain lain — termasuk `app/(staf)/<domain-lain>` dan `app/portal` dua
+  arah; `app/api` diperlakukan sebagai domain sendiri.
+- `lib/` adalah kernel (prisma, auth, access, audit, cbt, berkas, …) —
+  TIDAK boleh impor dari `app/` atau `components/`.
+- `components/` TIDAK boleh impor dari `app/`. Impor ke `lib/` hanya untuk
+  server component cangkang aplikasi (pola yang sudah ada: `PemilihUnit`,
+  `PemilihPeran`, `CrudPanel` memakai lib kernel); atoms/molecules murni
+  presentasi tidak mengimpor lib selain `components/utils` + `lib/api-path`.
+- Kebutuhan yang dipakai ≥2 domain NAIK ke kernel: logika/server action
+  bersama → `lib/`, komponen UI bersama → `components/`. Jangan mengimpor
+  file domain tetangga. Pola yang benar dan sudah berjalan: mesin CBT murni
+  di `lib/cbt.ts`, dipakai domain ujian, portal, dan api.
+
+**Domain saat ini** (folder di bawah `app/`): staf — beranda, induk,
+keuangan, kepegawaian, kurikulum, sarpras, perpustakaan, ujian, lms,
+poskestren, penggajian, rekrutmen, karir, ppdb-panitia, kunjungan-wali,
+notifikasi, data, laporan, pengaturan, lapor-kerusakan; portal (santri &
+wali); publik — ppdb, cek-status, r, a, profil-pondok; lintas — login,
+akun, berkas, cetak, docs, api.
+
+**Backlog pelanggaran (audit graf impor 2026-10-12 — perbaiki saat
+menyentuh area ini; jangan dibiarkan bertambah):**
+
+1. `app/(staf)/ujian/peserta-actions.ts` + `cbt-bersama.ts` diimpor portal
+   (2 file) & `app/api/cbt/*` (2 route) → pindahkan ke `lib/` mengikuti
+   pola `lib/cbt.ts`, perbarui semua pengimpornya.
+2. `app/(staf)/keuangan/teks-wa.ts` diimpor `app/api/keuangan/utilitas/*`
+   → pindahkan ke `lib/teks-wa.ts`.
+3. `app/a/PindaiShell.tsx` diimpor `app/r/[token]/page.tsx` → pindahkan ke
+   `components/PindaiShell.tsx`.
+4. **Pengecualian yang disahkan**: `app/(staf)/lapor-kerusakan` mengimpor
+   `../sarpras/actions` + `../sarpras/Kembali` — laporan kerusakan memang
+   milik domain sarpras (halamannya formulir ringkas untuk aksi sarpras).
+   Jangan tambah pengecualian baru tanpa mencatatnya di sini.
+
+**Cek cepat sebelum commit** — dua grep ini menyaring kandidat pelanggaran
+(yang sah hanya pengecualian di atas + impor yang ternyata masih satu
+domain): `grep -rn "from '@/app/" app lib components` dan
+`grep -rn "from '\.\./[a-z]" "app/(staf)" --include='*.ts' --include='*.tsx'`.
+
 ## Skema & migrasi
 
 - Ubah `prisma/schema.prisma` → buat migrasi di `prisma/migrations/` →

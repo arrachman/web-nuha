@@ -1,5 +1,13 @@
 # Riwayat Perubahan — web-nuha
 
+## 2026-10-12 — Aturan batas modul per domain (monolit modular) di CLAUDE.md
+
+- Keputusan user: TIDAK memecah frontend jadi micro-app per route; monolit dipertahankan dan batas antar domainnya yang dirapikan.
+- Audit graf impor atas `app/`, `lib/`, `components/`: arah lapisan sehat — `lib` → `app` 0 impor, `components` → `app` 0 impor, semua domain mengimpor `lib` + `components` sebagaimana mestinya; `components` → `lib` 26 impor (pola sah server component cangkang: PemilihUnit/PemilihPeran/CrudPanel).
+- Ditemukan hanya 8 impor lintas domain `app` → `app` di 4 titik: (1) portal + `api/cbt` mengimpor `app/(staf)/ujian/peserta-actions.ts` & `cbt-bersama.ts`; (2) `api/keuangan/utilitas` mengimpor `app/(staf)/keuangan/teks-wa.ts`; (3) `app/r/[token]` mengimpor `app/a/PindaiShell.tsx`; (4) `lapor-kerusakan` mengimpor `sarpras/actions` + `sarpras/Kembali` — yang terakhir DISAHKAN sebagai pengecualian (laporan kerusakan memang milik domain sarpras).
+- Section baru "Batas modul per domain (monolit modular)" ditambahkan ke `CLAUDE.md`: arah impor per lapisan, daftar domain saat ini, backlog pemindahan 3 titik di atas (ke `lib/` / `components/`, mengikuti pola `lib/cbt.ts` yang sudah berjalan), dan dua grep cek cepat sebelum commit.
+- Pemindahan filenya SENGAJA belum dieksekusi sesi ini: file-file pengimpornya (`portal/santri/ujian/*`, `TabUjian.tsx`, `lapor-kerusakan/page.tsx`, `sarpras/Kembali.tsx`, dan belasan file ujian/sarpras/portal lain) sedang diubah sesi paralel — memindahkan target impor sekarang akan mematahkan build mereka. Eksekusi backlog saat pohon kerja bersih; langkah persisnya tertulis di section CLAUDE.md tersebut. Commit ini hanya mengambil hunk section baru (perubahan CLAUDE.md sesi paralel tidak ikut).
+
 ## 2026-10-12 — Fase A+B: runtime standalone + deploy lebih ramping
 
 - **Runtime diganti**: service `nuha-apps.service` (systemd user) sekarang menjalankan `node /opt/nuha/apps/.next/standalone/server.js` (PORT=3411, HOSTNAME=127.0.0.1, STORAGE_DIR=/opt/nuha/apps/storage), bukan `next start` dari repo penuh. Start 151–184 ms (sebelumnya 480–584 ms), RAM ±80 MB, peringatan "next start does not work with standalone" hilang. Unit lama dibackup di `~/.config/systemd/user/nuha-apps.service.bak-nextstart-20261012`.
