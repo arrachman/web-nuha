@@ -71,13 +71,14 @@ export function whereFilter(f: FilterInduk, opsi: { unitIds?: number[] } = {}): 
   if (unitLulusan) {
     syarat.push(lulusanDiUnit(unitLulusan));
   } else {
-    // Unit/kelas dijawab dari `SantriKelas`, bukan kolom `santri.unitId/kelasId`:
-    // satu santri bisa sekolah di SMP sekaligus mengaji di Madin, dan kolom lama
-    // hanya memuat penempatan utama — memakainya akan menghilangkan santri dari
-    // cabang unit keduanya. "Tanpa kelas" berarti tidak punya penempatan sama sekali.
-    if (f.kelasId === 'none') syarat.push({ kelasLain: { none: {} } });
-    else if (f.kelasId) syarat.push({ kelasLain: { some: { kelasId: f.kelasId } } });
-    else if (f.unitId) syarat.push({ kelasLain: { some: { unitId: f.unitId } } });
+    // Keanggotaan unit/kelas: punya penempatan rombel (`SantriKelas`) di unit/kelas
+    // itu ATAU unit/kelas utamanya (`santri.unitId/kelasId`) unit/kelas itu — satu
+    // santri bisa sekolah di SMP sekaligus mengaji di Madin, dan penempatan rombel
+    // bisa kosong (belum diimpor), sehingga kolom utama tidak boleh diabaikan.
+    // "Tanpa kelas" berarti tidak punya penempatan dan tidak punya kelas utama.
+    if (f.kelasId === 'none') syarat.push({ kelasLain: { none: {} }, kelasId: null });
+    else if (f.kelasId) syarat.push({ OR: [{ kelasLain: { some: { kelasId: f.kelasId } } }, { kelasId: f.kelasId }] });
+    else if (f.unitId) syarat.push({ OR: [{ kelasLain: { some: { unitId: f.unitId } } }, { unitId: f.unitId }] });
     syarat.push({ status: f.status ?? STATUS_AKTIF });
   }
   if (f.angkatan) syarat.push({ tahunMasuk: f.angkatan });
